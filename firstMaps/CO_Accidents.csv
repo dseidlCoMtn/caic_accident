@@ -1,0 +1,195 @@
+acc_id,acc_type,acc_status,acc_public,acc_lat,acc_lon,acc_date,acc_location,acc_activity,acc_travel_mode,acc_no_caught,acc_no_buried,acc_no_killed,report
+3,inv,published,1,38,-107,11-Feb-10,"Near Ridgway Hut, Sneffels Range",Backcountry Tourer,,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=3
+23,inv,published,1,38,-107,27-Dec-09,"Kebler, CO",Backcountry Tourer,Ski,2,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=23
+30,inv,published,1,39,-106,14-Feb-10,"Mt Yeckel, Near Margy's Hut above the town of Lenado",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=30
+39,inv,published,1,37,-107,6-Jan-10,Picayne Gulch,Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=39
+41,inv,published,1,39.79952,-105.80136,11-Jan-10,"No Name Peak, Berthoud Pass",Backcountry Tourer,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=41
+42,inv,published,1,39.5595,-106.34039,6-Jan-10,Battle Mountain - outside Vail Mountain ski area,Sidecountry Rider,,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=42
+57,inv,published,1,39.9213,-105.67374,15-Feb-10,"Above Forest Lakes, Moffat Tunnel",Backcountry Tourer,Ski,0,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=57
+72,inv,published,1,39.901625,-105.667384,26-Feb-10,"South of Arapaho Lakes, west of Rollinsville",Backcountry Tourer,Ski,1,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=72
+81,inv,published,1,39,-106,23-Feb-10,Ashcroft- Near Lindley Hut,Backcountry Tourer,,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=81
+98,inv,published,1,39,-107,7-Mar-10,"Cliff Lake Overlook, Flattops-White River National Forest",Snowmobiler,Snowmobile,0,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=98
+108,inv,published,1,38.32872,-106.23696,12-Mar-10,Mt Antora,Snowmobiler,,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=108
+118,inv,published,1,39.63599,-105.88544,10-Mar-10,"Steep Gully #1, backcountry near Arapahoe Basin Ski Area",Sidecountry Rider,,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=118
+120,inv,published,1,39,-106,26-Feb-10,"Ophir Gulch, Aspen Mountain Side Country",Sidecountry Rider,Ski,2,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=120
+122,inv,published,1,37.83267,-107.7449,21-Mar-10,"Peak 12,442 (Battleship Avalanche Path) NW of Silverton",Backcountry Tourer,,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=122
+139,inv,published,1,38.12291,-107.67303,30-Mar-10,"Near Baldy Peak, southeast of Ridgway",Backcountry Tourer,,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=139
+188,inv,published,1,38.9853,-107.05181,24-Oct-10,"Mt. Baldy - North Bowl, Crested Butte",Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=188
+189,inv,published,1,39.58201,-105.91043,12-Nov-10,"Midnight Ride, Independence Bowl, Keystone",Sidecountry Rider,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=189
+206,inv,published,1,37,-106,22-Nov-10,"Wolf Creek Pass Ski Area, Glory Hole Point",Ski Patroller,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=206
+208,inv,published,1,39.74933,-105.82991,20-Nov-10,"Woods Creek, near Butler Gulch",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=208
+216,inv,published,1,38.8861,-107.061,2-Dec-10,"Redwell Basin, Ruby Range",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=216
+225,inv,published,1,39.7026,-105.89682,5-Dec-10,Dry Gulch-East of Eisenhower Tunnel,Backcountry Tourer,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=225
+232,inv,published,1,39.79615,-105.87226,12-Dec-10,"Near Jones Pass, Front Range",Snowmobiler,Snowmobile,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=232
+243,inv,published,1,39,-107,20-Dec-10,Marble Peak,Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=243
+291,inv,published,1,39,-106,29-Jan-11,"Uneva Peak, Vail Pass",Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=291
+321,inv,published,1,39,-106,19-Feb-11,Express Creek (west of Markley Hut),Backcountry Tourer,Ski,4,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=321
+324,inv,published,1,40,-107,20-Feb-11,Sand Peak-Flat Tops,Snowmobiler,Snowmobile,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=324
+327,inv,published,1,39,-106,22-Feb-11,"East Snowmass Creek Valley, Sand's Chute",Sidecountry Rider,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=327
+372,inv,published,1,39,-106,4-Apr-11,"Highlands Ridge, Desolation Row, Aspen zone",Sidecountry Rider,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=372
+377,inv,published,1,39,-106,2-Apr-11,"Green Mountain, west side of Independence Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=377
+380,inv,published,1,37.8973,-107.7039,15-Apr-11,Red Mountain Pass Backcountry,Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=380
+406,inv,published,1,39.64473,-105.81825,21-May-11,Torreys Peak,Backcountry Tourer,Snowboard,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=406
+420,inv,published,1,40.52308,-105.86984,18-Jun-11,"Iron Mountain, Cameron Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=420
+423,inv,published,1,37.83378,-107.74567,17-Dec-11,"Battleship, south of Red Mountain Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=423
+426,inv,published,1,39.82162,-105.78873,1-Jan-12,Second Creek headwall near Berthoud Pass,Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=426
+431,inv,published,1,39.18217,-106.92676,18-Jan-12,Burnt Mountain Near Snowmass Village,Sidecountry Rider,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=431
+432,inv,published,1,39.61276,-106.35495,22-Jan-12,"Prima Cornice, Vail",Inbounds Rider,Ski,3,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=432
+433,inv,published,1,39.85833,-105.76066,22-Jan-12,"Trestle Trees, Winter Park",Inbounds Rider,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=433
+434,inv,published,1,40.56363,-106.64257,21-Jan-12,"Chedsey Creek, North Park",Snowmobiler,Foot,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=434
+436,inv,published,1,40.51426,-105.89945,22-Jan-12,"Diamond Peaks, Cameron Pass",Backcountry Tourer,Ski,0,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=436
+437,rep,published,1,40.50649,-105.88623,22-Jan-12,Cameron Pass,Snowmobiler,Snowmobile,0,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=437
+440,inv,published,1,39.648,-105.95215,25-Jan-12,Deer Creek Drainage above Montezuma,Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=440
+442,inv,published,1,37.92179,-107.80952,13-Feb-12,"Contention Fingers, Bear Creek, Telluride",Sidecountry Rider,Snowboard,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=442
+443,rep,published,1,39.56335,-106.27075,13-Feb-12,Mushroom Bowl,Sidecountry Rider,Ski,0,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=443
+444,inv,published,1,37.49628,-106.80359,16-Feb-12,"Gibbs Creek, near Wolf Creek Pass",Backcountry Tourer,Ski,3,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=444
+456,inv,published,1,37.88142,-107.7207,25-Feb-12,"Big Horn Gulch, south of Red Mountain Pass",Backcountry Tourer,Ski,2,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=456
+463,inv,published,1,37.84165,-107.7812,30-Mar-12,"Ophir Pass, Paradise Basin",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=463
+465,rep,published,1,37.83365,-107.80884,28-Apr-12,"South Lookout Peak, near Ophir Pass",Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=465
+473,inv,published,1,39.33405,-106.25522,24-Dec-12,"Buckeye Peak, southwest of Fremont Pass",Backcountry Tourer,Ski,2,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=473
+478,inv,published,1,39.170414,-106.939467,30-Dec-12,"Ships Prow Glades, Snowmass Ski Area",Ski Patroller,Ski,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=478
+480,inv,published,1,39.04965,-107.19536,13-Jan-13,"Raspberry Creek, near Marble",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=480
+484,inv,published,1,37.80924,-107.63374,27-Jan-13,Kendall Mountain southeast of Silverton,Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=484
+485,inv,published,1,37.89819,-107.65301,2-Feb-13,"Cement Creek, near Silverton",Backcountry Tourer,Ski,3,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=485
+486,rep,published,1,37.8991,-107.65254,2-Feb-13,"Cement Creek, north of Gladstone",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=486
+487,inv,published,1,39.79996,-105.79113,3-Feb-13,"Russell Peak, near Berthoud Pass",Backcountry Tourer,Ski,2,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=487
+488,rep,published,1,40.51458,-105.90443,2-Feb-13,Cameron Pass/South Diamond Peak,Backcountry Tourer,Unknown,0,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=488
+489,inv,published,1,39.79218,-105.80589,7-Feb-13,Berthoud Pass-Current Creek-Postage Stamp,Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=489
+490,inv,published,1,39.623971,-105.876514,16-Feb-13,Montezuma Bowl - Arapahoe Basin,Inbounds Rider,Ski,15,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=490
+492,rep,published,1,39.75701,-105.87175,23-Feb-13,Butler Gulch,Backcountry Tourer,Foot,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=492
+497,inv,published,1,40.49092,-105.89048,2-Mar-13,"Nokhu Crags, Never Summer Mountains",Backcountry Tourer,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=497
+499,inv,published,1,40.45562,-105.67725,17-Mar-13,"Ypsilon Mountain, Rocky Mountain National Park",Climber,Foot,2,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=499
+504,inv,published,1,39.49593,-106.26114,18-Apr-13,"Ptarmigan Hill, near Vail Pass",Hybrid Rider,Snowboard,2,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=504
+505,inv,published,1,39.6789,-105.86839,20-Apr-13,"Sheep Creek, north of Loveland Pass",Backcountry Tourer,Snowboard,6,5,5,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=505
+507,rep,published,1,40.3138,-105.6738,21-Nov-13,Rocky Mountain National Park-Dragon's Tail Couloir,Climber,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=507
+508,rep,published,1,39.83408,-105.64865,24-Nov-13,St Mary's Lake,Climber,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=508
+512,inv,published,1,39.67329,-105.88813,27-Dec-13,North side Loveland Pass,Sidecountry Rider,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=512
+514,inv,published,1,40.34187,-106.11978,31-Dec-13,"Parkview Mountain, west of Willow Creek Pass",Backcountry Tourer,Snowboard,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=514
+516,inv,published,1,39.60136,-106.29805,22-Dec-13,Abrahams-East Vail Chutes,Sidecountry Rider,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=516
+517,inv,published,1,39.47596,-106.10415,2-Jan-14,"Whale's Tail, Breckenridge Ski Area",Inbounds Rider,Ski,6,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=517
+518,inv,published,1,39.60073,-106.29978,7-Jan-14,"East Vail, backcountry southeast of Vail Ski Area",Sidecountry Rider,Ski,4,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=518
+523,inv,published,1,38.85522,-107.07288,10-Feb-14,"Near Kebler Pass, west of Crested Butte",Snowmobiler,Snowmobile,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=523
+524,inv,published,1,39.54075,-105.90855,10-Feb-14,"North Fork Swan River, south of Keystone Ski Area",Sidecountry Rider,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=524
+526,inv,published,1,39.06118,-106.5181,15-Feb-14,"Star Mountain, near Twin Lakes",Backcountry Tourer,Ski,5,3,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=526
+531,inv,published,1,37.29154,-106.56876,4-Mar-14,"Diablo Ridge, Pt. 12,505, approx. 1 mile W of Conejos Peak",Ski Patroller,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=531
+532,inv,published,1,37.46096,-108.0689,5-Mar-14,"Sharkstooth Peak, La Plata Mountains",Snowmobiler,Snowmobile,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=532
+542,rep,published,1,37.8337,-107.84346,16-Mar-14,"Serpent Couloir, Yellow Mtn, Ophir",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=542
+550,inv,published,1,38.90688,-107.12176,3-Nov-14,"Mt Owen, Ruby Range",Backcountry Tourer,Foot,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=550
+554,inv,published,1,38.91599,-107.05543,18-Dec-14,"Schuykill Ridge, Birthday Bowl. Near Crested Butte",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=554
+555,inv,published,1,39.65165,-105.79787,31-Dec-14,Kelso Mountain,Climber,Snowshoe,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=555
+556,inv,published,1,37.80219,-107.65048,6-Jan-15,"Rabbit Ears path, Kendall Mountain",Backcountry Tourer,Ski,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=556
+557,inv,published,1,39.13582,-106.80697,1-Jan-15,McFarlane's Bowl - The Happy Face,Mechanised Guide,Snowcat,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=557
+558,inv,published,1,39.16365,-106.83021,23-Feb-15,"Peter Barker path, near Aspen Mountain",Sidecountry Rider,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=558
+560,rep,published,1,39.67292,-106.29401,5-Mar-15,"Pitkin Creek, Gore Range",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=560
+565,rep,published,1,39.00196,-106.79432,17-Mar-15,"Cooper Fork, northwest of Taylor Peak",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=565
+566,inv,published,1,39.29493,-106.92443,3-May-15,"Thomas Lakes Bowl, Mt. Sopris",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=566
+568,rep,published,1,39.03544,-106.85713,17-May-15,"Pearl Couloir, Cathedral Peak",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=568
+569,rep,published,1,39.62136,-106.14278,31-May-15,"Buffalo Mountain, southern Gore Range",Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=569
+571,inv,published,1,39.45578,-105.97507,21-Nov-15,Boreas Pass/Bald Mountain,Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=571
+574,inv,published,1,37.8295,-107.84158,25-Nov-15,"Ophir, Fatwa Couloir",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=574
+576,inv,published,1,39.4521,-106.07609,19-Dec-15,"Number 4, Carter Gulch southwest of Breckenridge",Sidecountry Rider,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=576
+579,rep,published,1,37.885,-107.81093,2-Jan-16,"San Joaquin Couloir, Bear Creek near Telluride",Sidecountry Rider,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=579
+582,inv,published,1,39.26228,-106.47413,16-Jan-16,Hagerman Pass,Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=582
+583,inv,published,1,39.8328,-105.64831,16-Jan-16,"St Marys Lake, Front Range",Climber,Foot,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=583
+586,inv,published,1,38.89207,-107.12154,21-Jan-16,"Ruby Peak, Ruby Range west of Crested Butte",Snowmobiler,Snowmobile,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=586
+589,rep,published,1,39.81826,-105.7886,23-Jan-16,"Postage Stamp, Current Creek, Berthoud Pass",Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=589
+593,inv,published,1,39.68183,-105.94146,25-Jan-16,"Coon Hill, west of Eisenhower Tunnel",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=593
+594,inv,published,1,38.49255,-106.309667,22-Jan-16,"North Fooses, Monarch Pass",Backcountry Tourer,Ski,1,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=594
+597,inv,published,1,37.49201,-106.70106,2-Feb-16,"Lost Mine Creek, east of Wolf Creek Pass",Snowmobiler,Snowmobile,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=597
+598,inv,published,1,38.78811,-106.38731,5-Feb-16,"Cottonwood Pass, west of Buena Vista",Snowmobiler,Snowmobile,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=598
+599,inv,published,1,37.88146,-107.73528,13-Feb-16,"Eagle avalanche path, north of Silverton",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=599
+606,inv,published,1,39.6474,-106.27084,19-Mar-16,Bighorn Creek-Gore Range,Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=606
+607,inv,published,1,39.55052,-105.88915,21-Mar-16,"North Fork of the Snake, near Glacier Mountain",Hybrid Rider,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=607
+608,rep,published,1,39.5194,-106.25414,19-Mar-16,"Shrine Ridge, near Vail Pass",Snowmobiler,Snowmobile,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=608
+611,inv,published,1,37.90232,-107.80223,3-Apr-16,"Grandfather Couloir, Bear Creek drainage",Sidecountry Rider,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=611
+613,rep,published,1,39.75178,-105.83877,22-Jan-16,"Red Mountain, Clear Creek County",Backcountry Tourer,Snowboard,0,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=613
+619,rep,published,1,40.42707,-106.63357,11-Dec-16,"FSR 311, west of Rabbit Ears Peak",Snowmobiler,Snowmobile,1,2,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=619
+622,inv,published,1,38.97479,-107.03503,12-Dec-16,"Washington Gulch, north of Crested Butte",Snowmobiler,Snowmobile,1,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=622
+628,inv,published,1,40.50368,-106.74346,12-Jan-17,"North Fork Fish Creek, Buffalo Mountain",Rescuer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=628
+631,inv,published,1,40.07444,-107.24227,14-Feb-17,"Near West Lost Lake, Flat Tops Wilderness area",Snowmobiler,Snowmobile,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=631
+632,inv,published,1,38.96929,-106.95122,3-Feb-17,"Above Copper Creek, near Gothic",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=632
+640,rep,published,1,39.00682,-106.82106,18-Nov-17,"Greg Mace Peak, Castle Creek",Hybrid Rider,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=640
+647,rep,published,1,38.68906,-106.35538,14-Jan-18,"William's Pass, Mt. Princeton Area",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=647
+649,inv,published,1,37.86923,-107.72284,21-Jan-18,"South of Red Mountain Pass, Sam's Trees",Backcountry Tourer,Ski,2,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=649
+650,inv,published,1,39.49631,-106.25826,8-Feb-18,"Ptarmigan Hill, Vail Pass",Hybrid Rider,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=650
+651,rep,published,1,39.80318,-105.77126,11-Feb-18,"The Fingers, Berthoud Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=651
+653,rep,published,1,38.83853,-106.57729,19-Feb-18,Schuykill Ridge,Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=653
+654,inv,published,1,38.00888,-107.87307,20-Feb-18,Chute 4 near Last Dollar Pass,Backcountry Tourer,Snowboard,2,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=654
+662,inv,published,1,39.3327,-106.17805,7-Mar-18,"Mt Arkansas, Fremont Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=662
+665,inv,published,1,39.13635,-106.8795,8-Apr-18,"Maroon Bowl, west of Aspen Highlands",Sidecountry Rider,Ski,2,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=665
+666,inv,published,1,39.48928,-105.8942633,10-Apr-18,"Northwest of Glacier Peak, Middle Fork Swan River",Snowmobiler,Snowmobile,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=666
+673,rep,published,1,40.01012,-105.65347,15-Oct-18,"South of South Arapaho Peak, Indian Peaks",Hiker,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=673
+675,rep,published,1,39.37024,-106.07149,2-Nov-18,"Above Northstar Neighborhood, Hoosier Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=675
+676,rep,published,1,38.88505,-107.05041,25-Nov-18,"Red Lady Bowl, Mt. Emmons",Backcountry Tourer,Ski,0,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=676
+677,rep,published,1,39.13778,-106.80549,24-Nov-18,"Richmond Ridge, McFarland's B Nose",Sidecountry Rider,Ski,0,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=677
+680,inv,published,1,38.89817,-107.11271,6-Dec-18,Irwin Snowcat Ski Operation,Mechanised Guide,Ski,3,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=680
+681,inv,published,1,39.79655,-105.88635,18-Dec-18,"West Fork of Clear Creek, north of Jones Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=681
+682,rep,published,1,39.34063,-106.25051,14-Dec-18,Buckeye Peak,Backcountry Tourer,Ski,0,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=682
+684,inv,published,1,37.7123,-107.9239,16-Dec-18,Hermosa Peak on Barlow Creek side,Snowmobiler,Snowmobile,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=684
+685,inv,published,1,37.91467,-107.73362,5-Jan-19,"Upper Senator Beck Basin, northwest of Red Mountain Pass",Backcountry Tourer,Ski,6,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=685
+687,rep,published,1,37.8997,-107.72756,3-Jan-19,"Near Trico Peak, west of Red Mountain Pass",Hiker,Snowshoe,3,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=687
+689,inv,published,1,39.00232,-106.79927,11-Jan-19,"Near Lindley Hut, south of Ashcroft",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=689
+691,inv,published,1,38.80825,-106.41335,17-Jan-19,"Near Lost Lake, south of Cottonwood Pass",Snowmobiler,Snowmobile,1,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=691
+693,inv,published,1,39.02842,-106.78352,21-Jan-19,"Green Mountain, Express Creek",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=693
+699,rep,published,1,37.83467,-107.74735,21-Jan-19,"Battleship, southeast of Ophir Pass",Backcountry Tourer,Ski,0,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=699
+703,inv,published,1,39.69564,-105.93123,10-Feb-19,"Straight Creek, north of Eisenhower Tunnel",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=703
+704,inv,published,1,38.900249,-106.871974,16-Feb-19,"Pearl Pass Road, Brush Creek Drainage",Backcountry Tourer,Ski,2,2,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=704
+705,inv,published,1,37.90733,-107.81162,19-Feb-19,"Temptation avalanche path, Bear Creek, south of Telluride",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=705
+707,inv,published,1,37.84356,-107.86456,3-Mar-19,"Base Camp above Matterhorn Nordic trailhead, northeast of Lizard Head Pass",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=707
+709,inv,published,1,39.78113,-105.86643,7-Mar-19,"Point 12118, east of Jones Pass",Mechanised Guide,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=709
+710,rep,published,1,38.80363,-106.8897,9-Mar-19,Crested Butte South,Resident,Foot,0,2,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=710
+711,rep,published,1,38.71552,-107.02881,8-Mar-19,Mount Crested Butte,Resident,Foot,0,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=711
+713,rep,published,1,37.90624,-107.41477,12-Mar-19,"County Road 30, southwest of Lake City",Resident,Not Applicable,3,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=713
+714,inv,published,1,39.48979,-106.13465,7-Mar-19,"Y Chute, Highway 91 near Copper Mountain",Motorist,Road Vehicle,5,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=714
+717,rep,published,1,39.63987,-105.855,23-Mar-19,"Black Mountain, east of Arapahoe Basin Ski Area",Backcountry Tourer,Foot,4,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=717
+722,inv,published,1,39.45934,-106.23518,28-Nov-19,Northwest of Searle Pass,Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=722
+723,inv,published,1,38.83314,-107.10514,1-Dec-19,"Big Chute, Anthracite Range",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=723
+726,inv,published,1,40.51611,-105.90773,8-Dec-19,"Diamond Peaks, west of Cameron Pass",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=726
+727,inv,published,1,37.893392,-107.697333,30-Nov-19,"Lower Putney Shoulder, east of Red Mountain Pass",Hiker,Snowshoe,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=727
+729,rep,published,1,40.45593,-106.73999,15-Dec-19,"Mount Werner, between Chute 1 and 2",Inbounds Rider,Snowboard,2,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=729
+737,inv,published,1,37.983432,-107.655867,18-Jan-20,"Uncompahgre Gorge, south of Ouray",Climber,Foot,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=737
+740,inv,published,1,39.781905,-105.86957,24-Jan-20,"East face of Point 12118, Jones Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=740
+741,inv,published,1,40.31048,-105.67456,22-Jan-20,"Above Emerald Lake, Rocky Mountain National Park",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=741
+742,inv,published,1,40.31153,-105.67369,19-Jan-20,"Above Emerald Lake, Rocky Mountain National Park",Climber,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=742
+744,inv,published,1,39.6897,-106.4702,15-Feb-20,"South Fork of Dickson Creek, east of Red and White Mountain",Snowmobiler,Snowmobile,3,2,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=744
+746,inv,published,1,39.27221,-106.2056,11-Feb-20,"Birdseye Gulch, southwest of Mosquito Pass",Snowmobiler,Snowmobile,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=746
+750,inv,published,1,37.84525,-107.82146,24-Mar-20,"Waterfall Canyon, south of Ophir",Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=750
+751,inv,published,1,37.72295,-108.008581,31-Mar-20,"Telescope Mountain, northeast of Rico",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=751
+753,inv,published,1,37.8503,-107.8463,20-Mar-20,North of Yellow Mountain,Backcountry Tourer,Snowboard,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=753
+754,inv,published,1,39.67635,-105.92766,25-Mar-20,"West Portal, Eisenhower Johnson Memorial Tunnels",Backcountry Tourer,Snowboard,0,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=754
+756,inv,published,1,39.0915,-106.5618,7-Apr-20,Mountain Boy Gulch south of Independence Pass,Snowmobiler,Snowmobile,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=756
+757,inv,published,1,39.645742,-106.156128,15-Apr-20,"Point 12885 near Red Peak, west of Silverthorne",Backcountry Tourer,Ski,2,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=757
+758,inv,published,1,38.897606,-107.025938,28-Apr-20,"Mount Emmons, west of Crested Butte",Backcountry Tourer,Ski,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=758
+759,inv,published,1,38.043209,-105.581313,2-May-20,"Horn Peak, Sangre de Cristo Mountains",Climber,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=759
+760,inv,published,1,39.12912,-106.87496,17-Apr-20,"Highlands Bowl, Highlands Peak",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=760
+761,inv,published,1,38.9375,-106.9847,15-Dec-20,Snodgrass Mountain,Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=761
+762,inv,published,1,38.8364,-107.0959,18-Dec-20,"Near Ohio Pass, Anthracite Range",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=762
+764,inv,published,1,37.8353,-107.74938,19-Dec-20,"North Face of Battleship, southeast of Ophir",Backcountry Tourer,Ski,2,1,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=764
+766,inv,published,1,39.8261,-105.772,26-Dec-20,"First Creek, north of Berthoud Pass",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=766
+767,inv,published,1,39.82775,-106.40871,20-Dec-20,"Elliot's Ridge, south of Kremmling",Snowmobiler,Snowmobile,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=767
+770,inv,published,1,37.84578,-107.76883,1-Feb-21,"The Nose, Middle Fork Mineral Creek southeast of Ophir",Backcountry Tourer,Ski,4,3,3,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=770
+774,inv,published,1,39.6059,-106.2956,4-Feb-21,"Marvins West, East Vail backcountry southeast of Vail",Sidecountry Rider,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=774
+779,rep,published,1,39.6191,-106.2912,13-Feb-21,East Vail backcountry southeast of Vail,Sidecountry Rider,Snowboard,0,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=779
+781,inv,published,1,39.924,-105.6904,14-Feb-21,"Pumphouse Lake, southwest of Rollins Pass",Snowmobiler,Snowmobile,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=781
+783,inv,published,1,39.6927,-105.8909,14-Feb-21,"Near Mount Trelease, north of Loveland Pass",Backcountry Tourer,Snowboard,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=783
+784,inv,published,1,40.3544,-105.96973,16-Feb-21,"West of Ruby Mountain, southeast of Rand",Snowmobiler,Snowmobile,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=784
+793,inv,published,1,39.5776,-106.5548,22-Mar-21,Lime Creek south of Edwards,Sidecountry Rider,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=793
+796,rep,published,1,39.64274,-105.81975,6-Jun-21,Torreys Peak,Climber,Foot,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=796
+799,inv,published,1,40.511046,-105.8901449,24-Dec-21,"Diamond Peaks, Cameron Pass",Backcountry Tourer,Ski,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=799
+801,inv,published,1,39.371,-106.0709,8-Jan-22,"North Star Mountain, Hoosier Pass",Hiker,Snowshoe,2,2,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=801
+805,inv,published,1,39.6479958,-105.8571459,13-Feb-22,"Point 12936, southeast of Loveland Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=805
+807,inv,published,1,39.0623641,-107.1754195,25-Feb-22,Yule Creek,Resident,Snowshoe,3,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=807
+808,inv,published,1,37.37323,-108.09593,26-Feb-22,"Parrott Peak, La Plata Mountains",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=808
+809,inv,published,1,39.66735,-106.27037,30-Jan-22,"Pitkin Creek, Gore Range",Backcountry Tourer,Snowboard,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=809
+810,inv,published,1,40.5164092,-105.9063578,6-Mar-22,"Diamond Peaks, Cameron Pass",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=810
+814,inv,published,1,37.81073,-107.83266,17-Mar-22,"Pilot Knob, east of Lizard Head Pass",Backcountry Tourer,Snowboard,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=814
+816,inv,published,1,38.4850018,-106.3070396,10-Mar-22,"Mount Peck, southeast of Monarch Pass",Backcountry Tourer,Ski,2,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=816
+817,inv,published,1,37.8839182,-107.6735635,10-Mar-22,"Prospect Gulch, north of Silverton",Backcountry Tourer,Ski,1,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=817
+818,inv,published,1,37.89323,-107.71173,10-Mar-22,Southeast of Red Mountain Pass,Backcountry Tourer,Ski,1,1,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=818
+819,inv,published,1,40.50566,-106.72047,19-Mar-22,"North Fork of Fish Creek, near Steamboat Springs",Backcountry Tourer,Ski,1,0,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=819
+820,inv,published,1,39.02353,-106.78922,24-Mar-22,"Green Mountain, east of Ashcroft",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=820
+822,inv,published,1,40.25337,-105.600944,29-May-22,"Mount Meeker, Rocky Mountain National Park",Climber,Foot,3,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=822
+824,inv,published,1,39.00081,-106.82373,27-Oct-22,"Greg Mace Peak, south of Ashcroft",Backcountry Tourer,Ski,1,0,0,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=824
+825,inv,published,1,39.802025,-105.781271,26-Dec-22,"Nitro Chute, north of Berthoud Pass",Backcountry Tourer,Snowboard,4,2,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=825
+826,inv,published,1,39.4521,-106.0758069,31-Dec-22,"Number 5, Carter Gulch southwest of Breckenridge",Sidecountry Rider,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=826
+827,rep,published,1,39.9245192,-105.6912625,7-Jan-23,"Pumphouse Lake, southwest of Rollins Pass",Snowmobiler,Snowmobile,0,2,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=827

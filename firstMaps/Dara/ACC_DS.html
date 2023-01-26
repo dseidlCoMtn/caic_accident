@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>CAIC Accidents</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	
+	
+	<!-- Loading Leaflet Omnivore to read CSV file -->
+	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map { width: 100%; height: 100%;}
+
+		.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; 
+			background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
+		.info h4 { margin: 0 0 5px; color: #777; }
+		.legend { text-align: left; line-height: 18px; color: #555; } 
+		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+	</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+	<script type="text/javascript">
+
+	var map = L.map('map')
+	.setView([38.8, -106.3], 7)
+	;
+
+	var terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
+		attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		subdomains: 'abcd',
+		minZoom: 0,
+		maxZoom: 18,
+		ext: 'png'
+	}).addTo(map);
+	
+	var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+	});
+	
+	var lGrey = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 20,
+	ext: 'png'
+	});
+	
+	function getColor(d) {
+		return d < 10 ?  '#eff3ff' :
+				d < 15  ? '#bdd7e7' :
+				d < 20  ? '#6baed6' :
+				d < 23  ? '#2171b5':
+						 '#7A1712';
+	};
+
+
+	function style(feature) {
+		return {
+			radius: 8,
+			weight: 0.5,
+			opacity: 1,
+			color: 'white',
+			dashArray: '',
+			fillOpacity: 0.9,
+			//chopped off the last two characters of the avalanche date to get the year
+			fillColor: getColor(feature.properties.acc_date.slice(-2))
+		}
+	}
+
+	function highlightFeature(e) {
+		var layer = e.target;
+
+		layer.setStyle({
+			weight: 2,
+			color: '#666',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
+	}
+
+	function resetHighlight(e) {
+		acc.resetStyle(e.target);
+	}
+
+
+	function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight
+		});
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + feature.properties.acc_date +
+		"<br>" + feature.properties.acc_activity);
+	}
+
+
+	// Create blank style holder for CSV data
+	var styleLayer = L.geoJson(null, {
+		pointToLayer: function(geoJsonPoint, latlng) {
+                        return L.circleMarker(latlng);},
+						onEachFeature: onEachFeature,
+						style:style
+	});
+	
+	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
+	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+	
+	
+	//The code below to fit bounds doesn't work, though if you set the alert first, it will.
+	//May be the duration of loading from CSV.
+	//alert(acc.getBounds());
+	//map.fitBounds(acc.getBounds());
+	
+
+	var baseLayers = {
+    "Terrain": terrain,
+	"Imagery": imagery,
+	"Light Grey": lGrey
+	
+	};
+
+	var overlays = {
+		"Accidents": acc
+
+	};
+
+	L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map);
+	
+	L.control.scale().addTo(map);
+	
+	
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
