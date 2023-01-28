@@ -69,28 +69,48 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
 	
-	//Uncomment below to style the color of the points by a variable
+	//Get style color by Dscale
 	function getColor(d) {
-		return d < 10 ?  '#eff3ff' :
-				d < 15  ? '#bdd7e7' :
-				d < 20  ? '#6baed6' :
-				d < 23  ? '#2171b5':
-						 '#7A1712';
+		return d < 1.5 ?  '#ffff00' :
+				d < 2  ? '#ffe800' :
+				d < 2.5  ? '#ffd000' :
+				d < 3  ? '#ffb800':
+				d < 3.5 ? '#ff9f00':
+				d < 4 ? '#ff8400':
+				d < 4.5 ? '#ff6700':
+				d < 5 ? '#ff4500':
+				d < 999 ? '#ff0000':
+						 '#ffffff';
+	};
+
+	//Get radius by Rscale
+	function getSize(d) {
+		return d < 1.5 ?  6 :
+				d < 2  ? 6 :
+				d < 2.5  ? 7 :
+				d < 3  ? 7:
+				d < 3.5 ? 8:
+				d < 4 ? 8:
+				d < 4.5 ? 9:
+				d < 5 ? 9:
+				d < 999 ? 10:
+						 6;
 	};
 	
 	
 	//Basic style for accident points
 	function style(feature) {
 		return {
-			radius: 7,
+			//radius: 7,
+			radius: getSize(feature.properties.Rscale),
 			weight: 2,
 			opacity: 1,
 			color: 'white',
 			dashArray: '',
-			fillOpacity: 0.7,
-			fillColor: 'blue',
-			//Below is to set the color by a variable, in this case by last 2 characters of acc_date)
-			//fillColor: getColor(feature.properties.acc_date.slice(-2))
+			fillOpacity: 0.8,
+			//fillColor: 'blue',
+			//Below is to set the color by a variable, in this case by Dscale)
+			fillColor: getColor(feature.properties.Dscale)
 		};
 	}
 
@@ -124,7 +144,7 @@
 		
 		//Content of tooltip
 		layer.bindTooltip(feature.properties.acc_location + "<br>" + feature.properties.acc_date +
-		"<br>" + feature.properties.acc_activity);
+		"<br>" + feature.properties.acc_activity + "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale);
 	}
 
 
@@ -137,7 +157,7 @@
 	});
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
-	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/RD_Scale/CO_Accidents.csv', null, styleLayer).addTo(map);
 
 	
 	var baseLayers = {
