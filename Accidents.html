@@ -70,13 +70,13 @@
     });
 	
 	//Uncomment below to style the color of the points by a variable
-	<!-- function getColor(d) { -->
-		<!-- return d < 10 ?  '#eff3ff' : -->
-				<!-- d < 15  ? '#bdd7e7' : -->
-				<!-- d < 20  ? '#6baed6' : -->
-				<!-- d < 23  ? '#2171b5': -->
-						 <!-- '#7A1712'; -->
-	<!-- }; -->
+	function getColor(d) {
+		return d < 10 ?  '#eff3ff' :
+				d < 15  ? '#bdd7e7' :
+				d < 20  ? '#6baed6' :
+				d < 23  ? '#2171b5':
+						 '#7A1712';
+	};
 	
 	
 	//Basic style for accident points
