@@ -107,9 +107,9 @@
 		return {
 			//radius: 7,
 			radius: getSize(feature.properties.Rscale),
-			weight: 2,
+			weight: 1.5,
 			opacity: 1,
-			color: 'grey',
+			color: 'white',
 			dashArray: '',
 			fillOpacity: 0.8,
 			//fillColor: 'blue',
@@ -148,9 +148,9 @@
 		
 		//Content of tooltip
 		layer.bindTooltip("<strong>" + feature.properties.acc_location +"</strong><br>" + feature.properties.acc_date +
-		"<br>" + feature.properties.acc_activity + "<br>R" + 
-    feature.properties.Rscale + " D" + feature.properties.Dscale +
-    "<br>Caught: " + feature.properties.acc_no_caught + 
+		"<br>" + feature.properties.acc_activity 
+		+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
+		"<br>Caught: " + feature.properties.acc_no_caught + 
 		 ", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
 	}
 
