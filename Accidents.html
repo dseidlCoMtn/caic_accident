@@ -199,10 +199,10 @@
 	//Function to call L.heatLayer
 	function createHeatmap(map, points) {
 		return L.heatLayer(points, {
-		radius: 25,
-		minOpacity: 0.45,
-		gradient: {.4: 'cyan', 0.82: 'blue', .96: 'purple'}
-		}).addTo(map);
+			radius: 25,
+			minOpacity: 0.45,
+			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'}
+		});
 	};
 
 	//function to parse csv from url
