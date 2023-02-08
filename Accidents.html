@@ -14,8 +14,15 @@
 	
 		<!-- Loading Leaflet Omnivore to read CSV file -->
 	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
-		<!-- Loading Leaflet heatmap plugin -->
+  <!-- Loading Leaflet heatmap plugin -->
 	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+	
+		<!-- Loading fontawesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+	
+	<!-- Loading Leaflet EasyButton -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+	<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
@@ -72,6 +79,19 @@
 	var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
+	
+	
+	//Zoom settings for home button
+	var home = {
+		lat: 39.118413163683854,
+		lng: -106.44565988833477,
+		zoom: 7.5
+		}; 
+				
+	//Adds home button to map
+	L.easyButton('fa fa-home',function(btn,map){
+		map.setView([home.lat, home.lng], home.zoom);
+		},'Zoom To Home').addTo(map);
 	
 	//Get style color by Dscale
 	function getColor(d) {
