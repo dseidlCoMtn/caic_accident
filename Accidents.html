@@ -37,7 +37,7 @@
 		.legend { text-align: left; line-height: 18px; color: rgb(147, 139, 139); } 
 		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
 		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
-			background-color: #e3e4ee9a;
+			background-color: #d1d3e8cb;
 			padding: 4px;
 		}
 	</style>
@@ -173,16 +173,22 @@
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
-			mouseout: resetHighlight
+			mouseout: resetHighlight,
+			closeButton: true
 		});
-		
+
+		// content of the tool tip
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + feature.properties.acc_date +
+		"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+
 		//content of the popup
 		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + formatDate(feature.properties.acc_date) +
-		"<br>" + feature.properties.acc_activity 
-		+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
-		"<br>Caught: " + feature.properties.acc_no_caught + 
-		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
-		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+			"<br>" + feature.properties.acc_activity 
+			+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 	}
 
 
@@ -194,6 +200,8 @@
 						style:style
 	});
 	
+
+
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
 	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
 
