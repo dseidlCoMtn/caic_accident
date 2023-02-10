@@ -38,7 +38,7 @@
 		.legend { text-align: left; line-height: 18px; color: rgb(147, 139, 139); } 
 		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
 		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
-			background-color: #e3e4ee9a;
+			background-color: #c0c3ebd7;
 			padding: 4px;
 		}
 	</style>
@@ -176,6 +176,11 @@
 			mouseout: resetHighlight
 		});
 		
+		//content of tool tip
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + feature.properties.acc_date +
+		"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+
 		//content of the popup
 		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + formatDate(feature.properties.acc_date) +
 		"<br>" + feature.properties.acc_activity 
