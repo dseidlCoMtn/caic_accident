@@ -23,6 +23,12 @@
 	<!-- Loading Leaflet EasyButton -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
 	<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+	
+	<!-- Loading jquery, moment.js, and daterangepicker -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
@@ -30,7 +36,8 @@
 			height: 100%;
 			margin: 0;
 		}
-		#map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif;}
+				
+		#map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: relative;}
 
 		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif; background: white; 
 			background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
@@ -40,14 +47,24 @@
 		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
 			background-color: #e3e4ee9a;
 			padding: 4px;
-		}
+			}
+		
 	</style>
 	
 </head>
 <body>
+	<!-- Added a div to hold the date range picker, need to change structure to have it float/overlay on map-->
+	<div id="reportrange" style="background: #fff; cursor: pointer; 
+		font-family: Nanum Gothic; font-size: 12px; text-align: center; padding: 5px 10px; border: 1px solid #ccc; width: 20%; z-index:2;">
+		<i class="fa fa-calendar"></i>&nbsp;
+		<span></span> <i class="fa fa-caret-down"></i>
+	</div>
+ 
 
-<div id='map'></div>
+	<div id="map"></div>
+
 	<script type="text/javascript">
+	
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 	
@@ -98,6 +115,7 @@
 	L.easyButton('fa fa-home',function(btn,map){
 		map.setView([home.lat, home.lng], home.zoom);
 		},'Zoom To Home').addTo(map);
+		
 	
 	//Get style color by Dscale
 	function getColor(d) {
@@ -190,6 +208,11 @@
 		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
 		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 	}
+	
+	
+	function dateFilter(feature) {
+		return true
+		}
 
 
 	// Create blank style geoJSON holder for CSV data
@@ -197,7 +220,8 @@
 		pointToLayer: function(geoJsonPoint, latlng) {
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
-						style:style
+						style:style,
+						filter: dateFilter
 	});
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
@@ -279,7 +303,66 @@
 	addHeatToOverlays();
 	//L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map);
 	
+	
+	// once the dates are selected, format and display the range in the date selection box.
+	function updateDisplayedDateRange (start, end) {
+			$('#reportrange span').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+		}
+	
+	//Sets the dropdowns and ranges for the date range picker
+	$('#reportrange').daterangepicker({
+		"showDropdowns": false,
+		"startDate": moment().subtract(15, 'year'),
+		"endDate": moment(),
+		ranges: {
+				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+				'Last Year': [moment().subtract(365, 'days'), moment()],
+				'Last 2 Years': [moment().subtract(2, 'years'), moment()],
+				'Last 5 Years': [moment().subtract(5, 'years'), moment()],
+				'Last 10 Years': [moment().subtract(10, 'years'), moment()],
+				'All': [moment().subtract(15, 'years'), moment()],
+				},
+				maxDate: moment()
+		}, updateDisplayedDateRange,
+	);
+	
+	//Sets the initial dates in the date range picker - 15 years ago to today, so all accidents
+	updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
+	
+	
+	//Upon changes to the date ranges, checks if each accident is after the start date
+	//Removes the accident layer and re-adds it with the date filter settings
+	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {			
+		function dateFilter(feature) {
+			if (picker!==undefined) {
+
+				if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) > moment(new Date(picker.startDate))){ 
+					return true
+				}
+				else {
+				return false
+				}
+			}
+			}
+			
+			//Need to remove the layer and add it again to apply the filter
+			map.removeLayer(acc);
+			
+			var styleLayer = L.geoJson(null, {
+						pointToLayer: function(geoJsonPoint, latlng) {
+                        return L.circleMarker(latlng);},
+						onEachFeature: onEachFeature,
+						style:style,
+						filter: dateFilter
+			});
+			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+	});
+
+	
 	L.control.scale().addTo(map);
+	
+	
 
 </script>
 
