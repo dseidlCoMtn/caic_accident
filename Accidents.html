@@ -219,8 +219,9 @@
 	//Function to call L.heatLayer
 	function createHeatmap(map, points) {
 		return L.heatLayer(points, {
-			radius: 25,
-			minOpacity: 0.45,
+			radius: 21,
+			blur: 12,
+			minOpacity: 0.4,
 			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'}
 		});
 	};
