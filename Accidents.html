@@ -57,7 +57,7 @@
 	
 </head>
 <body>
-	<!-- Added a div to hold the date range picker, need to change structure to have it float/overlay on map-->
+	<!-- Added a div to hold the reportrange picker, then placed the two divs in a container div-->
 	
 	<div className="container" >
 		<div id="reportrange" style="background: #fff; cursor: pointer; 
@@ -215,6 +215,7 @@
 	}
 	
 	
+	//Starting dateFilter: all accidents included
 	function dateFilter(feature) {
 		return true
 		}
@@ -281,14 +282,19 @@
 				return points;
 			})
 	};
-
+	
+	
+	//needed to set the layerControl as a variable so we can call it in
+	//later filter function for dates
+	const layerControl = L.control.layers(baseLayers, overlays, {collapsed: false});
+	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
-		L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map);
+		layerControl.addOverlay(heat, "Heat");
+		layerControl.addTo(map);
 	}
 
 	//add heat to overlays - wait for map to be created/data processing then create overlays
-
 	function addHeatToOverlays() {
 		if (heat!==undefined) {
 			overlays["Heat"] = heat;
@@ -351,7 +357,7 @@
 			}
 			}
 			
-			//Need to remove the layer and add it again to apply the filter
+			//Need to remove the layer from map and add it again to apply the filter
 			map.removeLayer(acc);
 			
 			var styleLayer = L.geoJson(null, {
@@ -361,7 +367,13 @@
 						style:style,
 						filter: dateFilter
 			});
+			//Need to remove the acc layer from the layer control to add in the filtered version
+			layerControl.removeLayer(acc);
+			layerControl.removeLayer(heat);
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+			//Adding back in these layer controls in the correct order
+			layerControl.addOverlay(acc, "Accidents");
+			layerControl.addOverlay(heat, "Heat");
 			
 			
 	});
