@@ -30,6 +30,9 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+	<!-- Loading  Chart.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
 		html, body {
@@ -43,15 +46,12 @@
 		
 
 
-		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif; background: white; 
-			background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
+		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif;  
+			background-color: rgba(239, 240, 250, 0.875); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
 		.info h4 { margin: 0 0 5px; color: #777; }
 		.legend { text-align: left; line-height: 18px; color: rgb(147, 139, 139); } 
 		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
-		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
-			background-color: #e3e4ee9a;
-			padding: 4px;
-			}
+		.leaflet-popup-content-wrapper, .leaflet-popup.tip { background-color: rgba(239, 240, 250, 0.875); padding: 4px; border-radius: 5px; }
 		
 	</style>
 	
@@ -66,6 +66,7 @@
 			<span></span> <i class="fa fa-caret-down"></i>
 		</div>
 		<div id="map"></div>
+		<div id="chart-area" style="width:40%; max-width: 800px;"><canvas id="barChart" ></canvas></div>
 	</div>
 
 	<script type="text/javascript">
@@ -181,37 +182,31 @@
 		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
-
 	}
 
 	function resetHighlight(e) {
 		acc.resetStyle(e.target);
 	}
 
-
-	//from csv we get 11-Feb-10 change to 02/11/2010
-	function formatDate(inputDate) {
-		var date = new Date(inputDate);
-		if (!isNaN(date.getTime())) {
-		// Months use 0 index.
-		return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
-    }
-
-	}
 	//Actions for mouseover, mouseout
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlight
 		});
-		
+
+		//content of tool tip
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+
 		//content of the popup
-		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + formatDate(feature.properties.acc_date) +
-		"<br>" + feature.properties.acc_activity 
-		+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
-		"<br>Caught: " + feature.properties.acc_no_caught + 
-		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
-		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity 
+			+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 	}
 	
 	
