@@ -69,7 +69,7 @@
 				
 		<!-- #map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;} -->
 		
-		#map { flex: 16 ; font-family: 'Nanum Gothic', sans-serif; position: relative;}
+		#map { flex: 15 ; font-family: 'Nanum Gothic', sans-serif; position: relative;}
 		
 		
 		@media (max-width: 767px) {
@@ -103,22 +103,10 @@
 <body>
 	<!-- Added a div to hold the reportrange picker, then placed the two divs in a container div-->
 	
-	<!-- <div className="container" > -->
-		<!-- <div id="reportrange" style="background: #fff; cursor: pointer;  -->
-		<!-- font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: absolute; width: 200px; z-index:1000;"> -->
-			<!-- <i class="fa fa-calendar"></i>&nbsp; -->
-			<!-- <span></span> <i class="fa fa-caret-down"></i> -->
-		<!-- </div> -->
-		<!-- <div id="map"></div> -->
-		<!-- <div class="col-sm-7 sidebar-container"> -->
-		<!-- </div> -->
-	<!-- </div> -->
 	<div id='container'>
 		<div id='graph1'>
 		<canvas id="barChartCanvas" height="40">&nbsp;</canvas>
 		</div>
-		<!-- <div id='graph2'>&nbsp; -->
-		<!-- </div> -->
 		<div id='map'>
 				<div id="reportrange" style="background: #fff; cursor: pointer; 
 		font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: relative; width: 200px; z-index:1000; flex: 5;">
@@ -131,19 +119,18 @@
 
 	<script type="text/javascript">
 	
+	
+		//Setting empty arrays to hold bar graph data
 		const barLabels=[];
 		const barData=[];
 		
-	
+		//Properties for bar graph
 	    const ctx = document.getElementById("barChartCanvas");
         const barChartCanvas = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
 					labels: barLabels,
                     datasets: [{
-                        label: 'Info',
-                        //data: [12, 19, 3, 5, 2, 3],
 						data: barData,
                         borderWidth: 1
                     }]
@@ -153,11 +140,6 @@
 					legend: false,
 					},
                     scales: {
-                        <!-- yAxes: [{ -->
-                            <!-- ticks: { -->
-                                <!-- beginAtZero:true -->
-                            <!-- } -->
-                        <!-- }] -->
                     }
                 }
             });
@@ -291,6 +273,8 @@
     }
 
 	}
+	
+	
 	//Actions for mouseover, mouseout
 	function onEachFeature(feature, layer) {
 		layer.on({
@@ -305,6 +289,10 @@
 		"<br>Caught: " + feature.properties.acc_no_caught + 
 		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
 		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+		
+		
+		//Pushing the acc_activity to the bar graph
+		barLabels.push(feature.properties.acc_activity);
 	}
 	
 	
@@ -468,94 +456,54 @@
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
 			layerControl.addOverlay(heat, "Heat");
+			barLabels.length=0;
+			barData.length=0;
+			updateChart();
 			
 			
 	});
 	
-		//acc.on("load", updateChart);
 		
-		//map.onAdd(acc)((updateChart));
-		acc.on("add", updateChart(acc));
+		//Updates the chart upon add of the acc layer
+		acc.on("add", updateChart());
 		
-		function updateChart(acc) {
-        // reformat the features' attributes of interest into
-        // the data array format required by the Chart.js scatterplot
-			//const barChartArray = [];
+		
+		function delay(time) {
+			return new Promise(resolve => setTimeout(resolve, time));
+		}
+		
+		
+		async function updateChart() {
+			//Takes out first element from barLabels array, which is just an empty array
+			barLabels.shift();
 			
-		//barLabels=acc.map(function(d) {return d.acc_activity})
+			//The shift() takes a while, so activate delay
+			await delay (1);
+			//alert(barLabels);
 
-        acc.eachActiveFeature(function (e) {
-          barLabels.push({
-            //x: e.feature.properties.acc_activity,
-			x:e.feature.properties.acc_activity
-            //y: e.feature.properties.HEIGHT,
-            //featureId: e.feature.id
-          });
-        });
-
-        // assign the new scatterPlotDataArray to the chart's data property
-        //chart.data.datasets[0].data = barChartArray;
+			console.log(barLabels);
 		
-		//barLabels.push(1,2,3);
-		//barLabels==[1,2,3];
-		alert(barLabels);
-		//barChartCanvas.data.datasets[0].labels = barLabels;
-		barChartCanvas.data.labels[0] = barLabels;
-        barChartCanvas.update();
+		//Reduce the array of all activity types to an object with counts of unique activities
+		const accCount = barLabels.reduce((allNames, name) => {
+		  const currCount = allNames[name] ?? 0;
+		  return {
+			...allNames,
+			[name]: currCount + 1,
+		  };
+		}, {});
+		
+		
+		//Grab the keys and values from the accCount
+		barLabels3=Object.keys(accCount);
+		barValues=Object.values(accCount);
+		
+		
+		//Update the bar chart with the labels and values
+		barChartCanvas.data.labels = barLabels3;
+		barChartCanvas.data.datasets[0].data=barValues;
+		barChartCanvas.update();
+				
       }
-	  
-	  //updateChart();
-	
-	
-	
-	<!-- const labels = Utils.months({count: 7}); -->
-	<!-- const data = { -->
-	  <!-- labels: labels, -->
-	  <!-- datasets: [ -->
-		<!-- { -->
-		  <!-- label: 'Dataset 1', -->
-		  <!-- data: Utils.numbers(NUMBER_CFG), -->
-		  <!-- borderColor: Utils.CHART_COLORS.red, -->
-		  <!-- backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5), -->
-		<!-- }, -->
-		<!-- { -->
-		  <!-- label: 'Dataset 2', -->
-		  <!-- data: Utils.numbers(NUMBER_CFG), -->
-		  <!-- borderColor: Utils.CHART_COLORS.blue, -->
-		  <!-- backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5), -->
-		<!-- } -->
-	  <!-- ] -->
-	<!-- }; -->
-	
-	
-	<!-- const labels = Utils.months({count: 7}); -->
-	
-	<!-- const barData = { -->
-			<!-- labels: scatterLabels, -->
-			<!-- datasets: [{ -->
-				<!-- label: 'Confirmed Cases (X-axis) vs. Discharged (Y-axis)', -->
-				<!-- data: acc -->
-			<!-- }] -->
-	<!-- }; -->
-	
-	<!-- const chartConfig = ("graph1", { -->
-		  <!-- type: 'bar', -->
-		  <!-- data: barData, -->
-		  <!-- options: { -->
-			<!-- responsive: true, -->
-			<!-- plugins: { -->
-			  <!-- legend: { -->
-				<!-- position: 'top', -->
-			  <!-- }, -->
-			  <!-- title: { -->
-				<!-- display: true, -->
-				<!-- text: 'Test Bar Chart' -->
-			  <!-- } -->
-			<!-- } -->
-		  <!-- }, -->
-		<!-- }); -->
-		
-
 
 	
 	L.control.scale().addTo(map);
