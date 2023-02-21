@@ -194,8 +194,25 @@
 
 	}
 
+	//Style of forecast zones upon cursor hover
+	function highlightZone(e) {
+		var zone = e.target;
+
+		zone.setStyle({
+			weight: 2,
+			color: '#FFFFFF',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+	}
+
+
 	function resetHighlight(e) {
 		acc.resetStyle(e.target);
+	}
+
+	function resetZone(e) {
+		zones.resetStyle(e.target);
 	}
 
 
@@ -208,7 +225,7 @@
     }
 
 	}
-	//Actions for mouseover, mouseout
+	//Actions for mouseover, mouseout for accident points
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
@@ -222,6 +239,20 @@
 		"<br>Caught: " + feature.properties.acc_no_caught + 
 		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
 		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+	}
+
+	//Actions for mouseover, mouseout for forecast zones
+	function onEachZone(feature, layer) {
+		layer.on({
+			mouseover: highlightZone,
+			mouseout: resetZone,
+			'add': function(){
+        			layer.bringToBack()
+      			}
+		});
+
+		//content of the popup
+		layer.bindPopup("<strong>" + "</strong>");
 	}
 	
 	
@@ -243,13 +274,7 @@
 	// Create geoJSON layer 
 	var zones = L.geoJson(forecastZones, {
 		style: styleForecastZones,
-		onEachFeature: function(feature, layer) {
-    		layer.on({
-      			'add': function(){
-        			layer.bringToBack()
-      			}
-    		})
-  		}
+		onEachFeature: onEachZone
 	});
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
