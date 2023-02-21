@@ -67,9 +67,8 @@
 		</div>
 		<div id="map"></div>
 	</div>
-
+	<script type="text/javascript" src="forecastZones.js"></script>
 	<script type="text/javascript">
-	
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 	
@@ -167,6 +166,17 @@
 		};
 	}
 
+	//Basic style for Avalanche Forecast Zones
+	function styleForecastZones(feature) {
+		return {
+			weight: 1.5,
+			opacity: 1,
+			color: 'black',
+			fillOpacity: 0.5,
+			fillColor: 'grey',
+		};
+	}
+
 	//Style of accident points upon cursor hover
 	function highlightFeature(e) {
 		var layer = e.target;
@@ -184,8 +194,25 @@
 
 	}
 
+	//Style of forecast zones upon cursor hover
+	function highlightZone(e) {
+		var zone = e.target;
+
+		zone.setStyle({
+			weight: 2,
+			color: '#FFFFFF',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+	}
+
+
 	function resetHighlight(e) {
 		acc.resetStyle(e.target);
+	}
+
+	function resetZone(e) {
+		zones.resetStyle(e.target);
 	}
 
 
@@ -198,7 +225,7 @@
     }
 
 	}
-	//Actions for mouseover, mouseout
+	//Actions for mouseover, mouseout for accident points
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
@@ -212,6 +239,20 @@
 		"<br>Caught: " + feature.properties.acc_no_caught + 
 		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
 		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+	}
+
+	//Actions for mouseover, mouseout for forecast zones
+	function onEachZone(feature, layer) {
+		layer.on({
+			mouseover: highlightZone,
+			mouseout: resetZone,
+			'add': function(){
+        			layer.bringToBack()
+      			}
+		});
+
+		//content of the popup
+		layer.bindPopup("<strong>" + "</strong>");
 	}
 	
 	
@@ -228,6 +269,12 @@
 						onEachFeature: onEachFeature,
 						style:style,
 						filter: dateFilter
+	});
+
+	// Create geoJSON layer 
+	var zones = L.geoJson(forecastZones, {
+		style: styleForecastZones,
+		onEachFeature: onEachZone
 	});
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
@@ -247,6 +294,7 @@
 
 	var overlays = {
 		"Accidents": acc,
+		"Forecast Zones": zones,
 	};
 
 	//set heat as a global var
@@ -380,6 +428,7 @@
 			
 			//Need to remove the layer from map and add it again to apply the filter
 			map.removeLayer(acc);
+			map.removeLayer(zones);
 			
 			var styleLayer = L.geoJson(null, {
 						pointToLayer: function(geoJsonPoint, latlng) {
@@ -390,11 +439,13 @@
 			});
 			//Need to remove the acc layer from the layer control to add in the filtered version
 			layerControl.removeLayer(acc);
+			layerControl.removeLayer(zones);
 			layerControl.removeLayer(heat);
 			map.removeLayer(heat);
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
+			layerControl.addOverlay(zones, "Forecast Zones");
 			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
 			addHeatToOverlays();
 			
