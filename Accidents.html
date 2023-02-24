@@ -30,6 +30,9 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+	<!-- Loading  Chart.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
 		html, body {
@@ -37,22 +40,25 @@
 			margin: 0;
 		}
 		
-		.container {position: 'relative'; width: 100%, height: 100%}
+		.container {position: 'relative'; width: 100%, height: 100%;}
 				
 		#map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;}
-		
 
-
-		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif; background: white; 
-			background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
+		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif;  
+			background-color: rgba(239, 240, 250, 0.875); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 5px; } 
 		.info h4 { margin: 0 0 5px; color: #777; }
 		.legend { text-align: left; line-height: 18px; color: rgb(147, 139, 139); } 
 		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
-		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
-			background-color: #e3e4ee9a;
-			padding: 4px;
-			}
-		
+		.leaflet-popup-content-wrapper, .leaflet-popup.tip { background-color: #eff0fadf; padding: 4px; border-radius: 5px; }
+		#chart-area {z-index:1000;
+					position: absolute;
+					width: 35%;
+					height: 35%;
+					bottom: 3%;
+					right: 3%;
+					border-radius: 5px;
+					background-color: #eff0fadf;
+					border: 1px solid rgba(57, 57, 70, 0.875);}
 	</style>
 	
 </head>
@@ -66,6 +72,7 @@
 			<span></span> <i class="fa fa-caret-down"></i>
 		</div>
 		<div id="map"></div>
+		<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 	</div>
 	<script type="text/javascript" src="forecastZones.js"></script>
 	<script type="text/javascript">
@@ -191,7 +198,6 @@
 		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
-
 	}
 
 	//Style of forecast zones upon cursor hover
@@ -211,34 +217,30 @@
 		acc.resetStyle(e.target);
 	}
 
+	//Actions for mouseover, mouseout
 	function resetZone(e) {
 		zones.resetStyle(e.target);
 	}
 
-
-	//from csv we get 11-Feb-10 change to 02/11/2010
-	function formatDate(inputDate) {
-		var date = new Date(inputDate);
-		if (!isNaN(date.getTime())) {
-		// Months use 0 index.
-		return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
-    }
-
-	}
 	//Actions for mouseover, mouseout for accident points
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlight
 		});
-		
+
+		//content of tool tip
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+
 		//content of the popup
-		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + formatDate(feature.properties.acc_date) +
-		"<br>" + feature.properties.acc_activity 
-		+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
-		"<br>Caught: " + feature.properties.acc_no_caught + 
-		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
-		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity 
+			+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 	}
 
 	//Actions for mouseover, mouseout for forecast zones
@@ -445,6 +447,7 @@
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
+			layerControl.addOverlay(heat, "Heat");	
 			layerControl.addOverlay(zones, "Forecast Zones");
 			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
 			addHeatToOverlays();
@@ -452,6 +455,41 @@
 			
 	});
 
+	//bar Chart of Accidents per month
+	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
+	Chart.defaults.global.defaultFontColor = '#333';
+	
+	let barChart = new Chart('bar-chart', {
+		type: 'bar',
+		options: {
+			maintainAspectRatio: false,
+			legend: {
+				display: false
+			},
+			scales: {
+				xAxes: [
+				{
+					scaleLabel: {
+					display: true,
+					labelString: 'Accidents by Month',
+					fontSize: 16
+					}
+				}
+				]
+			}
+		},
+		data: {
+			labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+			// labels: dataSet.map(row => row.moment(acc_date, ["DD-MMM-YY"]).format("MMM")),
+			datasets: [
+			{
+				//placeholder data
+				data: [1,2,3,2,4,3,5,4,6,5,6,5,4,5,6,1]
+			}
+			]
+		}
+		
+	});
 	
 	L.control.scale().addTo(map);
 	
