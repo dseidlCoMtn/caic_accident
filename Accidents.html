@@ -33,7 +33,7 @@
 	<!-- Loading chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-	<!-- Loading  Chart.js -->
+	<!-- Loading  Chart.js  --- maybe change this one to use the up-to-date -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 	<style>
@@ -55,17 +55,17 @@
 			
 		#graph1
 			{
-			flex:2;
+			flex:1;
 		}
 		
 		#barChartCanvas
 			{
-			height: 10%;
+			height: 8%;
 		}
 		
 		#graph2
 			{
-			flex:2;
+			flex:1;
 		}
  
 
@@ -86,7 +86,7 @@
 				display: none !important;
 			}
 			
-		.container {position: 'relative'; width: 100%, height: 100%;}
+		<!-- .container {position: 'relative'; width: 100%, height: 100%;} -->
 				
 		#map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;}
 
@@ -100,8 +100,8 @@
 					position: absolute;
 					width: 35%;
 					height: 35%;
-					bottom: 3%;
-					right: 3%;
+					bottom: 5%;
+					right: 1%;
 					border-radius: 5px;
 					background-color: #eff0fadf;
 					border: 1px solid rgba(57, 57, 70, 0.875);}
@@ -122,9 +122,11 @@
 			    <i class="fa fa-calendar"></i>&nbsp;
 			    <span></span> <i class="fa fa-caret-down"></i>
 		    </div>
+			
+			<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
     </div>
 
-		<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
+		
 	</div>
 
 	<script type="text/javascript">
@@ -134,7 +136,7 @@
 		const barLabels=[];
 		const barData=[];
 		
-		//Properties for bar graph
+		//Properties for activity bar graph
 	    const ctx = document.getElementById("barChartCanvas");
         const barChartCanvas = new Chart(ctx, {
                 type: 'bar',
@@ -148,8 +150,22 @@
                 options: {
 					plugins:{
 					legend: false,
+					<!-- title: { -->
+						<!-- display: true, -->
+						<!-- text: 'Activity Type', -->
+						<!-- position: 'top' -->
+						<!-- } -->
 					},
                     scales: {
+					
+					xAxes: [
+						{
+							scaleLabel: {
+								display: true,
+								labelString: 'Activity Type',
+								fontSize: 12
+							}
+						}]
                     }
                 }
             });
@@ -325,6 +341,9 @@
 			"<br>Caught: " + feature.properties.acc_no_caught + 
 			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
 			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+			
+		//Pushing the acc_activity to the bar graph
+		barLabels.push(feature.properties.acc_activity);
 	}
 
 	//Actions for mouseover, mouseout for forecast zones
@@ -340,9 +359,6 @@
 		//content of the popup
 		layer.bindPopup("<strong>" + feature.properties.Region +"</strong><br>");
 		
-		
-		//Pushing the acc_activity to the bar graph
-		barLabels.push(feature.properties.acc_activity);
 	}
 	
 	
@@ -507,7 +523,8 @@
 		function dateFilter(feature) {
 			if (picker!==undefined) {
 
-				if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) > moment(new Date(picker.startDate))){ 
+				if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) > moment(new Date(picker.startDate))
+					&& (moment(feature.properties.acc_date, 'DD-MMM-YY')) < moment(new Date(picker.endDate))){ 
 					return true
 				}
 				else {
@@ -538,9 +555,7 @@
 
 			barLabels.length=0;
 			barData.length=0;
-			updateChart();
-
-			layerControl.addOverlay(heat, "Heat");	
+			updateChart();	
 			layerControl.addOverlay(zones, "Forecast Zones");
 			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
 			addHeatToOverlays();
@@ -566,27 +581,27 @@
 
 			console.log(barLabels);
 		
-		//Reduce the array of all activity types to an object with counts of unique activities
-		const accCount = barLabels.reduce((allNames, name) => {
-		  const currCount = allNames[name] ?? 0;
-		  return {
-			...allNames,
-			[name]: currCount + 1,
-		  };
-		}, {});
+			//Reduce the array of all activity types to an object with counts of unique activities
+			const accCount = barLabels.reduce((allNames, name) => {
+				const currCount = allNames[name] ?? 0;
+				return {
+				...allNames,
+				[name]: currCount + 1,
+				};
+				}, {});
 		
 		
-		//Grab the keys and values from the accCount
-		barLabels3=Object.keys(accCount);
-		barValues=Object.values(accCount);
-		
-		
-		//Update the bar chart with the labels and values
-		barChartCanvas.data.labels = barLabels3;
-		barChartCanvas.data.datasets[0].data=barValues;
-		barChartCanvas.update();
-				
-      }
+			//Grab the keys and values from the accCount
+			barLabels3=Object.keys(accCount);
+			barValues=Object.values(accCount);
+			
+			
+			//Update the bar chart with the labels and values
+			barChartCanvas.data.labels = barLabels3;
+			barChartCanvas.data.datasets[0].data=barValues;
+			barChartCanvas.update();
+					
+		  }
 
 	//bar Chart of Accidents per month
 	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
