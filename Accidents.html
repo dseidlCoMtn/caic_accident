@@ -374,55 +374,13 @@
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
-			layerControl.addOverlay(heat, "Heat");
-			
-			
+			layerControl.addOverlay(heat, "Heat");	
 	});
 
 	//bar Chart of Accidents per month
 	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
 	Chart.defaults.global.defaultFontColor = '#333';
 	
-
-	//this function takes the csv file and makes it into an array of arrays of the data.
-	function buildDataset(url) {
-		fetch(url)
-			.then(response => response.text())
-			.then(csv => {
-				const rows = csv.split("\n");
-				const dataSet = [];
-// List of data in csv file:
-// acc_id,acc_type,acc_status,acc_public,acc_lat,acc_lon,acc_date,acc_location,acc_activity,acc_travel_mode,acc_no_caught,acc_no_buried,acc_no_killed,report,Rscale,Dscale
-
-				for (const row of rows) {
-					const values = row.split(",");
-					const acc_id = parseInt(values[0]);
-					const acc_type = values[1];
-					const acc_status = values[2];
-					const acc_public = parseInt(values[3]);
-					const lat = parseFloat(values[4]);
-					const lon = parseFloat(values[5]);
-					const acc_date = moment(values[6], ["DD-MMM-YY"]).format("MM/DD/YYYY");
-					const acc_location = values[7];
-					const acc_activity = values[8];
-					const acc_travel_mode = values[9];
-					const acc_no_caught = values[10];
-					const acc_no_buried = parseInt(values[11]);
-					const acc_no_killed = parseInt(values[12]);
-					const acc_report = parseInt(values[13]);
-					const Rscale = values[14];
-					const Dscale = parseInt(values[15]);
-
-					if (!isNaN(lat) && !isNaN(lon)) {
-						dataSet.push([acc_id, acc_type, acc_status, acc_public, lat, lon, acc_date, acc_location, acc_activity, acc_travel_mode, acc_no_caught, acc_no_buried, acc_no_killed, acc_report, Rscale, Dscale]);
-					}
-				}
-				//console.log(dataSet)
-				return dataSet;
-			})
-	};
-
-
 	let barChart = new Chart('bar-chart', {
 		type: 'bar',
 		options: {
