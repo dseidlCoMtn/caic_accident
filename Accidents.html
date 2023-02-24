@@ -74,9 +74,8 @@
 		<div id="map"></div>
 		<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 	</div>
-
+	<script type="text/javascript" src="forecastZones.js"></script>
 	<script type="text/javascript">
-	
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 	
@@ -174,6 +173,17 @@
 		};
 	}
 
+	//Basic style for Avalanche Forecast Zones
+	function styleForecastZones(feature) {
+		return {
+			weight: 1.5,
+			opacity: 1,
+			color: 'black',
+			fillOpacity: 0.5,
+			fillColor: 'grey',
+		};
+	}
+
 	//Style of accident points upon cursor hover
 	function highlightFeature(e) {
 		var layer = e.target;
@@ -190,11 +200,29 @@
 		}
 	}
 
+	//Style of forecast zones upon cursor hover
+	function highlightZone(e) {
+		var zone = e.target;
+
+		zone.setStyle({
+			weight: 2,
+			color: '#FFFFFF',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+	}
+
+
 	function resetHighlight(e) {
 		acc.resetStyle(e.target);
 	}
 
 	//Actions for mouseover, mouseout
+	function resetZone(e) {
+		zones.resetStyle(e.target);
+	}
+
+	//Actions for mouseover, mouseout for accident points
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
@@ -214,6 +242,20 @@
 			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
 			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 	}
+
+	//Actions for mouseover, mouseout for forecast zones
+	function onEachZone(feature, layer) {
+		layer.on({
+			mouseover: highlightZone,
+			mouseout: resetZone,
+			'add': function(){
+        			layer.bringToBack()
+      			}
+		});
+
+		//content of the popup
+		layer.bindPopup("<strong>" + "</strong>");
+	}
 	
 	
 	//Starting dateFilter: all accidents included
@@ -229,6 +271,12 @@
 						onEachFeature: onEachFeature,
 						style:style,
 						filter: dateFilter
+	});
+
+	// Create geoJSON layer 
+	var zones = L.geoJson(forecastZones, {
+		style: styleForecastZones,
+		onEachFeature: onEachZone
 	});
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
@@ -248,6 +296,7 @@
 
 	var overlays = {
 		"Accidents": acc,
+		"Forecast Zones": zones,
 	};
 
 	//set heat as a global var
@@ -255,12 +304,28 @@
 
 	//Create heatmap layer -- need to wait for call to CSV online
 	//Function to call L.heatLayer
-	function createHeatmap(map, points) {
-		return L.heatLayer(points, {
+	function createHeatmap(map, points, minDate, maxDate) {
+		const pointsNoDates = [];
+
+		//check if the date picker has been used
+		if ((minDate != undefined) && (maxDate != undefined)) {
+			for (i in points) {
+				const pointDate = moment(points[i][2],'DD-MMM-YY');
+				if ((pointDate > minDate) && (pointDate < maxDate))  {
+					pointsNoDates.push([points[i][0], points[i][1]]);
+				}
+			}
+		} else {
+			for (i in points) {
+				pointsNoDates.push([points[i][0], points[i][1]]);
+			}
+		}
+		return L.heatLayer(pointsNoDates, {
 			radius: 21,
 			blur: 12,
 			minOpacity: 0.4,
-			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'}
+			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
+			maxZoom: 25
 		});
 	};
 
@@ -276,8 +341,9 @@
 					const values = row.split(",");
 					const lat = parseFloat(values[4]);
 					const lon = parseFloat(values[5]);
+					const csvDate = values[6];
 					if (!isNaN(lat) && !isNaN(lon)) {
-						points.push([lat, lon]);
+						points.push([lat, lon, csvDate]);
 					}
 				}
 				
@@ -292,14 +358,14 @@
 	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
-		layerControl.addOverlay(heat, "Heat");
+		layerControl.addOverlay(heat, "Heatmap");
 		layerControl.addTo(map);
 	}
 
 	//add heat to overlays - wait for map to be created/data processing then create overlays
 	function addHeatToOverlays() {
 		if (heat!==undefined) {
-			overlays["Heat"] = heat;
+			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
 		}
 		else {
@@ -309,8 +375,11 @@
 
 	//call functions
 	//parse csv, create heatmap, assign var
+	var accPoints = [];
+
 	parseCSV(url).then(function(points) {
-		heat = createHeatmap(map, points);
+		accPoints = points;
+		heat = createHeatmap(map, accPoints);
 	});
 
 	addHeatToOverlays();
@@ -361,6 +430,7 @@
 			
 			//Need to remove the layer from map and add it again to apply the filter
 			map.removeLayer(acc);
+			map.removeLayer(zones);
 			
 			var styleLayer = L.geoJson(null, {
 						pointToLayer: function(geoJsonPoint, latlng) {
@@ -371,11 +441,18 @@
 			});
 			//Need to remove the acc layer from the layer control to add in the filtered version
 			layerControl.removeLayer(acc);
+			layerControl.removeLayer(zones);
 			layerControl.removeLayer(heat);
+			map.removeLayer(heat);
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
 			layerControl.addOverlay(heat, "Heat");	
+			layerControl.addOverlay(zones, "Forecast Zones");
+			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
+			addHeatToOverlays();
+			
+			
 	});
 
 	//bar Chart of Accidents per month
