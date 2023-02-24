@@ -29,6 +29,9 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	
+	<!-- Loading chart.js -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 	<!-- Loading  Chart.js -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
@@ -40,6 +43,49 @@
 			margin: 0;
 		}
 		
+		<!-- #container {position: 'relative'; width: 100%, height: 100%} -->
+		
+		#container
+			{
+			display:flex;
+			flex-direction:column-reverse;
+			flex-wrap: wrap;
+			min-height:100%;
+			}
+			
+		#graph1
+			{
+			flex:2;
+		}
+		
+		#barChartCanvas
+			{
+			height: 10%;
+		}
+		
+		#graph2
+			{
+			flex:2;
+		}
+ 
+
+				
+		<!-- #map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;} -->
+		
+		#map { flex: 15 ; font-family: 'Nanum Gothic', sans-serif; position: relative;}
+		
+		
+		@media (max-width: 767px) {
+			.page-switch-icon {
+				display: block;
+			}
+		}
+
+		@media (min-width: 768px) {
+			.col-sm-8>.tooltip {
+				display: none !important;
+			}
+			
 		.container {position: 'relative'; width: 100%, height: 100%;}
 				
 		#map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;}
@@ -65,15 +111,52 @@
 <body>
 	<!-- Added a div to hold the reportrange picker, then placed the two divs in a container div-->
 	
-	<div className="container" >
-		<div id="reportrange" style="background: #fff; cursor: pointer; 
-		font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: absolute; width: 200px; z-index:1000;">
-			<i class="fa fa-calendar"></i>&nbsp;
-			<span></span> <i class="fa fa-caret-down"></i>
+	<div id='container'>
+		<div id='graph1'>
+		<canvas id="barChartCanvas" height="40">&nbsp;</canvas>
 		</div>
-		<div id="map"></div>
+    
+		<div id='map'>
+				<div id="reportrange" style="background: #fff; cursor: pointer; 
+		      font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: relative; width: 200px; z-index:1000; flex: 5;">
+			    <i class="fa fa-calendar"></i>&nbsp;
+			    <span></span> <i class="fa fa-caret-down"></i>
+		    </div>
+    </div>
+
 		<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 	</div>
+
+	<script type="text/javascript">
+	
+	
+		//Setting empty arrays to hold bar graph data
+		const barLabels=[];
+		const barData=[];
+		
+		//Properties for bar graph
+	    const ctx = document.getElementById("barChartCanvas");
+        const barChartCanvas = new Chart(ctx, {
+                type: 'bar',
+                data: {
+					labels: barLabels,
+                    datasets: [{
+						data: barData,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+					plugins:{
+					legend: false,
+					},
+                    scales: {
+                    }
+                }
+            });
+		
+
+</script>	
+
 	<script type="text/javascript" src="forecastZones.js"></script>
 	<script type="text/javascript">
 	
@@ -217,6 +300,7 @@
 		acc.resetStyle(e.target);
 	}
 
+
 	//Actions for mouseover, mouseout
 	function resetZone(e) {
 		zones.resetStyle(e.target);
@@ -254,7 +338,16 @@
 		});
 
 		//content of the popup
-		layer.bindPopup("<strong>" + "</strong>");
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + formatDate(feature.properties.acc_date) +
+		"<br>" + feature.properties.acc_activity 
+		+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
+		"<br>Caught: " + feature.properties.acc_no_caught + 
+		", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+		"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+		
+		
+		//Pushing the acc_activity to the bar graph
+		barLabels.push(feature.properties.acc_activity);
 	}
 	
 	
@@ -447,13 +540,58 @@
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
+
+			barLabels.length=0;
+			barData.length=0;
+			updateChart();
+
 			layerControl.addOverlay(heat, "Heat");	
 			layerControl.addOverlay(zones, "Forecast Zones");
 			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
 			addHeatToOverlays();
-			
-			
 	});
+	
+		
+		//Updates the chart upon add of the acc layer
+		acc.on("add", updateChart());
+		
+		
+		function delay(time) {
+			return new Promise(resolve => setTimeout(resolve, time));
+		}
+		
+		
+		async function updateChart() {
+			//Takes out first element from barLabels array, which is just an empty array
+			barLabels.shift();
+			
+			//The shift() takes a while, so activate delay
+			await delay (20);
+			//alert(barLabels);
+
+			console.log(barLabels);
+		
+		//Reduce the array of all activity types to an object with counts of unique activities
+		const accCount = barLabels.reduce((allNames, name) => {
+		  const currCount = allNames[name] ?? 0;
+		  return {
+			...allNames,
+			[name]: currCount + 1,
+		  };
+		}, {});
+		
+		
+		//Grab the keys and values from the accCount
+		barLabels3=Object.keys(accCount);
+		barValues=Object.values(accCount);
+		
+		
+		//Update the bar chart with the labels and values
+		barChartCanvas.data.labels = barLabels3;
+		barChartCanvas.data.datasets[0].data=barValues;
+		barChartCanvas.update();
+				
+      }
 
 	//bar Chart of Accidents per month
 	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
