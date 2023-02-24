@@ -33,6 +33,9 @@
 	<!-- Loading chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+	<!-- Loading  Chart.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
 		html, body {
@@ -83,20 +86,25 @@
 				display: none !important;
 			}
 			
+		.container {position: 'relative'; width: 100%, height: 100%;}
+				
+		#map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;}
 
-		
-
-
-		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif; background: white; 
-			background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
+		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif;  
+			background-color: rgba(239, 240, 250, 0.875); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 5px; } 
 		.info h4 { margin: 0 0 5px; color: #777; }
 		.legend { text-align: left; line-height: 18px; color: rgb(147, 139, 139); } 
 		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
-		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
-			background-color: #e3e4ee9a;
-			padding: 4px;
-			}
-		
+		.leaflet-popup-content-wrapper, .leaflet-popup.tip { background-color: #eff0fadf; padding: 4px; border-radius: 5px; }
+		#chart-area {z-index:1000;
+					position: absolute;
+					width: 35%;
+					height: 35%;
+					bottom: 3%;
+					right: 3%;
+					border-radius: 5px;
+					background-color: #eff0fadf;
+					border: 1px solid rgba(57, 57, 70, 0.875);}
 	</style>
 	
 </head>
@@ -107,15 +115,17 @@
 		<div id='graph1'>
 		<canvas id="barChartCanvas" height="40">&nbsp;</canvas>
 		</div>
+    
 		<div id='map'>
 				<div id="reportrange" style="background: #fff; cursor: pointer; 
-		font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: relative; width: 200px; z-index:1000; flex: 5;">
-			<i class="fa fa-calendar"></i>&nbsp;
-			<span></span> <i class="fa fa-caret-down"></i>
-		</div>
-		</div>
+		      font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: relative; width: 200px; z-index:1000; flex: 5;">
+			    <i class="fa fa-calendar"></i>&nbsp;
+			    <span></span> <i class="fa fa-caret-down"></i>
+		    </div>
+    </div>
+
+		<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 	</div>
-	
 
 	<script type="text/javascript">
 	
@@ -145,6 +155,10 @@
             });
 		
 
+</script>	
+
+	<script type="text/javascript" src="forecastZones.js"></script>
+	<script type="text/javascript">
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 	
@@ -242,6 +256,17 @@
 		};
 	}
 
+	//Basic style for Avalanche Forecast Zones
+	function styleForecastZones(feature) {
+		return {
+			weight: 1.5,
+			opacity: 1,
+			color: 'black',
+			fillOpacity: 0.5,
+			fillColor: 'grey',
+		};
+	}
+
 	//Style of accident points upon cursor hover
 	function highlightFeature(e) {
 		var layer = e.target;
@@ -256,32 +281,62 @@
 		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
-
 	}
+
+	//Style of forecast zones upon cursor hover
+	function highlightZone(e) {
+		var zone = e.target;
+
+		zone.setStyle({
+			weight: 2,
+			color: '#FFFFFF',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+	}
+
 
 	function resetHighlight(e) {
 		acc.resetStyle(e.target);
 	}
 
 
-	//from csv we get 11-Feb-10 change to 02/11/2010
-	function formatDate(inputDate) {
-		var date = new Date(inputDate);
-		if (!isNaN(date.getTime())) {
-		// Months use 0 index.
-		return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
-    }
-
-	}
-	
-	
 	//Actions for mouseover, mouseout
+	function resetZone(e) {
+		zones.resetStyle(e.target);
+	}
+
+	//Actions for mouseover, mouseout for accident points
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlight
 		});
-		
+
+		//content of tool tip
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+
+		//content of the popup
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity 
+			+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+	}
+
+	//Actions for mouseover, mouseout for forecast zones
+	function onEachZone(feature, layer) {
+		layer.on({
+			mouseover: highlightZone,
+			mouseout: resetZone,
+			'add': function(){
+        			layer.bringToBack()
+      			}
+		});
+
 		//content of the popup
 		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + formatDate(feature.properties.acc_date) +
 		"<br>" + feature.properties.acc_activity 
@@ -310,6 +365,12 @@
 						style:style,
 						filter: dateFilter
 	});
+
+	// Create geoJSON layer 
+	var zones = L.geoJson(forecastZones, {
+		style: styleForecastZones,
+		onEachFeature: onEachZone
+	});
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
 	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
@@ -328,6 +389,7 @@
 
 	var overlays = {
 		"Accidents": acc,
+		"Forecast Zones": zones,
 	};
 
 	//set heat as a global var
@@ -335,12 +397,28 @@
 
 	//Create heatmap layer -- need to wait for call to CSV online
 	//Function to call L.heatLayer
-	function createHeatmap(map, points) {
-		return L.heatLayer(points, {
+	function createHeatmap(map, points, minDate, maxDate) {
+		const pointsNoDates = [];
+
+		//check if the date picker has been used
+		if ((minDate != undefined) && (maxDate != undefined)) {
+			for (i in points) {
+				const pointDate = moment(points[i][2],'DD-MMM-YY');
+				if ((pointDate > minDate) && (pointDate < maxDate))  {
+					pointsNoDates.push([points[i][0], points[i][1]]);
+				}
+			}
+		} else {
+			for (i in points) {
+				pointsNoDates.push([points[i][0], points[i][1]]);
+			}
+		}
+		return L.heatLayer(pointsNoDates, {
 			radius: 21,
 			blur: 12,
 			minOpacity: 0.4,
-			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'}
+			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
+			maxZoom: 25
 		});
 	};
 
@@ -356,8 +434,9 @@
 					const values = row.split(",");
 					const lat = parseFloat(values[4]);
 					const lon = parseFloat(values[5]);
+					const csvDate = values[6];
 					if (!isNaN(lat) && !isNaN(lon)) {
-						points.push([lat, lon]);
+						points.push([lat, lon, csvDate]);
 					}
 				}
 				
@@ -372,14 +451,14 @@
 	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
-		layerControl.addOverlay(heat, "Heat");
+		layerControl.addOverlay(heat, "Heatmap");
 		layerControl.addTo(map);
 	}
 
 	//add heat to overlays - wait for map to be created/data processing then create overlays
 	function addHeatToOverlays() {
 		if (heat!==undefined) {
-			overlays["Heat"] = heat;
+			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
 		}
 		else {
@@ -389,8 +468,11 @@
 
 	//call functions
 	//parse csv, create heatmap, assign var
+	var accPoints = [];
+
 	parseCSV(url).then(function(points) {
-		heat = createHeatmap(map, points);
+		accPoints = points;
+		heat = createHeatmap(map, accPoints);
 	});
 
 	addHeatToOverlays();
@@ -441,6 +523,7 @@
 			
 			//Need to remove the layer from map and add it again to apply the filter
 			map.removeLayer(acc);
+			map.removeLayer(zones);
 			
 			var styleLayer = L.geoJson(null, {
 						pointToLayer: function(geoJsonPoint, latlng) {
@@ -451,16 +534,21 @@
 			});
 			//Need to remove the acc layer from the layer control to add in the filtered version
 			layerControl.removeLayer(acc);
+			layerControl.removeLayer(zones);
 			layerControl.removeLayer(heat);
+			map.removeLayer(heat);
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
-			layerControl.addOverlay(heat, "Heat");
+
 			barLabels.length=0;
 			barData.length=0;
 			updateChart();
-			
-			
+
+			layerControl.addOverlay(heat, "Heat");	
+			layerControl.addOverlay(zones, "Forecast Zones");
+			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
+			addHeatToOverlays();
 	});
 	
 		
@@ -505,6 +593,41 @@
 				
       }
 
+	//bar Chart of Accidents per month
+	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
+	Chart.defaults.global.defaultFontColor = '#333';
+	
+	let barChart = new Chart('bar-chart', {
+		type: 'bar',
+		options: {
+			maintainAspectRatio: false,
+			legend: {
+				display: false
+			},
+			scales: {
+				xAxes: [
+				{
+					scaleLabel: {
+					display: true,
+					labelString: 'Accidents by Month',
+					fontSize: 16
+					}
+				}
+				]
+			}
+		},
+		data: {
+			labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+			// labels: dataSet.map(row => row.moment(acc_date, ["DD-MMM-YY"]).format("MMM")),
+			datasets: [
+			{
+				//placeholder data
+				data: [1,2,3,2,4,3,5,4,6,5,6,5,4,5,6,1]
+			}
+			]
+		}
+		
+	});
 	
 	L.control.scale().addTo(map);
 	
