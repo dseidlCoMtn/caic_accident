@@ -570,14 +570,39 @@
 			return new Promise(resolve => setTimeout(resolve, time));
 		}
 		
+		function removeFirst(array) {
+			return new Promise(resolve => {
+			let barLabels2 = array.shift();
+			//const arrayLength = barLabels2.length;
+			resolve(barLabels2);
+			//resolve (arrayLength);
+			});
+			}
+			
+		function getLength(array) {
+			return new Promise(resolve => {
+			const length = array.length;
+			//const arrayLength = barLabels2.length;
+			resolve(length);
+			//resolve (arrayLength);
+			});
+			}
+		
 		
 		async function updateChart() {
 			//Takes out first element from barLabels array, which is just an empty array
-			barLabels.shift();
+			//barLabels.shift();
 			
 			//The shift() takes a while, so activate delay
-			await delay (50);
+			//await delay (50);
+			
+			//const barLabels3 = await removeFirst(barLabels);
+			await removeFirst(barLabels);
+			//await getLength(barLabels);
+			//const barLabels3 = await new Promise(resolve => (removeFirst(barLabels, resolve)));
 			//alert(barLabels);
+			
+			await delay(1);
 
 			console.log(barLabels);
 		
@@ -590,7 +615,8 @@
 				};
 				}, {});
 		
-		
+			
+			//console.log(accCount);
 			//Grab the keys and values from the accCount
 			barLabels3=Object.keys(accCount);
 			barValues=Object.values(accCount);
