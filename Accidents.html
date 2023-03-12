@@ -131,9 +131,7 @@
 	</div>
 
 	<script type="text/javascript">
-		/* Make the array for the accident by date data */
-		let barChartDates = [];
-		/* console.log(barChartDates) */
+
 		/* Setting empty arrays to hold bar graph data */
 		const barLabels=[];
 		const barData=[];
@@ -173,15 +171,17 @@
 			})
 	
 	
-	/* //bar Chart of Accidents per month */
+	/* bar Chart of Accidents per month */
 	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
 	Chart.defaults.global.defaultFontColor = '#333';
-	
-	function processBarChartDates(month) {
-		console.log(barChartDates)
-		/* const dateData = barChartDates.reduce() */
-	}
-	processBarChartDates()
+	/* Make the array for the accident by date data */
+	let barChartDates = [];
+	let barChartLabels = [];
+	let barChartValues = [];
+	/* console.log(barChartDates) */
+
+
+
 	let barChart = new Chart('bar-chart', {
 		type: 'bar',
 		options: {
@@ -202,19 +202,20 @@
 			}
 		},
 		data: {
-			labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-			/* labels: dataSet.map(row => row.moment(acc_date, ["DD-MMM-YY"]).format("MMM")), */
+			/* labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'], */
+			labels: barChartLabels,
 			datasets: [
 			{
 				/* //placeholder data */
 				/* data: [13,12,3,2,4,3,5,4,6,5,6,5,4,5,6,1] */
-				data: barChartDates,
+				data: barChartValues,
 			}
 			]
 		}
 		
-	});		
-		
+	});
+
+
 
 </script>	
 
@@ -387,9 +388,11 @@
 			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
 			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 			
-		//Pushing the acc_activity to the bar graph
+		/* //Pushing the acc_activity to the bar graph */
 		barLabels.push(feature.properties.acc_activity);
-		barChartDates.push(feature.properties.acc_date);
+		/* use moment to get the month and push to bar chart */
+		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
+		
 	}
 
 	//Actions for mouseover, mouseout for forecast zones
@@ -449,11 +452,11 @@
 		"Forecast Zones": zones,
 	};
 
-	//set heat as a global var
+	/* //set heat as a global var */
 	var heat;
 
-	//Create heatmap layer -- need to wait for call to CSV online
-	//Function to call L.heatLayer
+	/* //Create heatmap layer -- need to wait for call to CSV online */
+	/* //Function to call L.heatLayer */
 	function createHeatmap(map, points, minDate, maxDate) {
 		const pointsNoDates = [];
 
@@ -479,7 +482,7 @@
 		});
 	};
 
-	//function to parse csv from url
+	/* //function to parse csv from url */
 	function parseCSV(url) {
 		return fetch(url)
 			.then(response => response.text())
@@ -563,8 +566,8 @@
 	updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
 	
 	
-	//Upon changes to the date ranges, checks if each accident is after the start date
-	//Removes the accident layer and re-adds it with the date filter settings
+	/* //Upon changes to the date ranges, checks if each accident is after the start date */
+	/* //Removes the accident layer and re-adds it with the date filter settings */
 	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {			
 		function dateFilter(feature) {
 			if (picker!==undefined) {
@@ -608,9 +611,9 @@
 	});
 	
 		
-		//Updates the chart upon add of the acc layer
+		/* //Updates the chart upon add of the acc layer */
 		acc.on("add", updateChart());
-		
+		acc.on("add", processBarChartDates());
 		
 		function delay(time) {
 			return new Promise(resolve => setTimeout(resolve, time));
@@ -618,16 +621,16 @@
 		
 		
 		async function updateChart() {
-			//Takes out first element from barLabels array, which is just an empty array
+			/* //Takes out first element from barLabels array, which is just an empty array */
 			barLabels.shift();
 			
-			//The shift() takes a while, so activate delay
+			/* //The shift() takes a while, so activate delay */
 			await delay (50);
-			//alert(barLabels);
+			/* //alert(barLabels); */
 
-			console.log(barLabels);
+			/* console.log("barLabels: ", barLabels); */
 		
-			//Reduce the array of all activity types to an object with counts of unique activities
+			/* //Reduce the array of all activity types to an object with counts of unique activities */
 			const accCount = barLabels.reduce((allNames, name) => {
 				const currCount = allNames[name] ?? 0;
 				return {
@@ -637,17 +640,46 @@
 				}, {});
 		
 		
-			//Grab the keys and values from the accCount
+			/* //Grab the keys and values from the accCount */
 			barLabels3=Object.keys(accCount);
 			barValues=Object.values(accCount);
 			
 			
-			//Update the bar chart with the labels and values
+			/* //Update the bar chart with the labels and values */
 			barChartCanvas.data.labels = barLabels3;
 			barChartCanvas.data.datasets[0].data=barValues;
 			barChartCanvas.update();
 					
 		  }
+
+		  async function processBarChartDates() {
+
+			console.log("barChartDates: ", barChartDates)
+			await delay (250);
+
+			/* Reduce the array of all accident dates  to an object with counts of unique months */
+			let dateData = barChartDates.reduce((allDates, month) => {
+					const currentCount = allDates[month] ?? 0;
+					return {
+					...allDates,
+					[month]: currentCount + 1,
+					};
+			}, {});
+			/* Grab the keys and values from the accCount */
+			console.log("dateData: ", dateData);
+
+			barChartLabels=Object.keys(dateData);
+			barChartValues=Object.values(dateData);
+			
+			
+			/* // Update the bar chart with the labels and values */
+			barChart.data.labels = barChartLabels;
+			barChart.data.datasets[0].data=barChartValues;
+			barChart.update();
+			console.log("barChartLabels: ", barChartLabels);
+			console.log("barChartValues: ", barChartValues);
+
+}
 
 
 	
