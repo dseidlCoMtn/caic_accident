@@ -173,7 +173,7 @@
 
 </script>	
 
-	<script type="text/javascript" src="forecastZones.js"></script>
+	<script type="text/javascript" src="zones.js"></script>
 	<script type="text/javascript">
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
@@ -357,7 +357,7 @@
 		});
 
 		//content of the popup
-		layer.bindPopup("<strong>" + feature.properties.Region +"</strong><br>");
+		layer.bindPopup("<strong>" + feature.properties.name +"</strong><br>");
 		
 	}
 	
