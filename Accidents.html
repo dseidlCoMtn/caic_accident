@@ -150,11 +150,11 @@
                 options: {
 					plugins:{
 					legend: false,
-					<!-- title: { -->
-						<!-- display: true, -->
-						<!-- text: 'Activity Type', -->
-						<!-- position: 'top' -->
-						<!-- } -->
+					title: {
+						display: true,
+						text: 'Activity Type',
+						position: 'top'
+						}
 					},
                     scales: {
 					
@@ -344,6 +344,8 @@
 			
 		//Pushing the acc_activity to the bar graph
 		barLabels.push(feature.properties.acc_activity);
+		/* use moment to get the month and push to bar chart */
+		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
 	}
 
 	//Actions for mouseover, mouseout for forecast zones
@@ -564,7 +566,7 @@
 		
 		//Updates the chart upon add of the acc layer
 		acc.on("add", updateChart());
-		
+		acc.on("add", processBarChartDates());
 		
 		function delay(time) {
 			return new Promise(resolve => setTimeout(resolve, time));
@@ -579,7 +581,7 @@
 			await delay (50);
 			//alert(barLabels);
 
-			console.log(barLabels);
+			/* console.log(barLabels); */
 		
 			//Reduce the array of all activity types to an object with counts of unique activities
 			const accCount = barLabels.reduce((allNames, name) => {
@@ -603,7 +605,7 @@
 					
 		  }
 
-	//bar Chart of Accidents per month
+	/* bar Chart of Accidents per month */
 	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
 	Chart.defaults.global.defaultFontColor = '#333';
 	
@@ -628,20 +630,41 @@
 		},
 		data: {
 			labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-			// labels: dataSet.map(row => row.moment(acc_date, ["DD-MMM-YY"]).format("MMM")),
 			datasets: [
-			{
-				//placeholder data
-				data: [1,2,3,2,4,3,5,4,6,5,6,5,4,5,6,1]
-			}
+				{
+				/* placeholder data */
+				/* data: [1,2,3,4,5,6,7,8,9,10,11,12], */
+				}
 			]
 		}
 		
 	});
-	
+
+	let barChartDates = [];
+
+	async function processBarChartDates() {
+		await delay (250);
+		console.log("barChartDates: ", barChartDates);
+		/* Reduce the array of all accident dates  to an object with counts of unique months */
+		let dateData = barChartDates.reduce((allDates, month) => {
+				const currentCount = allDates[month] ?? 0;
+				return {
+				...allDates,
+				[month]: currentCount + 1,
+				};
+		}, {});
+		/* Grab the keys and values from the accCount */
+		/* console.log("dateData: ", dateData); */
+		barChartLabels=Object.keys(dateData);
+		barChartValues=Object.values(dateData);
+		
+		/* // Update the bar chart with the labels and values */
+		barChart.data.labels = barChartLabels;
+		barChart.data.datasets[0].data=barChartValues;
+		barChart.update();
+	}
+
 	L.control.scale().addTo(map);
-	
-	
 
 </script>
 
