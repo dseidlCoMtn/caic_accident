@@ -193,3 +193,7 @@ acc_id,acc_type,acc_status,acc_public,acc_lat,acc_lon,acc_date,acc_location,acc_
 825,inv,published,1,39.802025,-105.781271,26-Dec-22,"Nitro Chute, north of Berthoud Pass",Backcountry Tourer,Snowboard,4,2,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=825,2,2
 826,inv,published,1,39.4521,-106.0758069,31-Dec-22,"Number 5, Carter Gulch southwest of Breckenridge",Sidecountry Rider,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=inv&acc_id=826,3,2
 827,rep,published,1,39.9245192,-105.6912625,7-Jan-23,"Pumphouse Lake, southwest of Rollins Pass",Snowmobiler,Snowmobile,0,2,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=827,2,2
+831,inv,published,1,37.3689262,-107.5720981,25-Feb-23,South of Vallecito Reservoir,Backcountry Tourer,Ski,2,2,2,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=831,2,2
+832,inv,published,1,37.07843,-106.41289,25-Feb-23,"Red Lakes Trailhead, near La Manga Pass",Snowmobiler,Snowmobile,1,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=832,3,2.5
+837,rep,published,1,39.0497063,-107.2771275,17-Mar-23,"Rapid Creek, southwest of Marble",Backcountry Tourer,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=837,,
+838,rep,published,1,39.1353071,-106.8773273,19-Mar-23,"Maroon Bowl, northwest of Highland Peak",Sidecountry Rider,Ski,2,1,1,https://classic.avalanche.state.co.us/caic/acc/acc_report.php?accfm=rep&acc_id=838,2,3
