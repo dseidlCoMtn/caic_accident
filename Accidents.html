@@ -165,6 +165,13 @@
 								labelString: 'Activity Type',
 								fontSize: 12
 							}
+						}],
+						
+					yAxes: [{
+						ticks: {
+						beginAtZero: true,
+						callback: function(value) {if (value % 1 === 0) {return value;}}
+						}
 						}]
                     }
                 }
@@ -556,8 +563,10 @@
 			layerControl.addOverlay(acc, "Accidents");
 
 			barLabels.length=0;
-			barData.length=0;
-			updateChart();	
+			//barData.length=0;
+			barChartDates.length=0;
+			updateChart();
+			processBarChartDates();			
 			layerControl.addOverlay(zones, "Forecast Zones");
 			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
 			addHeatToOverlays();
@@ -574,15 +583,8 @@
 		
 		
 		async function updateChart() {
-			//Takes out first element from barLabels array, which is just an empty array
-			barLabels.shift();
-			
-			//The shift() takes a while, so activate delay
-			await delay (50);
-			//alert(barLabels);
+			await delay (250);
 
-			/* console.log(barLabels); */
-		
 			//Reduce the array of all activity types to an object with counts of unique activities
 			const accCount = barLabels.reduce((allNames, name) => {
 				const currCount = allNames[name] ?? 0;
@@ -594,12 +596,12 @@
 		
 		
 			//Grab the keys and values from the accCount
-			barLabels3=Object.keys(accCount);
+			barLabels2=Object.keys(accCount);
 			barValues=Object.values(accCount);
 			
 			
 			//Update the bar chart with the labels and values
-			barChartCanvas.data.labels = barLabels3;
+			barChartCanvas.data.labels = barLabels2;
 			barChartCanvas.data.datasets[0].data=barValues;
 			barChartCanvas.update();
 					
@@ -625,7 +627,14 @@
 					fontSize: 16
 					}
 				}
-				]
+				],
+						
+					yAxes: [{
+						ticks: {
+						beginAtZero: true,
+						callback: function(value) {if (value % 1 === 0) {return value;}}
+						}
+						}]
 			}
 		},
 		data: {
