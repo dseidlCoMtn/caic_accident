@@ -156,6 +156,46 @@
 						position: 'top'
 						}
 					},
+					onClick : event => {
+						if (barChartCanvas.getElementAtEvent(event)[0] != undefined){
+							const datasetIndex = barChartCanvas.getElementAtEvent(event)[0]._datasetIndex;
+							const model = barChartCanvas.getElementsAtEvent(event)[datasetIndex]._model;
+							const activity = model.label;
+
+							function activityFilter(feature){
+							
+								if (feature.properties.acc_activity == activity){
+									return true
+									}
+								else {
+									return false
+									}
+							}
+							map.removeLayer(acc);
+							map.removeLayer(zones);
+			
+							var styleLayer = L.geoJson(null, {
+								pointToLayer: function(geoJsonPoint, latlng) {
+								return L.circleMarker(latlng);},
+								onEachFeature: onEachFeature,
+								style:style,
+								filter: activityFilter
+							});
+							layerControl.removeLayer(acc);
+							layerControl.removeLayer(zones);
+							layerControl.removeLayer(heat);
+							map.removeLayer(heat);
+							acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+							layerControl.addOverlay(acc, "Accidents");
+							//barLabels.length=0;
+							barChartDates.length=0;
+							//updateActivityChart();
+							processBarChartDates();			
+							layerControl.addOverlay(zones, "Forecast Zones");
+							//heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
+							addHeatToOverlays();
+					  }},
+
                     scales: {
 					
 					xAxes: [
@@ -176,7 +216,6 @@
                     }
                 }
             });
-		
 
 </script>	
 
@@ -565,7 +604,7 @@
 			barLabels.length=0;
 			//barData.length=0;
 			barChartDates.length=0;
-			updateChart();
+			updateActivityChart();
 			processBarChartDates();			
 			layerControl.addOverlay(zones, "Forecast Zones");
 			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
@@ -574,7 +613,7 @@
 	
 		
 		//Updates the chart upon add of the acc layer
-		acc.on("add", updateChart());
+		acc.on("add", updateActivityChart());
 		acc.on("add", processBarChartDates());
 		
 		function delay(time) {
@@ -582,7 +621,7 @@
 		}
 		
 		
-		async function updateChart() {
+		async function updateActivityChart() {
 			await delay (250);
 
 			//Reduce the array of all activity types to an object with counts of unique activities
