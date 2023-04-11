@@ -395,13 +395,9 @@
 		for (i in points) {
 			const pointActivity = points[i][3];
 			if (pointActivity == activity2)   {
-				console.log(pointActivity);
-				pointsActivity.push([points[i][0], points[i][1]]);
-					
+				pointsActivity.push([points[i][0], points[i][1]]);	
 				}
-			}
-			console.log(pointsActivity);
-		 
+			} 
 		return L.heatLayer(pointsActivity, {
 			radius: 21,
 			blur: 12,
@@ -639,7 +635,6 @@
 						barChartDates.length=0;
 						processBarChartDates();			
 						layerControl.addOverlay(zones, "Forecast Zones");
-						console.log(accPoints);
 						heat = createHeatmapActivity(map, accPoints, activity);
 						addHeatToOverlays();
 				  }},
