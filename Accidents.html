@@ -604,11 +604,27 @@
 				onClick : event => {
 					if (barChartCanvas.getElementAtEvent(event)[0] != undefined){
 						const datasetIndex = barChartCanvas.getElementAtEvent(event)[0]._datasetIndex;
+						const dataIndex = barChartCanvas.getElementAtEvent(event)[0]._index;
 						const model = barChartCanvas.getElementsAtEvent(event)[datasetIndex]._model;
+						const options = barChartCanvas.options;
+						const actLabels = barChartCanvas.options.scales.xAxes[0].ticks;
 						const activity = model.label;
+						const dataset = barChartCanvas.data.datasets[0];
+						dataset.borderWidth = [];
+						dataset.borderColor = [];
+						for (let i = 0; i < dataset.data.length; i++) {
+							if (dataIndex == i) {
+								dataset.borderWidth[i] = 4;
+								dataset.borderColor[i] = "black";
+							} else {
+								dataset.borderWidth[i] = 1;
+								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+							}
+						}
+						barChartCanvas.update();
 
 						function activityFilter(feature){
-						
+		
 							if (feature.properties.acc_activity == activity){
 								return true
 								}
@@ -640,7 +656,6 @@
 				  }},
 
 				scales: {
-				
 				xAxes: [
 					{
 						scaleLabel: {
