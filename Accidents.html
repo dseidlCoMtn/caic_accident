@@ -36,6 +36,11 @@
 	<!-- Loading  Chart.js  --- maybe change this one to use the up-to-date -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
+	<!-- Loading leaflet Legend plugin
+	<link rel="stylesheet" href="https://ptma.github.io/Leaflet.Legend/src/leaflet.legend.css" />
+	<script type="text/javascript" src="https://ptma.github.io/Leaflet.Legend/src/leaflet.legend.js"></script>
+	-->
+
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
 		html, body {
@@ -747,20 +752,31 @@
 
 	L.control.scale().addTo(map);
 
-	var legend = L.control({ position: "bottomleft"});
+	var legend = L.control({ position: "bottomleft", orientation: 'horizontal'});
 
 	legend.onAdd = function(map) {
 	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>League Status for 22-23 Season</b></br>";
-		div.innerHTML += '<i style="background: purple"></i><span>Premier League</span><br>';
-		div.innerHTML += '<i style="background: gold"></i><span>EFL Championship</span><br>';
-		div.innerHTML += '<i style="background: silver"></i><span>EFL League One</span><br>';
-		div.innerHTML += '<i style="background: red"></i><span>EFL League Two</span><br>';
+		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
+		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
 
- 		 return div;
+		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
+		div.innerHTML += '<i style="background: cyan"></i><span></span>';
+		div.innerHTML += '<i style="background: blue"></i><span></span>';
+		div.innerHTML += '<i style="background: purple"></i><span></span>';
+ 		
+		return div;
 	};
 
 	legend.addTo(map);
+
 
 </script>
 
