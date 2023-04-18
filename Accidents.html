@@ -125,60 +125,7 @@
 			
 			<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
     </div>
-
-		
 	</div>
-
-	<script type="text/javascript">
-	
-	
-		//Setting empty arrays to hold bar graph data
-		const barLabels=[];
-		const barData=[];
-		
-		//Properties for activity bar graph
-	    const ctx = document.getElementById("barChartCanvas");
-        const barChartCanvas = new Chart(ctx, {
-                type: 'bar',
-                data: {
-					labels: barLabels,
-                    datasets: [{
-						data: barData,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-					plugins:{
-					legend: false,
-					title: {
-						display: true,
-						text: 'Activity Type',
-						position: 'top'
-						}
-					},
-                    scales: {
-					
-					xAxes: [
-						{
-							scaleLabel: {
-								display: true,
-								labelString: 'Activity Type',
-								fontSize: 12
-							}
-						}],
-						
-					yAxes: [{
-						ticks: {
-						beginAtZero: true,
-						callback: function(value) {if (value % 1 === 0) {return value;}}
-						}
-						}]
-                    }
-                }
-            });
-		
-
-</script>	
 
 	<script type="text/javascript" src="zones.js"></script>
 	<script type="text/javascript">
@@ -441,6 +388,24 @@
 			maxZoom: 25
 		});
 	};
+	
+	function createHeatmapActivity(map, points, activity2) {
+		const pointsActivity = [];
+		//check if activity matches 
+		for (i in points) {
+			const pointActivity = points[i][3];
+			if (pointActivity == activity2)   {
+				pointsActivity.push([points[i][0], points[i][1]]);	
+				}
+			} 
+		return L.heatLayer(pointsActivity, {
+			radius: 21,
+			blur: 12,
+			minOpacity: 0.4,
+			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
+			maxZoom: 25
+		});
+	};
 
 	//function to parse csv from url
 	function parseCSV(url) {
@@ -455,8 +420,9 @@
 					const lat = parseFloat(values[4]);
 					const lon = parseFloat(values[5]);
 					const csvDate = values[6];
+					const activ = values[7];
 					if (!isNaN(lat) && !isNaN(lon)) {
-						points.push([lat, lon, csvDate]);
+						points.push([lat, lon, csvDate, activ]);
 					}
 				}
 				
@@ -565,7 +531,7 @@
 			barLabels.length=0;
 			//barData.length=0;
 			barChartDates.length=0;
-			updateChart();
+			updateActivityChart();
 			processBarChartDates();			
 			layerControl.addOverlay(zones, "Forecast Zones");
 			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
@@ -574,7 +540,7 @@
 	
 		
 		//Updates the chart upon add of the acc layer
-		acc.on("add", updateChart());
+		acc.on("add", updateActivityChart());
 		acc.on("add", processBarChartDates());
 		
 		function delay(time) {
@@ -582,7 +548,7 @@
 		}
 		
 		
-		async function updateChart() {
+		async function updateActivityChart() {
 			await delay (250);
 
 			//Reduce the array of all activity types to an object with counts of unique activities
@@ -610,6 +576,104 @@
 	/* bar Chart of Accidents per month */
 	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
 	Chart.defaults.global.defaultFontColor = '#333';
+	
+	//Setting empty arrays to hold bar graph data
+	const barLabels=[];
+	const barData=[];
+	
+	//Properties for activity bar graph
+	const ctx = document.getElementById("barChartCanvas");
+	const barChartCanvas = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: barLabels,
+				datasets: [{
+					data: barData,
+					borderWidth: 1
+				}]
+			},
+			options: {
+				plugins:{
+				legend: false,
+				title: {
+					display: true,
+					text: 'Activity Type',
+					position: 'top'
+					}
+				},
+				onClick : event => {
+					if (barChartCanvas.getElementAtEvent(event)[0] != undefined){
+						const datasetIndex = barChartCanvas.getElementAtEvent(event)[0]._datasetIndex;
+						const dataIndex = barChartCanvas.getElementAtEvent(event)[0]._index;
+						const model = barChartCanvas.getElementsAtEvent(event)[datasetIndex]._model;
+						const options = barChartCanvas.options;
+						const actLabels = barChartCanvas.options.scales.xAxes[0].ticks;
+						const activity = model.label;
+						const dataset = barChartCanvas.data.datasets[0];
+						dataset.borderWidth = [];
+						dataset.borderColor = [];
+						for (let i = 0; i < dataset.data.length; i++) {
+							if (dataIndex == i) {
+								dataset.borderWidth[i] = 4;
+								dataset.borderColor[i] = "black";
+							} else {
+								dataset.borderWidth[i] = 1;
+								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+							}
+						}
+						barChartCanvas.update();
+
+						function activityFilter(feature){
+		
+							if (feature.properties.acc_activity == activity){
+								return true
+								}
+							else {
+								return false
+								}
+						}
+						map.removeLayer(acc);
+						map.removeLayer(zones);
+		
+						var styleLayer = L.geoJson(null, {
+							pointToLayer: function(geoJsonPoint, latlng) {
+							return L.circleMarker(latlng);},
+							onEachFeature: onEachFeature,
+							style:style,
+							filter: activityFilter
+						});
+						layerControl.removeLayer(acc);
+						layerControl.removeLayer(zones);
+						layerControl.removeLayer(heat);
+						map.removeLayer(heat);
+						acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+						layerControl.addOverlay(acc, "Accidents");
+						barChartDates.length=0;
+						processBarChartDates();			
+						layerControl.addOverlay(zones, "Forecast Zones");
+						heat = createHeatmapActivity(map, accPoints, activity);
+						addHeatToOverlays();
+				  }},
+
+				scales: {
+				xAxes: [
+					{
+						scaleLabel: {
+							display: true,
+							labelString: 'Activity Type',
+							fontSize: 12
+						}
+					}],
+					
+				yAxes: [{
+					ticks: {
+					beginAtZero: true,
+					callback: function(value) {if (value % 1 === 0) {return value;}}
+					}
+					}]
+				}
+			}
+		});
 	
 	let barChart = new Chart('bar-chart', {
 		type: 'bar',
