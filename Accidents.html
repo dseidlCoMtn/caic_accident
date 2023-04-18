@@ -108,6 +108,18 @@
 					bottom: 5%;
 					right: 1%;
 					border-radius: 5px;
+					padding: 5px;
+					background-color: #eff0fadf;
+					border: 1px solid rgba(57, 57, 70, 0.875);}
+		
+		#chart-travel {z-index:1000;
+					position: absolute;
+					width: 35%;
+					height: 23%;
+					bottom: 45%;
+					right: 1%;
+					border-radius: 5px;
+					padding: 5px;
 					background-color: #eff0fadf;
 					border: 1px solid rgba(57, 57, 70, 0.875);}
 	</style>
@@ -117,7 +129,7 @@
 	<!-- Added a div to hold the reportrange picker, then placed the two divs in a container div-->
 	
 	<div id='container'>
-		<div id='graph1'>
+		<div id='chart-travel'>
 		<canvas id="barChartCanvas" height="40">&nbsp;</canvas>
 		</div>
     
@@ -711,7 +723,7 @@
 			datasets: [
 				{
 				/* placeholder data */
-				data: [0,0,0,0,0,0,0,0,0,0,0,0],
+				data: [1,2,3,4,5,6,7,8,9,10,11,12],
 				}
 			]
 		}
@@ -736,9 +748,9 @@
 		/* Grab the keys and values from the accCount */
 		/* console.log("dateData: ", dateData); */
 
-		const months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		/* const months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; */
 		let barChartKeys = Object.keys(dateData);
-		barChartKeys.sort((a,b) => months.indexOf(a) - months.indexOf(b));
+		/* barChartKeys.sort((a,b) => months.indexOf(a) - months.indexOf(b)); */
 		/* console.log("barChartKeyss sorted: ", barChartKeys); */
 
 		/* barChartLabels=Object.keys(dateData); */
