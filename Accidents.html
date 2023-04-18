@@ -195,6 +195,7 @@
 						 '#ffffff';
 	};
 
+
 	//Get radius by Rscale
 	function getSize(d) {
 		return d < 1.5 ?  6 :
@@ -208,22 +209,55 @@
 				d < 999 ? 10:
 						 6;
 	};
-	
+
+	//Set up ivon variable to be used for accident travel modes
+	var activityIcon = L.Icon.extend({
+		options: {
+			iconSize:     [27, 27],
+			shadowSize:   [0, 0],
+			iconAnchor:   [13.5, 13.5],
+			shadowAnchor: [0, 0],
+			popupAnchor:  [0, 0]
+		}
+	})
+
+	//define each icon image for accident travel modes
+	var skiIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/94/94150.png'}),
+		footIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/10280/10280356.png'}),
+		snowboardIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/38/38491.png'}),
+		snowmobileIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/3664/3664566.png'}),
+		snowshoeIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/8524/8524641.png'}),
+		otherIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/686/686700.png'});
+
+	//Get style icon by accident activity (travel mode)
+	function getIcon(feature) {
+		var icon;
+		if (feature.properties.acc_travel_mode == "Foot") icon = footIcon;
+		else if (feature.properties.acc_travel_mode == "Ski") icon = skiIcon;
+		else if (feature.properties.acc_travel_mode == "Snowboard") icon = snowboardIcon;
+		else if (feature.properties.acc_travel_mode == "Snowmobile") icon = snowmobileIcon;
+		else if (feature.properties.acc_travel_mode == "Snowshoe") icon = snowshoeIcon;
+		else icon = otherIcon;
+
+		return icon;
+	}
 	
 	//Basic style for accident points
 	function style(feature) {
 		return {
-			//radius: 7,
 			radius: getSize(feature.properties.Rscale),
 			weight: 1.5,
 			opacity: 1,
 			color: 'white',
 			dashArray: '',
 			fillOpacity: 0.8,
-			//fillColor: 'blue',
 			//Below is to set the color by a variable, in this case by Dscale)
 			fillColor: getColor(feature.properties.Dscale)
 		};
+	}
+
+	//Basic style for accident points BY TRAVEL MODE
+	function styleAccidentType(feature) {
 	}
 
 	//Basic style for Avalanche Forecast Zones
@@ -268,6 +302,7 @@
 
 	function resetHighlight(e) {
 		acc.resetStyle(e.target);
+		accByType.resetStyle(e.target);
 	}
 
 
@@ -302,6 +337,36 @@
 		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
 	}
 
+	//Actions for mouseover, mouseout for accident points BY TRAVEL MODE
+	function onEachFeatureTravelMode(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight
+		});
+
+		//content of tool tip
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+
+		//content of the popup
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity 
+			+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.acc_no_caught + 
+			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
+			
+		//get icon for activity
+		layer.setIcon(getIcon(feature));
+
+		//Pushing the acc_activity to the bar graph
+		barLabels.push(feature.properties.acc_activity);
+		/* use moment to get the month and push to bar chart */
+		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
+	}
+
+
 	//Actions for mouseover, mouseout for forecast zones
 	function onEachZone(feature, layer) {
 		layer.on({
@@ -333,6 +398,17 @@
 						filter: dateFilter
 	});
 
+	// Create blank style geoJSON holder for CSV data BY ACC TRAVEL TYPE
+	var styleLayerByAccType = L.geoJson(null, {
+		pointToLayer: function(geoJsonPoint, latlng) {
+                        return L.marker(latlng);},
+						onEachFeature: onEachFeatureTravelMode,
+						style: styleAccidentType,
+						//filter: dateFilter
+						icon: skiIcon
+	});
+
+
 	// Create geoJSON layer 
 	var zones = L.geoJson(forecastZones, {
 		style: styleForecastZones,
@@ -341,7 +417,8 @@
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
 	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
-	
+	var accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType).addTo(map);
+
 	//define csv url
 	const url = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
 
@@ -356,6 +433,7 @@
 
 	var overlays = {
 		"Accidents": acc,
+		"Accidents by Travel Mode": accByType,
 		"Forecast Zones": zones,
 	};
 
@@ -510,6 +588,7 @@
 			
 			//Need to remove the layer from map and add it again to apply the filter
 			map.removeLayer(acc);
+			map.removeLayer(accByType);
 			map.removeLayer(zones);
 			
 			var styleLayer = L.geoJson(null, {
@@ -521,12 +600,15 @@
 			});
 			//Need to remove the acc layer from the layer control to add in the filtered version
 			layerControl.removeLayer(acc);
+			layerControl.removeLayer(accByType);
 			layerControl.removeLayer(zones);
 			layerControl.removeLayer(heat);
 			map.removeLayer(heat);
 			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+			accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
+			layerControl.addOverlay(accByType, "Accidents by Travel Mode");
 
 			barLabels.length=0;
 			//barData.length=0;
@@ -542,6 +624,10 @@
 		//Updates the chart upon add of the acc layer
 		acc.on("add", updateActivityChart());
 		acc.on("add", processBarChartDates());
+		accByType.on("add", updateActivityChart());
+		accByType.on("add", processBarChartDates());
+
+
 		
 		function delay(time) {
 			return new Promise(resolve => setTimeout(resolve, time));
@@ -633,6 +719,7 @@
 								}
 						}
 						map.removeLayer(acc);
+						map.removeLayer(accByType);
 						map.removeLayer(zones);
 		
 						var styleLayer = L.geoJson(null, {
@@ -643,11 +730,14 @@
 							filter: activityFilter
 						});
 						layerControl.removeLayer(acc);
+						layerControl.removeLayer(accByType);
 						layerControl.removeLayer(zones);
 						layerControl.removeLayer(heat);
 						map.removeLayer(heat);
 						acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+						accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
 						layerControl.addOverlay(acc, "Accidents");
+						layerControl.addOverlay(accByType, "Accidents by Travel Mode");
 						barChartDates.length=0;
 						processBarChartDates();			
 						layerControl.addOverlay(zones, "Forecast Zones");
