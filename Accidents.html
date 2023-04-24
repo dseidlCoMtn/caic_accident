@@ -88,14 +88,15 @@
 			margin: 5px;
 			border-radius: 5px;
 			background-color: #eff0fadf;
-			border: 1px solid rgba(57, 57, 70, 0.875);}
-		
+			border: 1px solid rgba(57, 57, 70, 0.875);
+		}
 		#chart-travel {
 			padding: 5px;
 			margin: 5px;
 			border-radius: 5px;
 			background-color: #eff0fadf;
-			border: 1px solid rgba(57, 57, 70, 0.875);}
+			border: 1px solid rgba(57, 57, 70, 0.875);
+		}
 		#chart-rose {
 			padding: 5px;
 			border-radius: 5px;
@@ -107,14 +108,27 @@
 		#barChartCanvas {
 			height: 300px;
 		}
+		#reportrange {
+			background: #fff;
+			cursor: pointer; 
+		    font-family: Nanum Gothic;
+			font-size: 12px;
+			text-align: center;
+			margin-left: 80px;
+			margin-top: 10px;
+			padding: 5px 10px;
+			border: 1px solid #ccc;
+			position: relative;
+			width: 200px;
+			z-index:1000;
+		}
 	</style>
 	
 </head>
 <body>	
 	<div id='container'>
 		<div id='map'>
-			<div id="reportrange" style="background: #fff; cursor: pointer; 
-		      font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: relative; width: 200px; z-index:1000;">
+			<div id="reportrange">
 			    <i class="fa fa-calendar"></i>&nbsp;
 			    <span></span> <i class="fa fa-caret-down"></i>
 		    </div>
@@ -463,7 +477,7 @@
 	});
 
 	addHeatToOverlays();
-	//L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map);
+	/* L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map); */
 	
 	
 	// once the dates are selected, format and display the range in the date selection box.
@@ -679,6 +693,16 @@
 	let barChart = new Chart('bar-chart', {
 		type: 'bar',
 		options: {
+			plugins: {
+				title: {
+					display: true,
+					text: 'Custom Chart Title',
+					padding: {
+						top: 10,
+						bottom: 30
+                	}
+				}
+			},
 			maintainAspectRatio: false,
 			legend: {
 				display: false
@@ -688,18 +712,22 @@
 				{
 					scaleLabel: {
 					display: true,
-					labelString: 'Accidents by Month',
+					labelString: 'Month',
 					fontSize: 16
 					}
 				}
 				],
 						
-					yAxes: [{
+					yAxes: [{scaleLabel: {
+						display: true,
+						labelString: 'Accidents',
+						fontSize: 16
+						},
 						ticks: {
 						beginAtZero: true,
 						callback: function(value) {if (value % 1 === 0) {return value;}}
 						}
-						}]
+					}]
 			}
 		},
 		data: {
