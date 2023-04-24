@@ -42,39 +42,14 @@
 			height: 100%;
 			margin: 0;
 		}
-		
-		<!-- #container {position: 'relative'; width: 100%, height: 100%} -->
-		
-		#container
-			{
+				
+		#container {
 			display:flex;
-			flex-direction:column-reverse;
+			flex-direction:row;
 			flex-wrap: wrap;
 			min-height:100%;
 			}
-			
-		#graph1
-			{
-			flex:1;
-		}
-		
-		#barChartCanvas
-			{
-			height: 8%;
-		}
-		
-		#graph2
-			{
-			flex:1;
-		}
  
-
-				
-		<!-- #map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;} -->
-		
-		#map { flex: 15 ; font-family: 'Nanum Gothic', sans-serif; position: relative;}
-		
-		
 		@media (max-width: 767px) {
 			.page-switch-icon {
 				display: block;
@@ -85,60 +60,74 @@
 			.col-sm-8>.tooltip {
 				display: none !important;
 			}
-			
-		<!-- .container {position: 'relative'; width: 100%, height: 100%;} -->
-				
-		#map { width: 100%; height: 100%; font-family: 'Nanum Gothic', sans-serif; position: absolute;}
+							
+		#map {
+			width: 60%;
+			min-height: 100%;
+			font-family: 'Nanum Gothic', sans-serif; 
+			}
 
 		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif;  
 			background-color: rgba(239, 240, 250, 0.875); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 5px; } 
 		.info h4 { margin: 0 0 5px; color: #777; }
 		.legend { text-align: left; line-height: 18px; color: rgb(147, 139, 139); } 
 		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
-		.leaflet-popup-content-wrapper, .leaflet-popup.tip { background-color: #eff0fadf; padding: 4px; border-radius: 5px; }
-		#chart-area {z-index:1000;
-					position: absolute;
-					width: 35%;
-					height: 35%;
-					bottom: 5%;
-					right: 1%;
-					border-radius: 5px;
-					padding: 5px;
-					background-color: #eff0fadf;
-					border: 1px solid rgba(57, 57, 70, 0.875);}
+		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
+			background-color: #eff0fadf;
+			padding: 4px;
+			border-radius: 5px;
+			}
+
+		#side-panel {
+			width: 40%;
+			height: 100%;
+			background-color: rgb(160, 161, 165);
+		}
+		#chart-area {
+			padding: 5px;
+			margin: 5px;
+			border-radius: 5px;
+			background-color: #eff0fadf;
+			border: 1px solid rgba(57, 57, 70, 0.875);}
 		
-		#chart-travel {z-index:1000;
-					position: absolute;
-					width: 35%;
-					height: 23%;
-					bottom: 45%;
-					right: 1%;
-					border-radius: 5px;
-					padding: 5px;
-					background-color: #eff0fadf;
-					border: 1px solid rgba(57, 57, 70, 0.875);}
+		#chart-travel {
+			padding: 5px;
+			margin: 5px;
+			border-radius: 5px;
+			background-color: #eff0fadf;
+			border: 1px solid rgba(57, 57, 70, 0.875);}
+		#chart-rose {
+			padding: 5px;
+			border-radius: 5px;
+			background-color: #eff0fadf;
+		}
+		#bar-chart {
+			height: 300px;
+		}
+		#barChartCanvas {
+			height: 300px;
+		}
 	</style>
 	
 </head>
-<body>
-	<!-- Added a div to hold the reportrange picker, then placed the two divs in a container div-->
-	
+<body>	
 	<div id='container'>
-		<div id='chart-travel'>
-		<canvas id="barChartCanvas" height="40">&nbsp;</canvas>
-		</div>
-    
 		<div id='map'>
-				<div id="reportrange" style="background: #fff; cursor: pointer; 
-		      font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: relative; width: 200px; z-index:1000; flex: 5;">
+			<div id="reportrange" style="background: #fff; cursor: pointer; 
+		      font-family: Nanum Gothic; font-size: 12px; text-align: center; margin-left: 80px; margin-top: 10px; padding: 5px 10px; border: 1px solid #ccc; position: relative; width: 200px; z-index:1000;">
 			    <i class="fa fa-calendar"></i>&nbsp;
 			    <span></span> <i class="fa fa-caret-down"></i>
 		    </div>
-			
+    	</div>
+		<div id='side-panel'>
+			<div id='chart-travel'>
+				<canvas id="barChartCanvas"></canvas>
+			</div>
 			<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
-    </div>
+			<div id="chart-rose"><canvas id="rose"></canvas></div>
+		</div>
 	</div>
-
+	
 	<script type="text/javascript" src="zones.js"></script>
 	<script type="text/javascript">
 	
@@ -717,8 +706,7 @@
 			labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 			datasets: [
 				{
-				/* placeholder data */
-				data: [1,2,3,4,5,6,7,8,9,10,11,12],
+				
 				}
 			]
 		}
