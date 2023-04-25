@@ -740,16 +740,17 @@
 		}, {});
 
 
-		/* Grab the keys and values from the accCount */
-		/* console.log("dateData: ", dateData); */
-
-		/* const months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; */
-		let barChartKeys = Object.keys(dateData);
-		/* barChartKeys.sort((a,b) => months.indexOf(a) - months.indexOf(b)); */
-		/* console.log("barChartKeyss sorted: ", barChartKeys); */
-
-		/* barChartLabels=Object.keys(dateData); */
-		barChartValues=Object.values(dateData);
+		/* Convert the dates and counts to array and sort by month */
+		let dateDataArr=Object.entries(dateData);
+		sortByMonth(dateDataArr);
+		function sortByMonth(arr) {
+			var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+			arr.sort(function(a, b){
+			return months.indexOf(a[0]) - months.indexOf(b[0]);
+		});
+		}
+		let barChartKeys = Object.keys(Object.fromEntries(dateDataArr));
+		barChartValues=Object.values(Object.fromEntries(dateDataArr));
 		
 		/* // Update the bar chart with the labels and values */
 		barChart.data.labels = barChartKeys;
