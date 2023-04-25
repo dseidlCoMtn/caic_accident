@@ -36,6 +36,7 @@
 	<!-- Loading  Chart.js  --- maybe change this one to use the up-to-date -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
+
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
 		html, body {
@@ -94,7 +95,7 @@
 			background-color: rgba(239, 240, 250, 0.875); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 5px; } 
 		.info h4 { margin: 0 0 5px; color: #777; }
 		.legend { text-align: left; line-height: 18px; color: rgb(147, 139, 139); } 
-		.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+		.legend i { width: 18px; height: 18px; float: left; margin-right: 0px; opacity: 0.7; }
 		.leaflet-popup-content-wrapper, .leaflet-popup.tip { background-color: #eff0fadf; padding: 4px; border-radius: 5px; }
 		#chart-area {z-index:1000;
 					position: absolute;
@@ -103,6 +104,18 @@
 					bottom: 5%;
 					right: 1%;
 					border-radius: 5px;
+					padding: 5px;
+					background-color: #eff0fadf;
+					border: 1px solid rgba(57, 57, 70, 0.875);}
+		
+		#chart-travel {z-index:1000;
+					position: absolute;
+					width: 35%;
+					height: 23%;
+					bottom: 45%;
+					right: 1%;
+					border-radius: 5px;
+					padding: 5px;
 					background-color: #eff0fadf;
 					border: 1px solid rgba(57, 57, 70, 0.875);}
 	</style>
@@ -112,7 +125,7 @@
 	<!-- Added a div to hold the reportrange picker, then placed the two divs in a container div-->
 	
 	<div id='container'>
-		<div id='graph1'>
+		<div id='chart-travel'>
 		<canvas id="barChartCanvas" height="40">&nbsp;</canvas>
 		</div>
     
@@ -796,7 +809,7 @@
 			datasets: [
 				{
 				/* placeholder data */
-				data: [0,0,0,0,0,0,0,0,0,0,0,0],
+				data: [1,2,3,4,5,6,7,8,9,10,11,12],
 				}
 			]
 		}
@@ -818,16 +831,17 @@
 		}, {});
 
 
-		/* Grab the keys and values from the accCount */
-		/* console.log("dateData: ", dateData); */
-
-		const months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-		let barChartKeys = Object.keys(dateData);
-		barChartKeys.sort((a,b) => months.indexOf(a) - months.indexOf(b));
-		/* console.log("barChartKeyss sorted: ", barChartKeys); */
-
-		/* barChartLabels=Object.keys(dateData); */
-		barChartValues=Object.values(dateData);
+		/* Convert the dates and counts to array and sort by month */
+		let dateDataArr=Object.entries(dateData);
+		sortByMonth(dateDataArr);
+		function sortByMonth(arr) {
+			var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+			arr.sort(function(a, b){
+			return months.indexOf(a[0]) - months.indexOf(b[0]);
+		});
+		}
+		let barChartKeys = Object.keys(Object.fromEntries(dateDataArr));
+		barChartValues=Object.values(Object.fromEntries(dateDataArr));
 		
 		/* // Update the bar chart with the labels and values */
 		barChart.data.labels = barChartKeys;
@@ -836,6 +850,43 @@
 	}
 
 	L.control.scale().addTo(map);
+
+	var legend = L.control({ position: "bottomleft", orientation: 'horizontal'});
+
+	legend.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
+		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
+
+		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
+		div.innerHTML += '<i style="background: cyan"></i><span></span>';
+		div.innerHTML += '<i style="background: blue"></i><span></span>';
+		div.innerHTML += '<i style="background: purple" ></i><span></span><br><br>';
+
+ 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid black; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid black; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid black; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid black; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid black; width: 18px; height: 18px"></i><span></span><br><br>';
+
+		div.innerHTML += "<b>Mode of Travel</b></br>";
+		div.innerHTML += '<i style="background-image: url(https://cdn-icons-png.flaticon.com/512/94/94150.png)"></i><span></span>';
+
+
+		return div;
+	};
+
+	legend.addTo(map);
+
 
 </script>
 
