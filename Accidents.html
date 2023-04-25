@@ -315,6 +315,9 @@
 
 	function resetHighlight(e) {
 		acc.resetStyle(e.target);
+	}
+
+	function resetHighlightTravelMode(e) {
 		accByType.resetStyle(e.target);
 	}
 
@@ -353,8 +356,8 @@
 	//Actions for mouseover, mouseout for accident points BY TRAVEL MODE
 	function onEachFeatureTravelMode(feature, layer) {
 		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight
+			//mouseover: highlightFeature,
+			mouseout: resetHighlightTravelMode
 		});
 
 		//content of tool tip
