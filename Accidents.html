@@ -383,7 +383,7 @@
 		if ((minDate != undefined) && (maxDate != undefined)) {
 			for (i in points) {
 				const pointDate = moment(points[i][2],'DD-MMM-YY');
-				if ((pointDate > minDate) && (pointDate < maxDate))  {
+				if ((pointDate >= minDate) && (pointDate < maxDate))  {
 					pointsNoDates.push([points[i][0], points[i][1]]);
 				}
 			}
@@ -401,12 +401,13 @@
 		});
 	};
 	
-	function createHeatmapActivity(map, points, activity2) {
+	function createHeatmapActivity(map, points, activity, minDate, maxDate) {
 		const pointsActivity = [];
 		//check if activity matches 
 		for (i in points) {
 			const pointActivity = points[i][3];
-			if (pointActivity == activity2)   {
+			const pointDate = moment(points[i][2],'DD-MMM-YY');
+			if ((pointActivity == activity) && (pointDate >= minDate) && (pointDate < maxDate))  {
 				pointsActivity.push([points[i][0], points[i][1]]);	
 				}
 			} 
@@ -510,7 +511,7 @@
 		function dateFilter(feature) {
 			if (picker!==undefined) {
 
-				if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) > moment(new Date(picker.startDate))
+				if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) >= moment(new Date(picker.startDate))
 					&& (moment(feature.properties.acc_date, 'DD-MMM-YY')) < moment(new Date(picker.endDate))){ 
 					return true
 				}
@@ -581,6 +582,16 @@
 			//Update the bar chart with the labels and values
 			barChartCanvas.data.labels = barLabels2;
 			barChartCanvas.data.datasets[0].data=barValues;
+			
+			//Reset the outline of any previously selected activity
+			const dataset = barChartCanvas.data.datasets[0];
+			dataset.borderWidth = [];
+			dataset.borderColor = [];
+			for (let i = 0; i < dataset.data.length; i++) {
+				dataset.borderWidth[i] = 1;
+				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+				}
+			
 			barChartCanvas.update();
 					
 		  }
@@ -588,6 +599,10 @@
 	/* bar Chart of Accidents per month */
 	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
 	Chart.defaults.global.defaultFontColor = '#333';
+	
+	
+
+
 	
 	//Setting empty arrays to hold bar graph data
 	const barLabels=[];
@@ -634,10 +649,14 @@
 							}
 						}
 						barChartCanvas.update();
+						
+						
+						const startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
+						const endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
 
 						function activityFilter(feature){
-		
-							if (feature.properties.acc_activity == activity){
+							if (feature.properties.acc_activity == activity && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate)
+							{
 								return true
 								}
 							else {
@@ -663,7 +682,7 @@
 						barChartDates.length=0;
 						processBarChartDates();			
 						layerControl.addOverlay(zones, "Forecast Zones");
-						heat = createHeatmapActivity(map, accPoints, activity);
+						heat = createHeatmapActivity(map, accPoints, activity, startDate, endDate);
 						addHeatToOverlays();
 				  }},
 
@@ -703,8 +722,7 @@
 					fontSize: 16
 					}
 				}
-				],
-						
+				],		
 					yAxes: [{
 						ticks: {
 						beginAtZero: true,
@@ -714,11 +732,8 @@
 			}
 		},
 		data: {
-			labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 			datasets: [
 				{
-				/* placeholder data */
-				data: [1,2,3,4,5,6,7,8,9,10,11,12],
 				}
 			]
 		}
