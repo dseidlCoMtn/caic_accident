@@ -378,11 +378,6 @@
 			
 		//get icon for activity
 		layer.setIcon(getIcon(feature));
-
-		//Pushing the acc_activity to the bar graph
-		barLabels.push(feature.properties.acc_activity);
-		/* use moment to get the month and push to bar chart */
-		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
 	}
 
 
@@ -644,8 +639,8 @@
 		//Updates the chart upon add of the acc layer
 		acc.on("add", updateActivityChart());
 		acc.on("add", processBarChartDates());
-		accByType.on("add", updateActivityChart());
-		accByType.on("add", processBarChartDates());
+		//accByType.on("add", updateActivityChart());
+		//accByType.on("add", processBarChartDates());
 
 
 		
