@@ -45,11 +45,11 @@
 		}
 				
 		#container {
-			display:flex;
-			flex-direction:row;
+			display: flex;
+			flex-direction: row;
 			flex-wrap: wrap;
-			min-height:100%;
-			}
+			height: 100%;
+		}
  
 		@media (max-width: 767px) {
 			.page-switch-icon {
@@ -60,13 +60,13 @@
 		@media (min-width: 768px) {
 			.col-sm-8>.tooltip {
 				display: none !important;
-			}
+		}
 							
 		#map {
 			width: 60%;
 			min-height: 100%;
 			font-family: 'Nanum Gothic', sans-serif; 
-			}
+		}
 
 		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif;  
 			background-color: rgba(239, 240, 250, 0.875); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 5px; } 
@@ -82,33 +82,21 @@
 		#side-panel {
 			width: 40%;
 			height: 100%;
+			overflow: auto;
 			background-color: rgb(160, 161, 165);
 		}
-		#chart-area {
+		#chart-area, #chart-travel, #chart-rose, #chart-something {
 			padding: 5px;
 			margin: 5px;
 			border-radius: 5px;
 			background-color: #eff0fadf;
 			border: 1px solid rgba(57, 57, 70, 0.875);
 		}
-		#chart-travel {
-			padding: 5px;
-			margin: 5px;
-			border-radius: 5px;
-			background-color: #eff0fadf;
-			border: 1px solid rgba(57, 57, 70, 0.875);
+		
+		#bar-chart,#barChartCanvas, #rose, #something {
+			height: 250px;
 		}
-		#chart-rose {
-			padding: 5px;
-			border-radius: 5px;
-			background-color: #eff0fadf;
-		}
-		#bar-chart {
-			height: 300px;
-		}
-		#barChartCanvas {
-			height: 300px;
-		}
+		
 		#reportrange {
 			background: #fff;
 			cursor: pointer; 
@@ -135,11 +123,13 @@
 		    </div>
     	</div>
 		<div id='side-panel'>
-			<div id='chart-travel'>
-				<canvas id="barChartCanvas"></canvas>
+			<div id='chart-container'>
+				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
+				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
+				<div id="chart-rose"><canvas id="rose"></canvas></div>
+				<div id="chart-something"><canvas id="something"></canvas></div>
+
 			</div>
-			<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
-			<div id="chart-rose"><canvas id="rose"></canvas></div>
 		</div>
 	</div>
 	
