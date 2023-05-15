@@ -2,7 +2,7 @@
 <html>
 <head>
 	
-	<title>CAIC Accidents Map</title>
+	<title>CAIC Accident Explorer</title>
 
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,9 +32,6 @@
 	
 	<!-- Loading chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-	<!-- Loading  Chart.js  --- maybe change this one to use the up-to-date -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
 
 	<style>
@@ -195,6 +192,55 @@
 	L.easyButton('fa fa-home',function(btn,map){
 		map.setView([home.lat, home.lng], home.zoom);
 		},'Zoom To Home').addTo(map);
+	
+	//Button to clear map filters
+	L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
+		
+		var hasAcc = map.hasLayer(acc);
+		var hasAccByType = map.hasLayer(accByType);
+		var hasZones = map.hasLayer(zones);
+		var hasHeat = map.hasLayer(heat);
+			
+		map.removeLayer(acc);
+		map.removeLayer(accByType);
+		map.removeLayer(zones);
+		map.removeLayer(heat);
+		
+		var styleLayer = L.geoJson(null, {
+					pointToLayer: function(geoJsonPoint, latlng) {
+					return L.circleMarker(latlng);},
+					onEachFeature: onEachFeature,
+					style:style,
+					filter: dateFilter
+		});
+		//Need to remove the acc layer from the layer control to add in the filtered version
+		layerControl.removeLayer(acc);
+		layerControl.removeLayer(accByType);
+		layerControl.removeLayer(zones);
+		layerControl.removeLayer(heat);
+
+		acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
+		accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
+		heat = createHeatmap(map, accPoints);
+		
+		if (hasAcc == true){acc.addTo(map)};
+		if (hasAccByType == true){accByType.addTo(map)};
+		if (hasZones == true){zones.addTo(map)};
+		if (hasHeat == true){heat.addTo(map)};
+		
+		//Adding back in these layer controls in the correct order
+		layerControl.addOverlay(acc, "Accidents");
+		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+		layerControl.addOverlay(zones, "Forecast Zones");
+		addHeatToOverlays();
+		
+		barLabels.length=0;
+		barChartDates.length=0;
+		updateActivityChart();
+		processBarChartDates();	
+		
+		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
+		},'Clear Filters').addTo(map);
 		
 	
 	//Get style color by Dscale
@@ -360,7 +406,7 @@
 	function onEachFeatureTravelMode(feature, layer) {
 		layer.on({
 			//mouseover: highlightFeature,
-			mouseout: resetHighlightTravelMode
+			//mouseout: resetHighlightTravelMode
 		});
 
 		//content of tool tip
@@ -431,7 +477,7 @@
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
 	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
-	var accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType).addTo(map);
+	var accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
 
 	//define csv url
 	const url = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
@@ -601,10 +647,16 @@
 			}
 			}
 			
-			//Need to remove the layer from map and add it again to apply the filter
+			
+			var hasAcc = map.hasLayer(acc);
+			var hasAccByType = map.hasLayer(accByType);
+			var hasZones = map.hasLayer(zones);
+			var hasHeat = map.hasLayer(heat);
+	
 			map.removeLayer(acc);
 			map.removeLayer(accByType);
 			map.removeLayer(zones);
+			map.removeLayer(heat);
 			
 			var styleLayer = L.geoJson(null, {
 						pointToLayer: function(geoJsonPoint, latlng) {
@@ -613,35 +665,50 @@
 						style:style,
 						filter: dateFilter
 			});
+			
+			var styleLayerByAccType = L.geoJson(null, {
+						pointToLayer: function(geoJsonPoint, latlng) {
+                        return L.marker(latlng);},
+						onEachFeature: onEachFeatureTravelMode,
+						style: styleAccidentType,
+						filter: dateFilter
+	
+			});
 			//Need to remove the acc layer from the layer control to add in the filtered version
 			layerControl.removeLayer(acc);
 			layerControl.removeLayer(accByType);
 			layerControl.removeLayer(zones);
 			layerControl.removeLayer(heat);
-			map.removeLayer(heat);
-			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+
+			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
 			accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
+			
+			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
+			
+			
+			if (hasAcc == true){acc.addTo(map)};
+			if (hasAccByType == true){accByType.addTo(map)};
+			if (hasZones == true){zones.addTo(map)};
+			if (hasHeat == true){heat.addTo(map)};
+			
 			//Adding back in these layer controls in the correct order
 			layerControl.addOverlay(acc, "Accidents");
 			layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-
+			layerControl.addOverlay(zones, "Forecast Zones");
+			addHeatToOverlays();
+			
 			barLabels.length=0;
-			//barData.length=0;
 			barChartDates.length=0;
 			updateActivityChart();
 			processBarChartDates();			
-			layerControl.addOverlay(zones, "Forecast Zones");
-			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
-			addHeatToOverlays();
+			
+
 	});
 	
 		
 		//Updates the chart upon add of the acc layer
 		acc.on("add", updateActivityChart());
 		acc.on("add", processBarChartDates());
-		//accByType.on("add", updateActivityChart());
-		//accByType.on("add", processBarChartDates());
-
 
 		
 		function delay(time) {
@@ -650,7 +717,7 @@
 		
 		
 		async function updateActivityChart() {
-			await delay (250);
+			await delay (450);
 
 			//Reduce the array of all activity types to an object with counts of unique activities
 			const accCount = barLabels.reduce((allNames, name) => {
@@ -684,27 +751,28 @@
 					
 		  }
 
-	/* bar Chart of Accidents per month */
-	Chart.defaults.global.defaultFontFamily = 'Nanum Gothic';
-	Chart.defaults.global.defaultFontColor = '#333';
 	
-	
+	//default fonts for charts
+	Chart.defaults.font.family = 'Nanum Gothic';
+	Chart.defaults.font.color = '#333';
 
-
-	
-	//Setting empty arrays to hold bar graph data
+	//Setting empty arrays to hold activity bar graph data
 	const barLabels=[];
 	const barData=[];
 	
 	//Properties for activity bar graph
-	const ctx = document.getElementById("barChartCanvas");
+	const canvas = document.getElementById("barChartCanvas");
+	const ctx = canvas.getContext('2d');
 	const barChartCanvas = new Chart(ctx, {
 			type: 'bar',
 			data: {
 				labels: barLabels,
 				datasets: [{
 					data: barData,
-					borderWidth: 1
+					borderColor: 'rgba(0, 0, 0, 0.1)',
+					borderWidth: 1,
+					backgroundColor:'#cdced6'
+					
 				}]
 			},
 			options: {
@@ -716,19 +784,18 @@
 					position: 'top'
 					}
 				},
-				onClick : event => {
-					if (barChartCanvas.getElementAtEvent(event)[0] != undefined){
-						const datasetIndex = barChartCanvas.getElementAtEvent(event)[0]._datasetIndex;
-						const dataIndex = barChartCanvas.getElementAtEvent(event)[0]._index;
-						const model = barChartCanvas.getElementsAtEvent(event)[datasetIndex]._model;
-						const options = barChartCanvas.options;
-						const actLabels = barChartCanvas.options.scales.xAxes[0].ticks;
-						const activity = model.label;
+				onClick : evt=> {
+					const points = barChartCanvas.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+					if (points.length) {
+						const clickedPoint = points[0];
+						const activity = barChartCanvas.data.labels[clickedPoint.index];
+						const value = barChartCanvas.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
+						const actLabels = barChartCanvas.options.scales.x.ticks;
 						const dataset = barChartCanvas.data.datasets[0];
 						dataset.borderWidth = [];
 						dataset.borderColor = [];
 						for (let i = 0; i < dataset.data.length; i++) {
-							if (dataIndex == i) {
+							if (clickedPoint.index == i) {
 								dataset.borderWidth[i] = 4;
 								dataset.borderColor[i] = "black";
 							} else {
@@ -737,8 +804,6 @@
 							}
 						}
 						barChartCanvas.update();
-						
-						
 						const startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
 						const endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
 
@@ -751,9 +816,18 @@
 								return false
 								}
 						}
+						
+						//Checks which layers are toggled on in map before removing them
+						var hasAcc = map.hasLayer(acc);
+						var hasAccByType = map.hasLayer(accByType);
+						var hasZones = map.hasLayer(zones);
+						var hasHeat = map.hasLayer(heat);
+			
+			
 						map.removeLayer(acc);
 						map.removeLayer(accByType);
 						map.removeLayer(zones);
+						map.removeLayer(heat);
 		
 						var styleLayer = L.geoJson(null, {
 							pointToLayer: function(geoJsonPoint, latlng) {
@@ -762,41 +836,61 @@
 							style:style,
 							filter: activityFilter
 						});
+						var styleLayerByAccType = L.geoJson(null, {
+							pointToLayer: function(geoJsonPoint, latlng) {
+							return L.marker(latlng);},
+							onEachFeature: onEachFeatureTravelMode,
+							style: styleAccidentType,
+							filter: activityFilter
+						
+						});
+						
 						layerControl.removeLayer(acc);
 						layerControl.removeLayer(accByType);
 						layerControl.removeLayer(zones);
 						layerControl.removeLayer(heat);
-						map.removeLayer(heat);
-						acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+
+						acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
 						accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
+						
+						heat = createHeatmapActivity(map, accPoints, activity, startDate, endDate);
+						
+						//Adds back in layers that were last checked on
+						if (hasAcc == true){acc.addTo(map)};
+						if (hasAccByType == true){accByType.addTo(map)};
+						if (hasZones == true){zones.addTo(map)};
+						if (hasHeat == true){heat.addTo(map)};
+						
 						layerControl.addOverlay(acc, "Accidents");
 						layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-						barChartDates.length=0;
-						processBarChartDates();			
 						layerControl.addOverlay(zones, "Forecast Zones");
-						heat = createHeatmapActivity(map, accPoints, activity, startDate, endDate);
 						addHeatToOverlays();
+						
+						barChartDates.length=0;
+						processBarChartDates();	
+					
 				  }},
 
 				scales: {
-				xAxes: [
-					{
-						scaleLabel: {
-							display: true,
-							labelString: 'Activity Type',
-							fontSize: 12
-						}
-					}],
-					
-				yAxes: [{
-					ticks: {
-					beginAtZero: true,
-					callback: function(value) {if (value % 1 === 0) {return value;}}
+				x: {
+					title:{
+						text: 'Activity Type',
+						display: false
 					}
-					}]
+
+					},
+					
+				y:{
+					title:{
+						text: 'Accidents',
+						display: true
+					},
+					ticks: {
+						callback: function(value) {if (value % 1 === 0) {return value;}}
+					}
 				}
 			}
-		});
+		}});
 	
 	let barChart = new Chart('bar-chart', {
 		type: 'bar',
@@ -804,43 +898,37 @@
 			plugins: {
 				title: {
 					display: true,
-					text: 'Custom Chart Title',
+					text: 'Month',
 					padding: {
 						top: 10,
-						bottom: 30
+						bottom: 10
                 	}
-				}
+				},
+				legend: false
 			},
 			maintainAspectRatio: false,
-			legend: {
-				display: false
-			},
 			scales: {
-				xAxes: [
-				{
-					scaleLabel: {
-					display: true,
-					labelString: 'Month',
-					fontSize: 16
-					}
-				}
-				],
-						
-					yAxes: [{scaleLabel: {
-						display: true,
-						labelString: 'Accidents',
-						fontSize: 16
-						},
-						ticks: {
-						beginAtZero: true,
-						callback: function(value) {if (value % 1 === 0) {return value;}}
+				x: {
+					title:{
+						text: 'Month',
+						display: false
 						}
-					}]
+				},
+						
+				y: {
+					title:{
+						text: 'Accidents',
+						display: true
+						},
+					ticks: {callback: function(value) {if (value % 1 === 0) {return value;}}}
+				}				
+					
 			}
 		},
 		data: {
 			datasets: [
 				{
+				backgroundColor:'#cdced6'
         }
 			]
 		}
@@ -850,7 +938,7 @@
 	let barChartDates = [];
 
 	async function processBarChartDates() {
-		await delay (250);
+		await delay (450);
 		/* console.log("barChartDates: ", barChartDates); */
 		/* Reduce the array of all accident dates  to an object with counts of unique months */
 		let dateData = barChartDates.reduce((allDates, month) => {
