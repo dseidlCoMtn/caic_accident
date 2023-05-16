@@ -228,8 +228,9 @@
 		barLabels.length=0;
 		barChartDates.length=0;
 		updateActivityChart();
-		processBarChartDates();	
-		
+		processBarChartDates();
+		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
+		$('#reportrange').data('daterangepicker').endDate=moment();
 		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
 		},'Clear Filters').addTo(map);
 		
