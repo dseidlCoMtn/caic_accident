@@ -271,17 +271,17 @@
 			shadowSize:   [0, 0],
 			iconAnchor:   [13.5, 13.5],
 			shadowAnchor: [0, 0],
-			popupAnchor:  [0, 0]
+			popupAnchor:  [0, 0],
 		}
 	})
 
 	//define each icon image for accident travel modes
-	var skiIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/94/94150.png'}),
-		footIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/10280/10280356.png'}),
-		snowboardIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/38/38491.png'}),
-		snowmobileIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/3664/3664566.png'}),
-		snowshoeIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/8524/8524641.png'}),
-		otherIcon = new activityIcon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/686/686700.png'});
+	var skiIcon = new activityIcon({iconUrl: 'images/ski_icon.svg'}),
+		footIcon = new activityIcon({iconUrl: 'images/foot_icon.svg'}),
+		snowboardIcon = new activityIcon({iconUrl: 'images/ski_icon.svg'}),
+		snowmobileIcon = new activityIcon({iconUrl: 'images/snowmobile_icon.svg'}),
+		snowshoeIcon = new activityIcon({iconUrl: 'images/snowshoe_icon.svg'}),
+		otherIcon = new activityIcon({iconUrl: 'images/other_icon.svg'});
 
 	//Get style icon by accident activity (travel mode)
 	function getIcon(feature) {
@@ -457,7 +457,7 @@
 						onEachFeature: onEachFeatureTravelMode,
 						style: styleAccidentType,
 						//filter: dateFilter
-						icon: skiIcon
+						//icon: skiIcon
 	});
 
 
