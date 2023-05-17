@@ -44,22 +44,9 @@
 		#container {
 			display: flex;
 			flex-direction: row;
-			flex-wrap: wrap;
 			height: 100%;
 		}
  
-		@media (max-width: 767px) {
-			.page-switch-icon {
-				display: block;
-			}
-		}
-
-		/* When the browser is 820px or less */
-		@media screen and (max-width: 820px) {
-			.col-sm-8>.tooltip {
-				display: none !important;
-			}
-		}
 							
 		#map {
 			width: 60%;
@@ -109,6 +96,32 @@
 			position: relative;
 			width: 200px;
 			z-index:1000;
+		}
+		@media (max-width: 767px) {
+			.page-switch-icon {
+				display: block;
+			}
+		}
+
+		/* When the browser is 820px or less */
+		@media (max-width: 820px) {
+			.col-sm-8>.tooltip {
+				display: none !important;
+			}
+			#container {
+				background-color: pink;
+				flex-direction: column;
+				width: 100%;
+				min-height: 50%;
+			}
+			#map {
+				width: 100%;
+				min-height: 60%;
+			}
+			#side-panel {
+				width: 100%;
+				min-height: 40%;
+			}
 		}
 	</style>
 	
