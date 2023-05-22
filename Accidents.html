@@ -187,6 +187,9 @@
 	//Button to clear map filters
 	L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		
+		actSelected = 0;
+		monthSelected = 0;
+		
 		var hasAcc = map.hasLayer(acc);
 		var hasAccByType = map.hasLayer(accByType);
 		var hasZones = map.hasLayer(zones);
@@ -537,6 +540,25 @@
 			maxZoom: 25
 		});
 	};
+	
+	function createHeatmapMonth(map, points, month, minDate, maxDate) {
+		const pointsMonth = [];
+		//check if month matches 
+		for (i in points) {
+			const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
+			const pointDate = moment(points[i][2],'DD-MMM-YY');
+			if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
+				pointsMonth.push([points[i][0], points[i][1]]);	
+				}
+			} 
+		return L.heatLayer(pointsMonth, {
+			radius: 21,
+			blur: 12,
+			minOpacity: 0.4,
+			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
+			maxZoom: 25
+		});
+	};
 
 	//function to parse csv from url
 	function parseCSV(url) {
@@ -691,6 +713,8 @@
 			
 			barLabels.length=0;
 			barChartDates.length=0;
+			actSelected = 0;
+			monthSelected = 0;
 			updateActivityChart();
 			processBarChartDates();			
 			
@@ -752,6 +776,10 @@
 	const barLabels=[];
 	const barData=[];
 	
+	//Stores whether selections have been made in charts
+	var actSelected = 0;
+	var monthSelected = 0;
+	
 	//Properties for activity bar graph
 	const canvas = document.getElementById("barChartCanvas");
 	const ctx = canvas.getContext('2d');
@@ -778,7 +806,8 @@
 				},
 				onClick : evt=> {
 					const points = barChartCanvas.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-					if (points.length) {
+					if (points.length && monthSelected == 0) {
+						actSelected = 1;
 						const clickedPoint = points[0];
 						const activity = barChartCanvas.data.labels[clickedPoint.index];
 						const value = barChartCanvas.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
@@ -859,7 +888,7 @@
 						addHeatToOverlays();
 						
 						barChartDates.length=0;
-						processBarChartDates();	
+						processBarChartDates();
 					
 				  }},
 
@@ -899,6 +928,93 @@
 				legend: false
 			},
 			maintainAspectRatio: false,
+			onClick : evt=> {
+					const points = barChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+					if (points.length && actSelected == 0) {
+						monthSelected = 1;
+						const clickedPoint = points[0];
+						const month = barChart.data.labels[clickedPoint.index];
+						const value = barChart.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
+						const monthLabels = barChart.options.scales.x.ticks;
+						const dataset = barChart.data.datasets[0];
+						dataset.borderWidth = [];
+						dataset.borderColor = [];
+						for (let i = 0; i < dataset.data.length; i++) {
+							if (clickedPoint.index == i) {
+								dataset.borderWidth[i] = 4;
+								dataset.borderColor[i] = "black";
+							} else {
+								dataset.borderWidth[i] = 1;
+								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+							}
+						}
+						barChart.update();
+						const startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
+						const endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
+
+						function monthFilter(feature){
+							if (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate)
+							{
+								return true
+								}
+							else {
+								return false
+								}
+						}
+						
+						//Checks which layers are toggled on in map before removing them
+						var hasAcc = map.hasLayer(acc);
+						var hasAccByType = map.hasLayer(accByType);
+						var hasZones = map.hasLayer(zones);
+						var hasHeat = map.hasLayer(heat);
+			
+			
+						map.removeLayer(acc);
+						map.removeLayer(accByType);
+						map.removeLayer(zones);
+						map.removeLayer(heat);
+		
+						var styleLayer = L.geoJson(null, {
+							pointToLayer: function(geoJsonPoint, latlng) {
+							return L.circleMarker(latlng);},
+							onEachFeature: onEachFeature,
+							style:style,
+							filter: monthFilter
+						});
+						var styleLayerByAccType = L.geoJson(null, {
+							pointToLayer: function(geoJsonPoint, latlng) {
+							return L.marker(latlng);},
+							onEachFeature: onEachFeatureTravelMode,
+							style: styleAccidentType,
+							filter: monthFilter
+						
+						});
+						
+						layerControl.removeLayer(acc);
+						layerControl.removeLayer(accByType);
+						layerControl.removeLayer(zones);
+						layerControl.removeLayer(heat);
+
+						acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
+						accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
+						
+						heat = createHeatmapMonth(map, accPoints, month, startDate, endDate);
+						
+						//Adds back in layers that were last checked on
+						if (hasAcc == true){acc.addTo(map)};
+						if (hasAccByType == true){accByType.addTo(map)};
+						if (hasZones == true){zones.addTo(map)};
+						if (hasHeat == true){heat.addTo(map)};
+						
+						layerControl.addOverlay(acc, "Accidents");
+						layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+						layerControl.addOverlay(zones, "Forecast Zones");
+						addHeatToOverlays();
+						
+						barLabels.length=0;
+						updateActivityChart();
+					
+				  }},
 			scales: {
 				x: {
 					title:{
@@ -957,6 +1073,16 @@
 		/* // Update the bar chart with the labels and values */
 		barChart.data.labels = barChartKeys;
 		barChart.data.datasets[0].data=barChartValues;
+		
+		// Reset highlighting of previously selected month
+		const dataset = barChart.data.datasets[0];
+			dataset.borderWidth = [];
+			dataset.borderColor = [];
+			for (let i = 0; i < dataset.data.length; i++) {
+				dataset.borderWidth[i] = 1;
+				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+				}
+			
 		barChart.update();
 	}
 
