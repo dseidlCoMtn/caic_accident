@@ -709,9 +709,11 @@
 			
 			barLabels.length=0;
 			barChartDates.length=0;
+			barChartDatesMode.length=0;
 			updateActivityChart();
 			processBarChartDates();			
-			
+			processBarChartDatesMode();			
+
 
 	});
 	
@@ -994,6 +996,7 @@
 				},
 				legend: false
 			},
+			// on click here 
 			maintainAspectRatio: false,
 			scales: {
 				x: {
@@ -1041,13 +1044,7 @@
 
 		/* Convert the dates and counts to array and sort by month */
 		let dateDataArrMode=Object.entries(dateDataMode);
-		sortByMonthMode(dateDataArrMode);
-		function sortByMonthMode(arr) {
-			var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-			arr.sort(function(a, b){
-			return months.indexOf(a[0]) - months.indexOf(b[0]);
-		});
-		}
+		
 		let barChartKeysMode = Object.keys(Object.fromEntries(dateDataArrMode));
 		barChartValuesMode=Object.values(Object.fromEntries(dateDataArrMode));
 		
