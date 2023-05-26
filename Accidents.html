@@ -190,8 +190,82 @@
 		lat: 39.118413163683854,
 		lng: -106.44565988833477,
 		zoom: 7.5
-		}; 
-				
+		};
+	
+	var startDate, endDate, month=0, activity=0;
+
+	function mapChange() {
+		var hasAcc = map.hasLayer(acc);
+		var hasAccByType = map.hasLayer(accByType);
+		var hasZones = map.hasLayer(zones);
+		var hasHeat = map.hasLayer(heat);
+		map.removeLayer(acc);
+		map.removeLayer(accByType);
+		map.removeLayer(zones);
+		map.removeLayer(heat);
+		layerControl.removeLayer(acc);
+		layerControl.removeLayer(accByType);
+		layerControl.removeLayer(zones);
+		layerControl.removeLayer(heat);
+		startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
+		endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
+		function layerFilter(feature) {
+				//Activity + Date filter
+				if (activity != 0){
+					if (feature.properties.acc_activity == activity && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Month + Date filter
+				else if (month != 0){
+					if (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Date filter
+				else{
+					if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate
+						&& (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){ 
+						return true
+					}
+					else {
+						return false
+					}
+				}
+			}
+		styleLayer = L.geoJson(null, {
+				pointToLayer: function(geoJsonPoint, latlng) {
+				return L.circleMarker(latlng);},
+				onEachFeature: onEachFeature,
+				style:style,
+				filter: layerFilter
+		});
+		styleLayerByAccType = L.geoJson(null, {
+				pointToLayer: function(geoJsonPoint, latlng) {
+                return L.marker(latlng);},
+				onEachFeature: onEachFeatureTravelMode,
+				style: styleAccidentType,
+				filter: layerFilter
+		});
+		acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
+		accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
+		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month);
+		if (hasAcc == true){acc.addTo(map)};
+		if (hasAccByType == true){accByType.addTo(map)};
+		if (hasZones == true){zones.addTo(map)};
+		if (hasHeat == true){heat.addTo(map)};
+		layerControl.addOverlay(acc, "Accidents");
+		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+		layerControl.addOverlay(zones, "Forecast Zones");
+		addHeatToOverlays();
+	}
+	
 	//Adds home button to map
 	L.easyButton('fa fa-home',function(btn,map){
 		map.setView([home.lat, home.lng], home.zoom);
@@ -199,55 +273,18 @@
 	
 	//Button to clear map filters
 	L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
-		
 		actSelected = 0;
 		monthSelected = 0;
-		
-		var hasAcc = map.hasLayer(acc);
-		var hasAccByType = map.hasLayer(accByType);
-		var hasZones = map.hasLayer(zones);
-		var hasHeat = map.hasLayer(heat);
-			
-		map.removeLayer(acc);
-		map.removeLayer(accByType);
-		map.removeLayer(zones);
-		map.removeLayer(heat);
-		
-		var styleLayer = L.geoJson(null, {
-					pointToLayer: function(geoJsonPoint, latlng) {
-					return L.circleMarker(latlng);},
-					onEachFeature: onEachFeature,
-					style:style,
-					filter: dateFilter
-		});
-		//Need to remove the acc layer from the layer control to add in the filtered version
-		layerControl.removeLayer(acc);
-		layerControl.removeLayer(accByType);
-		layerControl.removeLayer(zones);
-		layerControl.removeLayer(heat);
-
-		acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
-		accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-		heat = createHeatmap(map, accPoints);
-		
-		if (hasAcc == true){acc.addTo(map)};
-		if (hasAccByType == true){accByType.addTo(map)};
-		if (hasZones == true){zones.addTo(map)};
-		if (hasHeat == true){heat.addTo(map)};
-		
-		//Adding back in these layer controls in the correct order
-		layerControl.addOverlay(acc, "Accidents");
-		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-		layerControl.addOverlay(zones, "Forecast Zones");
-		addHeatToOverlays();
-		
+		month=0;
+		activity=0;
+		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
+		$('#reportrange').data('daterangepicker').endDate=moment();
+		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
+		mapChange();
 		barLabels.length=0;
 		barChartDates.length=0;
 		updateActivityChart();
 		processBarChartDates();
-		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
-		$('#reportrange').data('daterangepicker').endDate=moment();
-		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
 		},'Clear Filters').addTo(map);
 		
 	
@@ -280,7 +317,7 @@
 						 6;
 	};
 
-	//Set up ivon variable to be used for accident travel modes
+	//Set up icon variable to be used for accident travel modes
 	var activityIcon = L.Icon.extend({
 		options: {
 			iconSize:     [27, 27],
@@ -452,9 +489,9 @@
 	
 	
 	//Starting dateFilter: all accidents included
-	function dateFilter(feature) {
-		return true
-		}
+	<!-- function dateFilter(feature) { -->
+		<!-- return true -->
+		<!-- } -->
 
 
 	// Create blank style geoJSON holder for CSV data
@@ -463,7 +500,7 @@
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
 						style:style,
-						filter: dateFilter
+						//filter: dateFilter
 	});
 
 	// Create blank style geoJSON holder for CSV data BY ACC TRAVEL TYPE
@@ -510,69 +547,53 @@
 
 	//Create heatmap layer -- need to wait for call to CSV online
 	//Function to call L.heatLayer
-	function createHeatmap(map, points, minDate, maxDate) {
-		const pointsNoDates = [];
-
-		//check if the date picker has been used
-		if ((minDate != undefined) && (maxDate != undefined)) {
-			for (i in points) {
-				const pointDate = moment(points[i][2],'DD-MMM-YY');
-				if ((pointDate >= minDate) && (pointDate < maxDate))  {
-					pointsNoDates.push([points[i][0], points[i][1]]);
+	function createHeatmap(map, points, minDate, maxDate, activity, month) {
+		const pointsArray = [];
+		if (activity != undefined && activity !=0){
+				//check if activity matches 
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					if ((pointActivity == activity) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		else if (month !=undefined && month !=0){
+				//check if month matches 
+				for (i in points) {
+					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
+					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		else{
+				//check if the date picker has been used
+				if ((minDate != undefined) && (maxDate != undefined)) {
+					for (i in points) {
+						const pointDate = moment(points[i][2],'DD-MMM-YY');
+						if ((pointDate >= minDate) && (pointDate < maxDate))  {
+							pointsArray.push([points[i][0], points[i][1]]);
+						}
+					}
+				} else {
+					for (i in points) {
+						pointsArray.push([points[i][0], points[i][1]]);
+					}
 				}
+
 			}
-		} else {
-			for (i in points) {
-				pointsNoDates.push([points[i][0], points[i][1]]);
-			}
-		}
-		return L.heatLayer(pointsNoDates, {
+		return L.heatLayer(pointsArray, {
 			radius: 21,
 			blur: 12,
 			minOpacity: 0.4,
 			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
 			maxZoom: 25
-		});
+			});
 	};
 	
-	function createHeatmapActivity(map, points, activity, minDate, maxDate) {
-		const pointsActivity = [];
-		//check if activity matches 
-		for (i in points) {
-			const pointActivity = points[i][3];
-			const pointDate = moment(points[i][2],'DD-MMM-YY');
-			if ((pointActivity == activity) && (pointDate >= minDate) && (pointDate < maxDate))  {
-				pointsActivity.push([points[i][0], points[i][1]]);	
-				}
-			} 
-		return L.heatLayer(pointsActivity, {
-			radius: 21,
-			blur: 12,
-			minOpacity: 0.4,
-			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
-			maxZoom: 25
-		});
-	};
-	
-	function createHeatmapMonth(map, points, month, minDate, maxDate) {
-		const pointsMonth = [];
-		//check if month matches 
-		for (i in points) {
-			const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
-			const pointDate = moment(points[i][2],'DD-MMM-YY');
-			if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
-				pointsMonth.push([points[i][0], points[i][1]]);	
-				}
-			} 
-		return L.heatLayer(pointsMonth, {
-			radius: 21,
-			blur: 12,
-			minOpacity: 0.4,
-			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
-			maxZoom: 25
-		});
-	};
-
 	//function to parse csv from url
 	function parseCSV(url) {
 		return fetch(url)
@@ -661,77 +682,15 @@
 	//Upon changes to the date ranges, checks if each accident is after the start date
 	//Removes the accident layer and re-adds it with the date filter settings
 	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {			
-		function dateFilter(feature) {
-			if (picker!==undefined) {
-
-				if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) >= moment(new Date(picker.startDate))
-					&& (moment(feature.properties.acc_date, 'DD-MMM-YY')) < moment(new Date(picker.endDate))){ 
-					return true
-				}
-				else {
-				return false
-				}
-			}
-			}
-			
-			
-			var hasAcc = map.hasLayer(acc);
-			var hasAccByType = map.hasLayer(accByType);
-			var hasZones = map.hasLayer(zones);
-			var hasHeat = map.hasLayer(heat);
-	
-			map.removeLayer(acc);
-			map.removeLayer(accByType);
-			map.removeLayer(zones);
-			map.removeLayer(heat);
-			
-			var styleLayer = L.geoJson(null, {
-						pointToLayer: function(geoJsonPoint, latlng) {
-                        return L.circleMarker(latlng);},
-						onEachFeature: onEachFeature,
-						style:style,
-						filter: dateFilter
-			});
-			
-			var styleLayerByAccType = L.geoJson(null, {
-						pointToLayer: function(geoJsonPoint, latlng) {
-                        return L.marker(latlng);},
-						onEachFeature: onEachFeatureTravelMode,
-						style: styleAccidentType,
-						filter: dateFilter
-	
-			});
-			//Need to remove the acc layer from the layer control to add in the filtered version
-			layerControl.removeLayer(acc);
-			layerControl.removeLayer(accByType);
-			layerControl.removeLayer(zones);
-			layerControl.removeLayer(heat);
-
-			acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
-			accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-			
-			heat = createHeatmap(map, accPoints, moment(new Date(picker.startDate)), moment(new Date(picker.endDate)));
-			
-			
-			if (hasAcc == true){acc.addTo(map)};
-			if (hasAccByType == true){accByType.addTo(map)};
-			if (hasZones == true){zones.addTo(map)};
-			if (hasHeat == true){heat.addTo(map)};
-			
-			//Adding back in these layer controls in the correct order
-			layerControl.addOverlay(acc, "Accidents");
-			layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-			layerControl.addOverlay(zones, "Forecast Zones");
-			addHeatToOverlays();
-			
+			activity = 0;
+			month = 0;
+			mapChange();
 			barLabels.length=0;
 			barChartDates.length=0;
 			actSelected = 0;
 			monthSelected = 0;
 			updateActivityChart();
 			processBarChartDates();			
-			
-
 	});
 	
 		
@@ -821,8 +780,9 @@
 					const points = barChartCanvas.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
 					if (points.length && monthSelected == 0) {
 						actSelected = 1;
+						month= 0;
 						const clickedPoint = points[0];
-						const activity = barChartCanvas.data.labels[clickedPoint.index];
+						activity = barChartCanvas.data.labels[clickedPoint.index];
 						const value = barChartCanvas.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
 						const actLabels = barChartCanvas.options.scales.x.ticks;
 						const dataset = barChartCanvas.data.datasets[0];
@@ -838,68 +798,7 @@
 							}
 						}
 						barChartCanvas.update();
-						const startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
-						const endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
-
-						function activityFilter(feature){
-							if (feature.properties.acc_activity == activity && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate)
-							{
-								return true
-								}
-							else {
-								return false
-								}
-						}
-						
-						//Checks which layers are toggled on in map before removing them
-						var hasAcc = map.hasLayer(acc);
-						var hasAccByType = map.hasLayer(accByType);
-						var hasZones = map.hasLayer(zones);
-						var hasHeat = map.hasLayer(heat);
-			
-			
-						map.removeLayer(acc);
-						map.removeLayer(accByType);
-						map.removeLayer(zones);
-						map.removeLayer(heat);
-		
-						var styleLayer = L.geoJson(null, {
-							pointToLayer: function(geoJsonPoint, latlng) {
-							return L.circleMarker(latlng);},
-							onEachFeature: onEachFeature,
-							style:style,
-							filter: activityFilter
-						});
-						var styleLayerByAccType = L.geoJson(null, {
-							pointToLayer: function(geoJsonPoint, latlng) {
-							return L.marker(latlng);},
-							onEachFeature: onEachFeatureTravelMode,
-							style: styleAccidentType,
-							filter: activityFilter
-						
-						});
-						
-						layerControl.removeLayer(acc);
-						layerControl.removeLayer(accByType);
-						layerControl.removeLayer(zones);
-						layerControl.removeLayer(heat);
-
-						acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
-						accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-						
-						heat = createHeatmapActivity(map, accPoints, activity, startDate, endDate);
-						
-						//Adds back in layers that were last checked on
-						if (hasAcc == true){acc.addTo(map)};
-						if (hasAccByType == true){accByType.addTo(map)};
-						if (hasZones == true){zones.addTo(map)};
-						if (hasHeat == true){heat.addTo(map)};
-						
-						layerControl.addOverlay(acc, "Accidents");
-						layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-						layerControl.addOverlay(zones, "Forecast Zones");
-						addHeatToOverlays();
-						
+						mapChange();
 						barChartDates.length=0;
 						processBarChartDates();
 					
@@ -945,8 +844,9 @@
 					const points = barChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
 					if (points.length && actSelected == 0) {
 						monthSelected = 1;
+						activity= 0;
 						const clickedPoint = points[0];
-						const month = barChart.data.labels[clickedPoint.index];
+						month = barChart.data.labels[clickedPoint.index];
 						const value = barChart.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
 						const monthLabels = barChart.options.scales.x.ticks;
 						const dataset = barChart.data.datasets[0];
@@ -962,68 +862,7 @@
 							}
 						}
 						barChart.update();
-						const startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
-						const endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
-
-						function monthFilter(feature){
-							if (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate)
-							{
-								return true
-								}
-							else {
-								return false
-								}
-						}
-						
-						//Checks which layers are toggled on in map before removing them
-						var hasAcc = map.hasLayer(acc);
-						var hasAccByType = map.hasLayer(accByType);
-						var hasZones = map.hasLayer(zones);
-						var hasHeat = map.hasLayer(heat);
-			
-			
-						map.removeLayer(acc);
-						map.removeLayer(accByType);
-						map.removeLayer(zones);
-						map.removeLayer(heat);
-		
-						var styleLayer = L.geoJson(null, {
-							pointToLayer: function(geoJsonPoint, latlng) {
-							return L.circleMarker(latlng);},
-							onEachFeature: onEachFeature,
-							style:style,
-							filter: monthFilter
-						});
-						var styleLayerByAccType = L.geoJson(null, {
-							pointToLayer: function(geoJsonPoint, latlng) {
-							return L.marker(latlng);},
-							onEachFeature: onEachFeatureTravelMode,
-							style: styleAccidentType,
-							filter: monthFilter
-						
-						});
-						
-						layerControl.removeLayer(acc);
-						layerControl.removeLayer(accByType);
-						layerControl.removeLayer(zones);
-						layerControl.removeLayer(heat);
-
-						acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
-						accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-						
-						heat = createHeatmapMonth(map, accPoints, month, startDate, endDate);
-						
-						//Adds back in layers that were last checked on
-						if (hasAcc == true){acc.addTo(map)};
-						if (hasAccByType == true){accByType.addTo(map)};
-						if (hasZones == true){zones.addTo(map)};
-						if (hasHeat == true){heat.addTo(map)};
-						
-						layerControl.addOverlay(acc, "Accidents");
-						layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-						layerControl.addOverlay(zones, "Forecast Zones");
-						addHeatToOverlays();
-						
+						mapChange();
 						barLabels.length=0;
 						updateActivityChart();
 					
