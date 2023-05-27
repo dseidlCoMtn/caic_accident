@@ -270,7 +270,7 @@
 	L.easyButton('fa fa-home',function(btn,map){
 		map.setView([home.lat, home.lng], home.zoom);
 		},'Zoom To Home').addTo(map);
-	
+
 	//Button to clear map filters
 	L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		actSelected = 0;
@@ -286,6 +286,43 @@
 		updateActivityChart();
 		processBarChartDates();
 		},'Clear Filters').addTo(map);
+		
+
+	
+	//Add CMC GIS attribution
+	L.Control.Button = L.Control.extend({
+		options: {
+			position: 'bottomright',
+			width:'120px'
+		},
+		onAdd: function (map) {
+			var container = L.DomUtil.create('div', 'leaflet-control');
+			L.DomEvent.disableClickPropagation(container);
+			//$(container).html('<div id="logohover"></div>');
+			container.innerHTML= "<a href='https://coloradomtn.edu/programs/gis/'><img src=\"images/cmc.png\" width=\"120px\"</a>";
+			L.DomEvent.on(container, 'mouseenter', function(ev){
+				container.innerHTML= '<a {text-decoration:none;}href="https://coloradomtn.edu/programs/gis/"><span style="font-size:11px; color:#000; text-decoration:none;"> Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</span></a>';
+			});
+			L.DomEvent.on(container, 'mouseleave', function(ev){
+				container.innerHTML= "<img src='images/cmc.png' style='width:120px'/>";
+			});
+			
+			L.DomEvent.on(container, 'click', function(ev){
+				container.innerHTML= "<a href='https://coloradomtn.edu/programs/gis/'><img src=\"images/cmc.png\" width=\"120px\"></a>";
+
+			});
+			return container;
+		},
+		onRemove: function(map) {},
+	});
+	var cmcLogo = new L.Control.Button()
+	cmcLogo.addTo(map);
+	
+	<!-- $("#logohover").hover(function(){ -->
+		<!-- $(this).html('<span style="font-size:11px">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</span>'); }, -->
+		<!-- function(){ -->
+		<!-- $(this).html("<img src='images/cmc.png' style='width:120px'/>");}); -->
+	
 		
 	
 	//Get style color by Dscale
