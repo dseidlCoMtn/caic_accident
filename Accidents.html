@@ -212,6 +212,195 @@
 		lng: -106.44565988833477,
 		zoom: 7.5
 		};
+
+
+	//legend for all layers on
+	var legendAll = L.control({ position: "bottomleft", orientation: 'horizontal'});
+	legendAll.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
+		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
+ 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
+		div.innerHTML += "<b>Travel Mode</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
+		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
+		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
+		div.innerHTML += '<i style="background: cyan"></i><span></span>';
+		div.innerHTML += '<i style="background: blue"></i><span></span>';
+		div.innerHTML += '<i style="background: purple" ></i><span></span>';
+
+		return div;
+	};
+
+	//legend for just Accidents layer
+	var legendAcc = L.control({ position: "bottomleft", orientation: 'horizontal'});
+	legendAcc.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
+		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
+ 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span>';
+
+		return div;
+	};
+
+	//legend for Accident by Travel Mode layer
+	var legendAccByType = L.control({ position: "bottomleft", orientation: 'horizontal'});
+	legendAccByType.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>Travel Mode</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
+		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other";
+
+		return div;
+	};
+
+	//legend for heatmap layer
+	var legendHeatmap = L.control({ position: "bottomleft", orientation: 'horizontal'});
+	legendHeatmap.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
+		div.innerHTML += '<i style="background: cyan"></i><span></span>';
+		div.innerHTML += '<i style="background: blue"></i><span></span>';
+		div.innerHTML += '<i style="background: purple" ></i><span></span>';
+
+		return div;
+	};
+
+	var legendAccAndAccByType = L.control({ position: "bottomleft", orientation: 'horizontal'});
+	legendAccAndAccByType.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
+		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
+ 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
+		div.innerHTML += "<b>Travel Mode</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
+		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other";
+
+		return div;
+	};
+
+	var legendAccAndHeatmap = L.control({ position: "bottomleft", orientation: 'horizontal'});
+	legendAccAndHeatmap.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
+		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
+		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
+ 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
+		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
+		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
+		div.innerHTML += '<i style="background: cyan"></i><span></span>';
+		div.innerHTML += '<i style="background: blue"></i><span></span>';
+		div.innerHTML += '<i style="background: purple" ></i><span></span>';
+
+		return div;
+	};
+
+	var legendAccByTypeAndHeatmap = L.control({ position: "bottomleft", orientation: 'horizontal'});
+	legendAccByTypeAndHeatmap.onAdd = function(map) {
+	var div = L.DomUtil.create("div", "info legend");
+		div.innerHTML += "<b>Travel Mode</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
+		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
+		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
+		div.innerHTML += '<i style="background: cyan"></i><span></span>';
+		div.innerHTML += '<i style="background: blue"></i><span></span>';
+		div.innerHTML += '<i style="background: purple" ></i><span></span>';
+
+		return div;
+	};
+
+	//update what legend is showing based on what layers are on
+	function updateLegend() {
+		var hasAcc = map.hasLayer(acc);
+		var hasAccByType = map.hasLayer(accByType);
+		var hasHeat = map.hasLayer(heat);
+		legendAll.remove();
+		legendAcc.remove();
+		legendAccByType.remove();
+		legendHeatmap.remove();
+		legendAccAndAccByType.remove();
+		legendAccAndHeatmap.remove();
+		legendAccByTypeAndHeatmap.remove();
+
+		if ((hasAcc == true) && (hasAccByType == true) && (hasHeat == true)){legendAll.addTo(map)}
+		else if ((hasAcc == true) && (hasAccByType == true)){legendAccAndAccByType.addTo(map)}
+		else if ((hasAcc == true) && (hasHeat == true)){legendAccAndHeatmap.addTo(map)}
+		else if ((hasAccByType == true) && (hasHeat)){legendAccByTypeAndHeatmap.addTo(map)}
+		else if (hasAcc == true){legendAcc.addTo(map)}
+		else if (hasAccByType == true){legendAccByType.addTo(map)}
+		else if (hasHeat == true){legendHeatmap.addTo(map)};
+	}
+
+	map.on('layeradd', function(evt) {
+  		updateLegend();
+	});
+	map.on('layerremove', function(evt) {
+  		updateLegend();
+	});
+
+
 	
 	var startDate, endDate, month=0, activity=0;
 
@@ -1065,171 +1254,6 @@
 
 
 	L.control.scale().addTo(map);
-
-	//legend for all layers on
-	var legendAll = L.control({ position: "bottomleft", orientation: 'horizontal'});
-	legendAll.onAdd = function(map) {
-	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
-		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
- 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
-		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
-		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
-		div.innerHTML += '<i style="background: cyan"></i><span></span>';
-		div.innerHTML += '<i style="background: blue"></i><span></span>';
-		div.innerHTML += '<i style="background: purple" ></i><span></span>';
-
-		return div;
-	};
-	//legendAll.addTo(map);
-
-	//legend for just Accidents layer
-	var legendAcc = L.control({ position: "bottomleft", orientation: 'horizontal'});
-	legendAcc.onAdd = function(map) {
-	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
-		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
- 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span>';
-
-		return div;
-	};
-	//legendAcc.addTo(map);
-
-	//legend for Accident by Travel Mode layer
-	var legendAccByType = L.control({ position: "bottomleft", orientation: 'horizontal'});
-	legendAccByType.onAdd = function(map) {
-	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
-		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other";
-
-		return div;
-	};
-	//legendAccByType.addTo(map);
-
-	//legend for heatmap layer
-	var legendHeatmap = L.control({ position: "bottomleft", orientation: 'horizontal'});
-	legendHeatmap.onAdd = function(map) {
-	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
-		div.innerHTML += '<i style="background: cyan"></i><span></span>';
-		div.innerHTML += '<i style="background: blue"></i><span></span>';
-		div.innerHTML += '<i style="background: purple" ></i><span></span>';
-
-		return div;
-	};
-	//legendHeatmap.addTo(map);
-
-	var legendAccAndAccByType = L.control({ position: "bottomleft", orientation: 'horizontal'});
-	legendAccAndAccByType.onAdd = function(map) {
-	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
-		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
- 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
-		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other";
-
-		return div;
-	};
-	//legendAccAndAccByType.addTo(map);
-
-	var legendAccAndHeatmap = L.control({ position: "bottomleft", orientation: 'horizontal'});
-	legendAccAndHeatmap.onAdd = function(map) {
-	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>D Scale, 1 to 5</b></br>";
-		div.innerHTML += '<i style="background: rgba(255, 255, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 232, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 208, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 184, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 159, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 132, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 103, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 69, 0)"></i><span></span>';
-		div.innerHTML += '<i style="background: rgba(255, 0, 0)"></i><span></span><br><br>';
- 		div.innerHTML += "<b>R Scale Circle Size, 1 to 5</b></br>";
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 10px; height: 10px; margin-right: 2px; margin-top: 8px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 12px; height: 12px; margin-right: 2px; margin-top: 6px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
-		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
-		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
-		div.innerHTML += '<i style="background: cyan"></i><span></span>';
-		div.innerHTML += '<i style="background: blue"></i><span></span>';
-		div.innerHTML += '<i style="background: purple" ></i><span></span>';
-
-		return div;
-	};
-	//legendAccAndHeatmap.addTo(map);
-
-	var legendAccByTypeAndHeatmap = L.control({ position: "bottomleft", orientation: 'horizontal'});
-	legendAccByTypeAndHeatmap.onAdd = function(map) {
-	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
-		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
-		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
-		div.innerHTML += '<i style="background: cyan"></i><span></span>';
-		div.innerHTML += '<i style="background: blue"></i><span></span>';
-		div.innerHTML += '<i style="background: purple" ></i><span></span>';
-
-		return div;
-	};
-	legendAccByTypeAndHeatmap.addTo(map);
-
 
 </script>
 
