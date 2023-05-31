@@ -71,7 +71,7 @@
 			overflow: auto;
 			background-color: rgb(160, 161, 165);
 		}
-		#chart-area, #chart-travel, #chart-rose, #chart-something {
+		#chart-area, #chart-travel, #chart-rose, #chart-mode {
 			padding: 5px;
 			margin: 5px;
 			border-radius: 5px;
@@ -79,10 +79,31 @@
 			border: 1px solid rgba(57, 57, 70, 0.875);
 		}
 		
-		#bar-chart,#barChartCanvas, #rose, #something {
+		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode {
 			height: 250px;
 		}
-		
+
+		#cmcLogo{
+			background-image: url("images/cmc.png");
+			background-size: 120px, 30px;
+			background-repeat: no-repeat;
+			width: 120px;
+			height: 30px;
+			margin-bottom: -5px;
+		}
+		#cmcLogo .text{
+			visibility: hidden;
+		}
+		#cmcLogo:hover{
+			background-image: none;
+			width: auto;
+			height: auto;
+			margin-bottom: -12px;
+		}
+		#cmcLogo:hover .text{
+			visibility:visible;
+			font-size: 11px;
+		}
 		#reportrange {
 			background: #fff;
 			cursor: pointer; 
@@ -139,7 +160,7 @@
 				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
 				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 				<div id="chart-rose"><canvas id="rose"></canvas></div>
-				<div id="chart-something"><canvas id="something"></canvas></div>
+				<div id="chart-mode"><canvas id="bar-chart-mode"></canvas></div>
 			</div>
 		</div>
 	</div>
@@ -270,7 +291,7 @@
 	L.easyButton('fa fa-home',function(btn,map){
 		map.setView([home.lat, home.lng], home.zoom);
 		},'Zoom To Home').addTo(map);
-	
+
 	//Button to clear map filters
 	L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		actSelected = 0;
@@ -283,10 +304,35 @@
 		mapChange();
 		barLabels.length=0;
 		barChartDates.length=0;
+		barChartDatesMode.length=0;
 		updateActivityChart();
 		processBarChartDates();
+
+		processBarChartDatesMode();
+
+		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
+		$('#reportrange').data('daterangepicker').endDate=moment();
+		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
+
 		},'Clear Filters').addTo(map);
 		
+
+	
+	//Add CMC GIS attribution
+	L.Control.Button = L.Control.extend({
+		options: {
+			position: 'bottomright',
+			width:'120px'
+		},
+		onAdd: function (map) {
+			var cmcContainer = L.DomUtil.create('div', 'leaflet-control');
+			$(cmcContainer).html('<div id="cmcLogo"> <p class="text">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</p> </div>');
+			return cmcContainer;
+		},
+		onRemove: function(map) {},
+	});
+	var cmcLogo = new L.Control.Button()
+	cmcLogo.addTo(map);
 	
 	//Get style color by Dscale
 	function getColor(d) {
@@ -443,8 +489,10 @@
 			
 		//Pushing the acc_activity to the bar graph
 		barLabels.push(feature.properties.acc_activity);
-		/* use moment to get the month and push to bar chart */
+		/* use moment to get the month and push to bar chart for activity type */
 		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
+		/* use moment to get the month and push to bar chart for travel mode */
+		barChartDatesMode.push(feature.properties.acc_travel_mode);
 	}
 
 	//Actions for mouseover, mouseout for accident points BY TRAVEL MODE
@@ -687,16 +735,21 @@
 			mapChange();
 			barLabels.length=0;
 			barChartDates.length=0;
-			actSelected = 0;
+    	actSelected = 0;
 			monthSelected = 0;
+			barChartDatesMode.length=0;
 			updateActivityChart();
 			processBarChartDates();			
+			processBarChartDatesMode();			
+
 	});
 	
 		
 		//Updates the chart upon add of the acc layer
 		acc.on("add", updateActivityChart());
 		acc.on("add", processBarChartDates());
+		acc.on("add", processBarChartDatesMode());
+
 
 		
 		function delay(time) {
@@ -772,7 +825,7 @@
 				legend: false,
 				title: {
 					display: true,
-					text: 'Activity Type',
+					text: 'Accidents by Activity Type',
 					position: 'top'
 					}
 				},
@@ -831,7 +884,7 @@
 			plugins: {
 				title: {
 					display: true,
-					text: 'Month',
+					text: 'Accidents by Month',
 					padding: {
 						top: 10,
 						bottom: 10
@@ -937,6 +990,79 @@
 			
 		barChart.update();
 	}
+
+	let barChartMode = new Chart('bar-chart-mode', {
+		type: 'bar',
+		options: {
+			plugins: {
+				title: {
+					display: true,
+					text: 'Accidents by Mode of Travel',
+					padding: {
+						top: 10,
+						bottom: 10
+                	}
+				},
+				legend: false
+			},
+			// on click here 
+			maintainAspectRatio: false,
+			scales: {
+				x: {
+					title:{
+						text: 'Month',
+						display: false
+						}
+				},
+						
+				y: {
+					title:{
+						text: 'Accidents',
+						display: true
+						},
+					ticks: {callback: function(value) {if (value % 1 === 0) {return value;}}}
+				}				
+					
+			}
+		},
+		data: {
+			datasets: [
+				{
+				backgroundColor:'#cdced6'
+        }
+			]
+		}
+		
+	});
+
+
+	let barChartDatesMode = [];
+
+	async function processBarChartDatesMode() {
+		await delay (450);
+		/* console.log("barChartDates: ", barChartDates); */
+		/* Reduce the array of all accident dates  to an object with counts of unique months */
+		let dateDataMode = barChartDatesMode.reduce((allDates, month) => {
+				const currentCountMode = allDates[month] ?? 0;
+				return {
+				...allDates,
+				[month]: currentCountMode + 1,
+				};
+		}, {});
+
+
+		/* Convert the dates and counts to array and sort by month */
+		let dateDataArrMode=Object.entries(dateDataMode);
+		
+		let barChartKeysMode = Object.keys(Object.fromEntries(dateDataArrMode));
+		barChartValuesMode=Object.values(Object.fromEntries(dateDataArrMode));
+		
+		/* // Update the bar chart with the labels and values */
+		barChartMode.data.labels = barChartKeysMode;
+		barChartMode.data.datasets[0].data=barChartValuesMode;
+		barChartMode.update();
+	}
+
 
 	L.control.scale().addTo(map);
 
