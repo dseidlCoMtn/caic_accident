@@ -82,7 +82,28 @@
 		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode {
 			height: 250px;
 		}
-		
+
+		#cmcLogo{
+			background-image: url("images/cmc.png");
+			background-size: 120px, 30px;
+			background-repeat: no-repeat;
+			width: 120px;
+			height: 30px;
+			margin-bottom: -5px;
+		}
+		#cmcLogo .text{
+			visibility: hidden;
+		}
+		#cmcLogo:hover{
+			background-image: none;
+			width: auto;
+			height: auto;
+			margin-bottom: -12px;
+		}
+		#cmcLogo:hover .text{
+			visibility:visible;
+			font-size: 11px;
+		}
 		#reportrange {
 			background: #fff;
 			cursor: pointer; 
@@ -304,34 +325,14 @@
 			width:'120px'
 		},
 		onAdd: function (map) {
-			var container = L.DomUtil.create('div', 'leaflet-control');
-			L.DomEvent.disableClickPropagation(container);
-			//$(container).html('<div id="logohover"></div>');
-			container.innerHTML= "<a href='https://coloradomtn.edu/programs/gis/'><img src=\"images/cmc.png\" width=\"120px\"</a>";
-			L.DomEvent.on(container, 'mouseenter', function(ev){
-				container.innerHTML= '<a {text-decoration:none;}href="https://coloradomtn.edu/programs/gis/"><span style="font-size:11px; color:#000; text-decoration:none;"> Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</span></a>';
-			});
-			L.DomEvent.on(container, 'mouseleave', function(ev){
-				container.innerHTML= "<img src='images/cmc.png' style='width:120px'/>";
-			});
-			
-			L.DomEvent.on(container, 'click', function(ev){
-				container.innerHTML= "<a href='https://coloradomtn.edu/programs/gis/'><img src=\"images/cmc.png\" width=\"120px\"></a>";
-
-			});
-			return container;
+			var cmcContainer = L.DomUtil.create('div', 'leaflet-control');
+			$(cmcContainer).html('<div id="cmcLogo"> <p class="text">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</p> </div>');
+			return cmcContainer;
 		},
 		onRemove: function(map) {},
 	});
 	var cmcLogo = new L.Control.Button()
 	cmcLogo.addTo(map);
-	
-	<!-- $("#logohover").hover(function(){ -->
-		<!-- $(this).html('<span style="font-size:11px">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</span>'); }, -->
-		<!-- function(){ -->
-		<!-- $(this).html("<img src='images/cmc.png' style='width:120px'/>");}); -->
-	
-		
 	
 	//Get style color by Dscale
 	function getColor(d) {
