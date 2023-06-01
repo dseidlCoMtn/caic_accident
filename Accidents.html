@@ -725,10 +725,6 @@
 	}
 	
 	
-	//Starting dateFilter: all accidents included
-	<!-- function dateFilter(feature) { -->
-		<!-- return true -->
-		<!-- } -->
 
 
 	// Create blank style geoJSON holder for CSV data
@@ -737,7 +733,6 @@
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
 						style:style,
-						//filter: dateFilter
 	});
 
 	// Create blank style geoJSON holder for CSV data BY ACC TRAVEL TYPE
@@ -924,7 +919,7 @@
 			mapChange();
 			barLabels.length=0;
 			barChartDates.length=0;
-    	actSelected = 0;
+			actSelected = 0;
 			monthSelected = 0;
 			barChartDatesMode.length=0;
 			updateActivityChart();
@@ -934,11 +929,9 @@
 	});
 	
 		
-		//Updates the chart upon add of the acc layer
-		acc.on("add", updateActivityChart());
-		acc.on("add", processBarChartDates());
-		acc.on("add", processBarChartDatesMode());
-
+		updateActivityChart();
+		processBarChartDates();
+		processBarChartDatesMode();
 
 		
 		function delay(time) {
