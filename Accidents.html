@@ -29,100 +29,13 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-	
+	<link rel="stylesheet" type="text/css" href="Accidents.css">
 	<!-- Loading chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Raleway&display=swap');
-		html, body {
-			height: 100%;
-			margin: 0;
-		}
-				
-		#container {
-			display: flex;
-			flex-direction: row;
-			height: 100%;
-		}
- 
-							
-		#map {
-			width: 60%;
-			min-height: 100%;
-			font-family: 'Nanum Gothic', sans-serif; 
-		}
-
-		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif;  
-			background-color: #eff0fadf; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 5px; } 
-		.info h4 { margin: 0 0 5px; color: #777; }
-		.legend { text-align: left; line-height: 18px; color: #938b8b; } 
-		.legend i { width: 18px; height: 18px; float: left; margin-right: 0px; opacity: 0.7; }
-		.leaflet-popup-content-wrapper, .leaflet-popup.tip {
-			background-color: #eff0fadf;
-			padding: 4px;
-			border-radius: 5px;
-			}
-
-		#side-panel {
-			width: 40%;
-			height: 100%;
-			overflow: auto;
-			background-color: #a0a1a5;
-		}
-		#chart-area, #chart-travel, #chart-rose, #chart-mode {
-			padding: 5px;
-			margin: 5px;
-			border-radius: 5px;
-			background-color: #fbfbfcdf;
-			border: 1px solid rgba(57, 57, 70, 0.875);
-		}
 		
-		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode {
-			height: 250px;
-		}
-		
-		#reportrange {
-			background: #fff;
-			cursor: pointer; 
-		    font-family: Nanum Gothic;
-			font-size: 12px;
-			text-align: center;
-			margin-left: 80px;
-			margin-top: 10px;
-			padding: 5px 10px;
-			border: 1px solid #ccc;
-			position: relative;
-			width: 200px;
-			z-index:1000;
-		}
-		@media (max-width: 767px) {
-			.page-switch-icon {
-				display: block;
-			}
-		}
-
-		/* When the browser is 820px or less */
-		@media (max-width: 820px) {
-			.col-sm-8>.tooltip {
-				display: none !important;
-			}
-			#container {
-				background-color: pink;
-				flex-direction: column;
-				width: 100%;
-				min-height: 50%;
-			}
-			#map {
-				width: 100%;
-				min-height: 60%;
-			}
-			#side-panel {
-				width: 100%;
-				min-height: 40%;
-			}
-		}
 	</style>
 	
 </head>
