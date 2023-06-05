@@ -46,6 +46,28 @@
 			height: 250px;
 		}
 		
+		#cmcLogo{
+			background-image: url("images/cmc.png");
+			background-size: 120px, 30px;
+			background-repeat: no-repeat;
+			width: 120px;
+			height: 30px;
+			margin-bottom: -5px;
+		}
+		#cmcLogo .text{
+			visibility: hidden;
+		}
+		#cmcLogo:hover{
+			background-image: none;
+			width: auto;
+			height: auto;
+			margin-bottom: -12px;
+		}
+		#cmcLogo:hover .text{
+			visibility:visible;
+			font-size: 11px;
+		}
+		
 		#reportrange {
 			background: #fff;
 			cursor: pointer; 
