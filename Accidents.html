@@ -898,6 +898,7 @@
 					position: 'top'
 					}
 				},
+				maintainAspectRatio: false,
 				onClick : evt=> {
 					const points = barChartCanvas.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
 					if (points.length && monthSelected == 0) {
