@@ -289,7 +289,7 @@
 
 
 	
-	var startDate, endDate, month=0, activity=0;
+	var startDate, endDate, month=0, activity=0, mode=0;
 
 	function mapChange() {
 		var hasAcc = map.hasLayer(acc);
@@ -308,7 +308,7 @@
 		endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
 		function layerFilter(feature) {
 				//Activity + Date filter
-				if (activity != 0){
+				if (activity != 0 && monthSelected==0 && modeSelected==0){
 					if (feature.properties.acc_activity == activity && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
 						return true
 					}
@@ -316,8 +316,53 @@
 						return false
 					}
 				}
+				//Travel Mode + Date filter
+				else if (mode != 0 && monthSelected==0 && actSelected==0){
+					if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Activity + Month + Date filter
+				else if (activity != 0 && monthSelected==1 && modeSelected==0){
+					if (feature.properties.acc_activity == activity && moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Activity + Travel Mode + Date filter
+				else if (activity != 0 && monthSelected==0 && modeSelected==1){
+					if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Travel Mode + Month + Date filter
+				else if (mode != 0 && monthSelected==1 && actSelected==0){
+					if (feature.properties.acc_travel_mode == mode && moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Travel Mode + Month + Activity + Date filter
+				else if (mode != 0 && monthSelected==1 && actSelected==1){
+					if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
 				//Month + Date filter
-				else if (month != 0){
+				else if (month != 0 && actSelected==0 && modeSelected==0){
 					if (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
 						return true
 					}
@@ -352,7 +397,7 @@
 		});
 		acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
 		accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month);
+		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
@@ -372,19 +417,23 @@
 	L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		actSelected = 0;
 		monthSelected = 0;
+		modeSelected = 0;
 		month=0;
 		activity=0;
+		mode = 0;
+		firstSelect=0;
+		secondSelect=0;
+		thirdSelect=0;
 		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
 		$('#reportrange').data('daterangepicker').endDate=moment();
 		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
 		mapChange();
 		barLabels.length=0;
 		barChartDates.length=0;
-		barChartDatesMode.length=0;
+		barChartModeArr.length=0;
 		updateActivityChart();
 		processBarChartDates();
-
-		processBarChartDatesMode();
+		processBarChartMode();
 
 		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
 		$('#reportrange').data('daterangepicker').endDate=moment();
@@ -568,7 +617,7 @@
 		/* use moment to get the month and push to bar chart for activity type */
 		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
 		/* push to bar chart for travel mode graph*/
-		barChartDatesMode.push(feature.properties.acc_travel_mode);
+		barChartModeArr.push(feature.properties.acc_travel_mode);
 	}
 
 	//Actions for mouseover, mouseout for accident points BY TRAVEL MODE
@@ -666,9 +715,54 @@
 
 	//Create heatmap layer -- need to wait for call to CSV online
 	//Function to call L.heatLayer
-	function createHeatmap(map, points, minDate, maxDate, activity, month) {
+	function createHeatmap(map, points, minDate, maxDate, activity, month, mode) {
 		const pointsArray = [];
-		if (activity != undefined && activity !=0){
+		if (activity != undefined && activity !=0 && month !=undefined && month !=0 && mode !=undefined && mode!=0){
+			//check if activity and month and mode match
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					if ((pointActivity == activity) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		else if (activity != undefined && activity !=0 && month !=undefined && month !=0 && mode ==0){
+			//check if activity and month match
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
+					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					if ((pointActivity == activity) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		else if (activity != undefined && activity !=0 && mode !=undefined && mode !=0 && month ==0){
+			//check if activity and mode match
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointMode = points[i][4];
+					if ((pointActivity == activity) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		else if (month != undefined && month !=0 && mode !=undefined && mode !=0 && activity ==0){
+			//check if month and mode match
+				for (i in points) {
+					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
+					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointMode = points[i][4];
+					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		else if (activity != undefined && activity !=0 && mode==0 && month==0){
 				//check if activity matches 
 				for (i in points) {
 					const pointActivity = points[i][3];
@@ -678,12 +772,22 @@
 						}
 					} 
 			}
-		else if (month !=undefined && month !=0){
+		else if (month !=undefined && month !=0 && activity==0 && mode==0){
 				//check if month matches 
 				for (i in points) {
 					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
 					const pointDate = moment(points[i][2],'DD-MMM-YY');
 					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		else if (mode !=undefined && mode !=0 && activity==0 && month==0){
+				//check if mode matches 
+				for (i in points) {
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
@@ -727,8 +831,9 @@
 					const lon = parseFloat(values[5]);
 					const csvDate = values[6];
 					const activ = values[7];
+					const travMode = values[8];
 					if (!isNaN(lat) && !isNaN(lon)) {
-						points.push([lat, lon, csvDate, activ]);
+						points.push([lat, lon, csvDate, activ, travMode]);
 					}
 				}
 				
@@ -803,22 +908,27 @@
 	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {			
 			activity = 0;
 			month = 0;
+			mode = 0;
+			firstSelect=0;
+			secondSelect=0;
+			thirdSelect=0;
 			mapChange();
 			barLabels.length=0;
 			barChartDates.length=0;
+			barChartModeArr.length=0;
 			actSelected = 0;
 			monthSelected = 0;
-			barChartDatesMode.length=0;
+			modeSelected = 0;
 			updateActivityChart();
 			processBarChartDates();			
-			processBarChartDatesMode();			
+			processBarChartMode();			
 
 	});
 	
 		
 		updateActivityChart();
 		processBarChartDates();
-		processBarChartDatesMode();
+		processBarChartMode();
 
 		
 		function delay(time) {
@@ -856,7 +966,7 @@
 				dataset.borderWidth[i] = 1;
 				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 				}
-			
+			barChartCanvas.options.plugins.title.text = "Accidents by Activity Type";
 			barChartCanvas.update();
 					
 		  }
@@ -871,8 +981,8 @@
 	const barData=[];
 	
 	//Stores whether selections have been made in charts
-	var actSelected = 0;
-	var monthSelected = 0;
+	var actSelected = 0, monthSelected = 0, modeSelected = 0, firstSelect =0,
+	secondSelect=0, thirdSelect=0;
 	
 	//Properties for activity bar graph
 	const canvas = document.getElementById("barChartCanvas");
@@ -900,9 +1010,8 @@
 				},
 				onClick : evt=> {
 					const points = barChartCanvas.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-					if (points.length && monthSelected == 0) {
+					if (points.length) {
 						actSelected = 1;
-						month= 0;
 						const clickedPoint = points[0];
 						activity = barChartCanvas.data.labels[clickedPoint.index];
 						const value = barChartCanvas.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
@@ -919,10 +1028,64 @@
 								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 							}
 						}
+						if (monthSelected ==0 && modeSelected==0 && firstSelect==0) {
+							firstSelect= "activity";
+							titleText="1st Filter";
+							barChartDates.length=0;
+							processBarChartDates();
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (firstSelect == "activity") {
+							titleText="1st Filter";
+							monthSelected=0;
+							month = 0;
+							modeSelected=0;
+							mode=0;
+							secondSelect=0;
+							thirdSelect=0;
+							barChartDates.length=0;
+							processBarChartDates();
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (secondSelect==0 && firstSelect=="mode")  {
+							secondSelect="activity";
+							titleText="2nd Filter";
+							barChartDates.length=0;
+							processBarChartDates();
+							}
+						else if (secondSelect==0 && firstSelect=="month")  {
+							secondSelect="activity";
+							titleText="2nd Filter";
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (secondSelect=="activity" && firstSelect=="mode")  {
+							titleText="2nd Filter";
+							barChartDates.length=0;
+							processBarChartDates();
+							thirdSelect=0;
+							monthSelected=0;
+							month=0;
+							}
+						else if (secondSelect=="activity" && firstSelect=="month"){
+							titleText="2nd Filter";
+							barChartModeArr.length=0;
+							processBarChartMode();
+							thirdSelect=0;
+							modeSelected=0;
+							mode=0;
+							}
+						else  {
+							thirdSelect="activity";
+							titleText="3rd Filter";
+							}
+						console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
+						barChartCanvas.options.plugins.title.text = "Accidents by Activity Type | "+titleText+": "+value;
 						barChartCanvas.update();
 						mapChange();
-						barChartDates.length=0;
-						processBarChartDates();
+
 					
 				  }},
 
@@ -964,9 +1127,8 @@
 			maintainAspectRatio: false,
 			onClick : evt=> {
 					const points = barChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-					if (points.length && actSelected == 0) {
+					if (points.length) {
 						monthSelected = 1;
-						activity= 0;
 						const clickedPoint = points[0];
 						month = barChart.data.labels[clickedPoint.index];
 						const value = barChart.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
@@ -983,10 +1145,65 @@
 								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 							}
 						}
+						if (actSelected==0 && modeSelected==0 && firstSelect==0) {
+							firstSelect= "month";
+							titleText="1st Filter";
+							barLabels.length=0;
+							updateActivityChart();
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (firstSelect == "month") {
+							titleText="1st Filter";
+							actSelected=0;
+							activity=0;
+							modeSelected=0;
+							mode=0;
+							secondSelect=0;
+							thirdSelect=0;
+							barLabels.length=0;
+							updateActivityChart();
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (secondSelect==0 && firstSelect=="activity")  {
+							secondSelect="month";
+							titleText="2nd Filter";
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (secondSelect==0 && firstSelect=="mode")  {
+							secondSelect="month";
+							titleText="2nd Filter";
+							barLabels.length=0;
+							updateActivityChart();
+							}
+						else if (secondSelect=="month" && firstSelect=="mode")  {
+							titleText="2nd Filter";
+							barLabels.length=0;
+							updateActivityChart();
+							thirdSelect=0;
+							activity=0;
+							actSelected=0;
+							}
+							
+						else if (secondSelect=="month" && firstSelect=="activity") {
+							titleText="2nd Filter";
+							barChartModeArr.length=0;
+							processBarChartMode();
+							thirdSelect=0;
+							mode=0;
+							modeSelected=0;
+							}
+						else {
+							thirdSelect="month";
+							titleText="3rd Filter";
+							}
+						console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
+						barChart.options.plugins.title.text = "Accidents by Month | "+titleText+": "+value;
 						barChart.update();
 						mapChange();
-						barLabels.length=0;
-						updateActivityChart();
+
 					
 				  }},
 			scales: {
@@ -1056,7 +1273,7 @@
 				dataset.borderWidth[i] = 1;
 				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 				}
-			
+		barChart.options.plugins.title.text = "Accidents by Month";
 		barChart.update();
 	}
 
@@ -1074,6 +1291,84 @@
 				},
 				legend: false
 			},
+				onClick : evt=> {
+					const points = barChartMode.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+					if (points.length) {
+						modeSelected = 1;
+						const clickedPoint = points[0];
+						mode = barChartMode.data.labels[clickedPoint.index];
+						const value = barChartMode.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
+						const actLabels = barChartMode.options.scales.x.ticks;
+						const dataset = barChartMode.data.datasets[0];
+						dataset.borderWidth = [];
+						dataset.borderColor = [];
+						for (let i = 0; i < dataset.data.length; i++) {
+							if (clickedPoint.index == i) {
+								dataset.borderWidth[i] = 4;
+								dataset.borderColor[i] = "black";
+							} else {
+								dataset.borderWidth[i] = 1;
+								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+							}
+						}
+						if (monthSelected ==0 && actSelected==0 && firstSelect==0) {
+							firstSelect= "mode";
+							titleText="1st Filter";
+							barLabels.length=0;
+							updateActivityChart();
+							barChartDates.length=0;
+							processBarChartDates();
+							}
+						else if (firstSelect == "mode") {
+							titleText="1st Filter";
+							monthSelected=0;
+							month = 0;
+							actSelected=0;
+							activity=0;
+							secondSelect=0;
+							thirdSelect=0;
+							barLabels.length=0;
+							updateActivityChart();
+							barChartDates.length=0;
+							processBarChartDates();
+							}
+						else if (secondSelect==0 && firstSelect=="activity")  {
+							secondSelect="mode";
+							titleText="2nd Filter";
+							barChartDates.length=0;
+							processBarChartDates();
+							}
+						else if (secondSelect==0 && firstSelect=="month")  {
+							secondSelect="mode";
+							titleText="2nd Filter";
+							barLabels.length=0;
+							updateActivityChart();
+							}
+						else if (secondSelect=="mode" && firstSelect=="month")  {
+							titleText="2nd Filter";
+							barLabels.length=0;
+							updateActivityChart();
+							thirdSelect=0;
+							actSelected=0;
+							activity=0;
+							}
+						else if (secondSelect=="mode" && firstSelect=="activity"){
+							titleText="2nd Filter";
+							barChartDates.length=0;
+							processBarChartDates();
+							thirdSelect=0;
+							month=0;
+							monthSelected=0;
+							}
+						else {
+							thirdSelect="mode";
+							titleText="3rd Filter";
+							}
+						console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect, actSelected, monthSelected, modeSelected);
+						barChartMode.options.plugins.title.text = "Accidents by Travel Mode | "+titleText+": "+value;
+						barChartMode.update();
+						mapChange();
+				  }},
 			// on click here 
 			maintainAspectRatio: false,
 			scales: {
@@ -1105,13 +1400,13 @@
 	});
 
 
-	let barChartDatesMode = [];
+	let barChartModeArr = [];
 
-	async function processBarChartDatesMode() {
+	async function processBarChartMode() {
 		await delay (450);
 		/* console.log("barChartDates: ", barChartDates); */
 		/* Reduce the array of all accident dates  to an object with counts of unique months */
-		let dateDataMode = barChartDatesMode.reduce((allDates, month) => {
+		let dateDataMode = barChartModeArr.reduce((allDates, month) => {
 				const currentCountMode = allDates[month] ?? 0;
 				return {
 				...allDates,
@@ -1129,6 +1424,16 @@
 		/* // Update the bar chart with the labels and values */
 		barChartMode.data.labels = barChartKeysMode;
 		barChartMode.data.datasets[0].data=barChartValuesMode;
+		
+		// Reset highlighting of previously selected mode
+		const dataset = barChartMode.data.datasets[0];
+			dataset.borderWidth = [];
+			dataset.borderColor = [];
+			for (let i = 0; i < dataset.data.length; i++) {
+				dataset.borderWidth[i] = 1;
+				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+				}
+		barChartMode.options.plugins.title.text = "Accidents by Travel Mode";
 		barChartMode.update();
 	}
 
