@@ -121,11 +121,15 @@
 		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
 		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
 		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
+		div.innerHTML += "<b>Travel Mode and Trigger Types</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard ";
+		div.innerHTML += '<img src="images/human.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Human<br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile ";
+		div.innerHTML += '<img src="images/natural.svg" style="height: 22px; width: 22px; margin-left: 15px"></img><span></span>' + "  Natural<br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker ";
+		div.innerHTML += '<img src="images/explosive.svg" style="height: 22px; width: 22px; margin-left: 55px"></img><span></span>' + "  Explosive<br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer ";
+		div.innerHTML += '<img src="images/unknown.svg" style="height: 22px; width: 22px; margin-left: 22px"></img><span></span>' + "  Unknown<br>";
 		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
 		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
 		div.innerHTML += '<i style="background: cyan"></i><span></span>';
@@ -163,12 +167,16 @@
 	var legendAccByType = L.control({ position: "bottomleft", orientation: 'horizontal'});
 	legendAccByType.onAdd = function(map) {
 	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
-		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other";
+	div.innerHTML += "<b>Travel Mode and Trigger Types</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard ";
+		div.innerHTML += '<img src="images/human.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Human<br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile ";
+		div.innerHTML += '<img src="images/natural.svg" style="height: 22px; width: 22px; margin-left: 15px"></img><span></span>' + "  Natural<br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker ";
+		div.innerHTML += '<img src="images/explosive.svg" style="height: 22px; width: 22px; margin-left: 55px"></img><span></span>' + "  Explosive<br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer ";
+		div.innerHTML += '<img src="images/unknown.svg" style="height: 22px; width: 22px; margin-left: 22px"></img><span></span>' + "  Unknown<br>";
+		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
 
 		return div;
 	};
@@ -204,12 +212,16 @@
 		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 14px; height: 14px; margin-right: 2px; margin-top: 4px"></i><span></span>';
 		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 16px; height: 16px; margin-right: 2px; margin-top: 2px"></i><span></span>';
 		div.innerHTML += '<i style="border-radius: 50%; border-width: 1px; border: solid grey; width: 18px; height: 18px"></i><span></span><br><br>';
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
-		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other";
+		div.innerHTML += "<b>Travel Mode and Trigger Types</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard ";
+		div.innerHTML += '<img src="images/human.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Human<br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile ";
+		div.innerHTML += '<img src="images/natural.svg" style="height: 22px; width: 22px; margin-left: 15px"></img><span></span>' + "  Natural<br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker ";
+		div.innerHTML += '<img src="images/explosive.svg" style="height: 22px; width: 22px; margin-left: 55px"></img><span></span>' + "  Explosive<br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer ";
+		div.innerHTML += '<img src="images/unknown.svg" style="height: 22px; width: 22px; margin-left: 22px"></img><span></span>' + "  Unknown<br>";
+		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
 
 		return div;
 	};
@@ -244,11 +256,15 @@
 	var legendAccByTypeAndHeatmap = L.control({ position: "bottomleft", orientation: 'horizontal'});
 	legendAccByTypeAndHeatmap.onAdd = function(map) {
 	var div = L.DomUtil.create("div", "info legend");
-		div.innerHTML += "<b>Travel Mode</b></br>";
-		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard</br>";
-		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile</br>";
-		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker</br>";
-		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer<br>";
+	div.innerHTML += "<b>Travel Mode and Trigger Types</b></br>";
+		div.innerHTML += '<img src="images/ski_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Ski/Snowboard ";
+		div.innerHTML += '<img src="images/human.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Human<br>";
+		div.innerHTML += '<img src="images/snowmobile_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowmobile ";
+		div.innerHTML += '<img src="images/natural.svg" style="height: 22px; width: 22px; margin-left: 15px"></img><span></span>' + "  Natural<br>";
+		div.innerHTML += '<img src="images/foot_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Hiker ";
+		div.innerHTML += '<img src="images/explosive.svg" style="height: 22px; width: 22px; margin-left: 55px"></img><span></span>' + "  Explosive<br>";
+		div.innerHTML += '<img src="images/snowshoe_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Snowshoer ";
+		div.innerHTML += '<img src="images/unknown.svg" style="height: 22px; width: 22px; margin-left: 22px"></img><span></span>' + "  Unknown<br>";
 		div.innerHTML += '<img src="images/other_icon.svg" style="height: 22px; width: 22px"></img><span></span>' + "  Other<br><br>";
 		div.innerHTML += "<b>Heatmap, Least to Most Dense</b></br>";
 		div.innerHTML += '<i style="background: cyan"></i><span></span>';
@@ -505,16 +521,77 @@
 		snowboardIcon = new activityIcon({iconUrl: 'images/ski_icon.svg'}),
 		snowmobileIcon = new activityIcon({iconUrl: 'images/snowmobile_icon.svg'}),
 		snowshoeIcon = new activityIcon({iconUrl: 'images/snowshoe_icon.svg'}),
-		otherIcon = new activityIcon({iconUrl: 'images/other_icon.svg'});
+		otherIcon = new activityIcon({iconUrl: 'images/other_icon.svg'}),
+		skiIconExplosive = new activityIcon({iconUrl: 'images/ski_icon_explosive.svg'}),
+		skiIconHuman = new activityIcon({iconUrl: 'images/ski_icon_human.svg'}),
+		skiIconNatural = new activityIcon({iconUrl: 'images/ski_icon_natural.svg'}),
+		skiIconUnknown = new activityIcon({iconUrl: 'images/ski_icon_unknown.svg'}),
+		footIconExplosive = new activityIcon({iconUrl: 'images/foot_icon_explosive.svg'}),
+		footIconHuman = new activityIcon({iconUrl: 'images/foot_icon_human.svg'}),
+		footIconNatural = new activityIcon({iconUrl: 'images/foot_icon_natural.svg'}),
+		footIconUnknown = new activityIcon({iconUrl: 'images/foot_icon_unknown.svg'}),
+		snowboardIconExplosive = new activityIcon({iconUrl: 'images/ski_icon_explosive.svg'}),
+		snowboardIconHuman = new activityIcon({iconUrl: 'images/ski_icon_human.svg'}),
+		snowboardIconNatural = new activityIcon({iconUrl: 'images/ski_icon_natural.svg'}),
+		snowboardIconUnknown = new activityIcon({iconUrl: 'images/ski_icon_unknown.svg'}),
+		snowmobileIconExplosive = new activityIcon({iconUrl: 'images/snowmobile_icon_explosive.svg'}),
+		snowmobileIconHuman = new activityIcon({iconUrl: 'images/snowmobile_icon_human.svg'}),
+		snowmobileIconNatural = new activityIcon({iconUrl: 'images/snowmobile_icon_natural.svg'}),
+		snowmobileIconUnknown = new activityIcon({iconUrl: 'images/snowmobile_icon_unknown.svg'}),
+		snowshoeIconExplosive = new activityIcon({iconUrl: 'images/snowshoe_icon_explosive.svg'}),
+		snowshoeIconHuman = new activityIcon({iconUrl: 'images/snowshoe_icon_human.svg'}),
+		snowshoeIconNatural = new activityIcon({iconUrl: 'images/snowshoe_icon_natural.svg'}),
+		snowshoeIconUnknown = new activityIcon({iconUrl: 'images/snowshoe_icon_unknown.svg'}),
+		otherIconExplosive = new activityIcon({iconUrl: 'images/other_icon_explosive.svg'}),
+		otherIconHuman = new activityIcon({iconUrl: 'images/other_icon_human.svg'}),
+		otherIconNatural = new activityIcon({iconUrl: 'images/other_icon_natural.svg'}),
+		otherIconUnknown = new activityIcon({iconUrl: 'images/other_icon_unknown.svg'});
 
 	//Get style icon by accident activity (travel mode)
 	function getIcon(feature) {
 		var icon;
-		if (feature.properties.acc_travel_mode == "Foot") icon = footIcon;
-		else if (feature.properties.acc_travel_mode == "Ski") icon = skiIcon;
-		else if (feature.properties.acc_travel_mode == "Snowboard") icon = snowboardIcon;
-		else if (feature.properties.acc_travel_mode == "Snowmobile") icon = snowmobileIcon;
-		else if (feature.properties.acc_travel_mode == "Snowshoe") icon = snowshoeIcon;
+		var travelMode = feature.properties.acc_travel_mode;
+		var trigger = feature.properties.trigger.slice(0,2);
+		var triggerCategory;
+		//Identify category the trigger type falls into based on Avalanche Coding
+		if (trigger == "AA" || trigger == "AE" || trigger == "AL" || trigger == "AB" || trigger == "AX" || trigger == "AH" || trigger == "AP")
+			triggerCategory = "Explosive";
+		else if (trigger == "AM" || trigger == "AK" || trigger == "AV" || trigger == "AS" || trigger == "AR" || trigger == "AI" || trigger == "AF" || trigger == "AC")
+			triggerCategory = "Human";
+		else if (trigger == "N " || trigger == "NC" || trigger == "NE" || trigger == "NI" || trigger == "NL" || trigger == "NS" || trigger == "NR" || trigger == "NO")
+			triggerCategory = "Natural";
+		else triggerCategory = "Unknown";
+
+		//get icon based on travel mode and trigger category
+		if (travelMode == "Foot" && triggerCategory == "Explosive") icon = footIconExplosive;
+		else if (travelMode == "Foot" && triggerCategory == "Human") icon = footIconHuman;
+		else if (travelMode == "Foot" && triggerCategory == "Natural") icon = footIconNatural;
+		else if (travelMode == "Foot" && triggerCategory == "Unknown") icon = footIconUnknown;
+		else if (travelMode == "Foot") icon = footIcon;
+		else if (travelMode == "Ski" && triggerCategory == "Explosive") icon = skiIconExplosive;
+		else if (travelMode == "Ski" && triggerCategory == "Human") icon = skiIconHuman;
+		else if (travelMode == "Ski" && triggerCategory == "Natural") icon = skiIconNatural;
+		else if (travelMode == "Ski" && triggerCategory == "Unknown") icon = skiIconUnknown;
+		else if (travelMode == "Ski") icon = skiIcon;
+		else if (travelMode == "Snowboard" && triggerCategory == "Explosive") icon = snowboardIconExplosive;
+		else if (travelMode == "Snowboard" && triggerCategory == "Human") icon = snowboardIconHuman;
+		else if (travelMode == "Snowboard" && triggerCategory == "Natural") icon = snowboardIconNatural;
+		else if (travelMode == "Snowboard" && triggerCategory == "Unknown") icon = snowboardIconUnknown;
+		else if (travelMode == "Snowboard") icon = snowboardIcon;
+		else if (travelMode == "Snowmobile" && triggerCategory == "Explosive") icon = snowmobileIconExplosive;
+		else if (travelMode == "Snowmobile" && triggerCategory == "Human") icon = snowmobileIconHuman;
+		else if (travelMode == "Snowmobile" && triggerCategory == "Natural") icon = snowmobileIconNatural;
+		else if (travelMode == "Snowmobile" && triggerCategory == "Unknown") icon = snowmobileIconUnknown;
+		else if (travelMode == "Snowmobile") icon = snowmobileIcon;
+		else if (travelMode == "Snowshoe" && triggerCategory == "Explosive") icon = snowshoeIconExplosive;
+		else if (travelMode == "Snowshoe" && triggerCategory == "Human") icon = snowshoeIconHuman;
+		else if (travelMode == "Snowshoe" && triggerCategory == "Natural") icon = snowshoeIconNatural;
+		else if (travelMode == "Snowshoe" && triggerCategory == "Unknown") icon = snowshoeIconUnknown;
+		else if (travelMode == "Snowshoe") icon = snowshoeIcon;
+		else if (triggerCategory == "Explosive") icon = otherIconExplosive;
+		else if (triggerCategory == "Human") icon = otherIconHuman;
+		else if (triggerCategory == "Natural") icon = otherIconNatural;
+		else if (triggerCategory == "Unknown") icon = otherIconUnknown;
 		else icon = otherIcon;
 
 		return icon;
