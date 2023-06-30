@@ -24,6 +24,9 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
 	<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
 	
+	<!-- Loading Leaflet Lasso Button -->
+	<script src="https://unpkg.com/leaflet-lasso@2.2.12/dist/leaflet-lasso.umd.min.js"></script>
+	
 	<!-- Loading jquery, moment.js, and daterangepicker -->
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -404,7 +407,7 @@
 		layerControl.addOverlay(zones, "Forecast Zones");
 		addHeatToOverlays();
 	}
-	
+		
 	//Adds home button to map
 	L.easyButton('fa fa-home',function(btn,map){
 		map.setView([home.lat, home.lng], home.zoom);
@@ -455,6 +458,94 @@
 	});
 	var cmcLogo = new L.Control.Button()
 	cmcLogo.addTo(map);
+	
+	const lasso = L.lasso(map);
+		
+	L.easyButton('<img src="images/lasso.svg" style="width:19px; margin-top:6px">',function(btn,map){
+		lasso.enable();
+		},'Lasso').addTo(map);	
+	map.on('lasso.finished', evt =>{
+		lassoLayers(evt.layers);
+	});
+	
+	function lassoLayers(layers) {
+		var hasAcc = map.hasLayer(acc);
+		var hasAccByType = map.hasLayer(accByType);
+		var hasZones = map.hasLayer(zones);
+		var hasHeat = map.hasLayer(heat);
+		
+		if (hasAcc == false && hasAccByType==false && hasHeat == true ){
+		alert("Please turn on one of the accident point layers to filter by lasso.");
+		}
+		
+		else{
+		
+	 	actSelected = 0;
+		monthSelected = 0;
+		modeSelected = 0;
+		month=0;
+		activity=0;
+		mode = 0;
+		firstSelect=0;
+		secondSelect=0;
+		thirdSelect=0;
+
+		map.removeLayer(acc);
+		map.removeLayer(accByType);
+		map.removeLayer(zones);
+		map.removeLayer(heat);
+		layerControl.removeLayer(acc);
+		layerControl.removeLayer(accByType);
+		layerControl.removeLayer(zones);
+		layerControl.removeLayer(heat);
+		var accIDs =[];
+        layers.forEach(layer => {
+				accIDs.push(layer.feature.properties.acc_id);
+                });
+		function layerFilter(feature) {
+				if (accIDs.includes(feature.properties.acc_id) === true){
+						return true
+						
+				}
+				else {
+						return false
+					}
+				}
+		styleLayer = L.geoJson(null, {
+				pointToLayer: function(geoJsonPoint, latlng) {
+				return L.circleMarker(latlng);},
+				onEachFeature: onEachFeature,
+				style:style,
+				filter: layerFilter
+		});
+		styleLayerByAccType = L.geoJson(null, {
+				pointToLayer: function(geoJsonPoint, latlng) {
+                return L.marker(latlng);},
+				onEachFeature: onEachFeatureTravelMode,
+				style: styleAccidentType,
+				filter: layerFilter
+		});
+		acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
+		accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
+		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, accIDs);
+		if (hasAcc == true){acc.addTo(map)};
+		if (hasAccByType == true){accByType.addTo(map)};
+		if (hasZones == true){zones.addTo(map)};
+		if (hasHeat == true){heat.addTo(map)};
+		layerControl.addOverlay(acc, "Accidents");
+		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+		layerControl.addOverlay(zones, "Forecast Zones");
+		addHeatToOverlays();
+		barLabels.length=0;
+		barChartDates.length=0;
+		barChartModeArr.length=0;
+		updateActivityChart();
+		processBarChartDates();
+		processBarChartMode();
+		}
+		
+        };
+
 	
 	//Get style color by Dscale
 	function getColor(d) {
@@ -770,9 +861,18 @@
 
 	//Create heatmap layer -- need to wait for call to CSV online
 	//Function to call L.heatLayer
-	function createHeatmap(map, points, minDate, maxDate, activity, month, mode) {
+	function createHeatmap(map, points, minDate, maxDate, activity, month, mode, lassoIDs) {
 		const pointsArray = [];
-		if (activity != undefined && activity !=0 && month !=undefined && month !=0 && mode !=undefined && mode!=0){
+		if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0){
+			//check if lasso has been applied
+			for (i in points) {
+				const pointID = points[i][5];
+				if (lassoIDs.includes(pointID) === true){
+					pointsArray.push([points[i][0], points[i][1]]);
+					}
+				}
+			}
+		else if (activity != undefined && activity !=0 && month !=undefined && month !=0 && mode !=undefined && mode!=0){
 			//check if activity and month and mode match
 				for (i in points) {
 					const pointActivity = points[i][3];
@@ -887,8 +987,9 @@
 					const csvDate = values[6];
 					const activ = values[7];
 					const travMode = values[8];
+					const accID = values[0];
 					if (!isNaN(lat) && !isNaN(lon)) {
-						points.push([lat, lon, csvDate, activ, travMode]);
+						points.push([lat, lon, csvDate, activ, travMode, accID]);
 					}
 				}
 				

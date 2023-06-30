@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="198"
+   width="217.26971"
+   fill="#000000"
+   data-name="Layer 1"
+   viewBox="0 0 72.423238 66"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="lasso.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="2.45"
+     inkscape:cx="189.15734"
+     inkscape:cy="168.11612"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8"
+     inkscape:snap-bbox="true"
+     inkscape:snap-global="false" />
+  <title
+     id="title2">Artboard 6</title>
+  <path
+     d="m 72.096665,46.75 -40.5,-37.94 a 1,1 0 0 0 -1.1,-0.18 1,1 0 0 0 -0.58,0.95 l 2,55.45 a 1,1 0 0 0 0.67,0.91 1,1 0 0 0 0.33,0.06 1,1 0 0 0 0.76,-0.35 l 14.92,-17.24 22.82,0.07 v 0 a 1,1 0 0 0 0.69,-1.73 z"
+     id="path4" />
+  <path
+     d="m 19.696665,29.35 c -4.86,-1.79 -9,-1.09 -11.0000005,1.86 a 7.61,7.61 0 0 0 -0.57,7.12 c -0.39,-0.36 -0.77,-0.75 -1.14,-1.15 a 18.22,18.22 0 0 1 -4.83,-14.5 C 3.7566645,10.89 18.406665,2 36.226665,2 c 8.68,0 16,3.8 19.6,10.15 2.59,4.59 2.71,9.7 0.31,13.68 a 1,1 0 1 0 1.71,1 c 2.75,-4.56 2.63,-10.44 -0.32,-15.66 -4,-7 -11.93,-11.17 -21.34,-11.17 -18.82,0 -34.3100005,9.63 -36.06000048,22.41 a 20.27,20.27 0 0 0 5.34999998,16.12 20,20 0 0 0 5.6000005,4.33 l 0.33,0.39 c 4.32,5 4.77,5.48 1.35,14 a 1,1 0 0 0 0.56,1.3 0.94,0.94 0 0 0 0.37,0.07 1,1 0 0 0 0.93,-0.63 c 3.13,-7.83 3.11,-10 0.3,-13.69 a 16,16 0 0 0 4.72,0.48 c 5.46,-0.25 7.83,-3.1 8.23,-5.68 0.46,-2.93 -1.41,-7.26 -8.17,-9.75 z m 6.19,9.47 c -0.35,2.3 -2.78,3.83 -6.34,4 a 14.87,14.87 0 0 1 -7.22,-1.55 l -0.59,-0.7 c -2.3600005,-2.76 -2.9400005,-6.06 -1.44,-8.21 1.5,-2.15 4.76,-2.59 8.71,-1.09 5.26,1.9 7.25,5.17 6.88,7.55 z"
+     id="path6" />
+</svg>
