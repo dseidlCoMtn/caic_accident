@@ -287,7 +287,21 @@
   		updateLegend();
 	});
 
-
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
+	const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
+	const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UUXhORVEzTVVGR1JFTXpNREJETkVVeFEwWTFSVGRFTWpnMFFqUTFOa016TWpCRk5UUkNRdyJ9.eyJpc3MiOiJodHRwczovL2NhaWMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY0OTRjMTU3NGY1YjZjMDliNTFjMDBlMSIsImF1ZCI6WyJodHRwczovL2FwaS5hdmFsYW5jaGUuc3RhdGUuY28udXMiLCJodHRwczovL2NhaWMuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY4ODQwMzczOSwiZXhwIjoxNjg4NDkwMTM5LCJhenAiOiJsQ2RHMzJkdVd5OXVwSEVrYnZ5M2dqWno1WnVoZHFZaiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgb2ZmbGluZV9hY2Nlc3MiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnB1YmxpYyJdfQ.EoANkk_iAO46dwW7aC7bahfbCwdrdLGW9E8UpZV5U6yvv946fMWIRvgOmyJJdBVp8ofzmDKSG9HvpBJ6nBrpY4ldOV0R37x8S4dluMUB2fA0YIM0bTlPx-nBodmqhCx_vx1WxsCyMSDQWofXOjyuAXGOZRC2wC4HeHUg-tmBYqAQzeC5rHwRPxuI44ENgD8Pj13_hTCig54altdnjzfXISIZ6DH5CU4xbd6jRzYTuEbORA_lPchtoY5BvKtGIxcVhXLrUO9h_Ud1zJYzvhw-Qtfeqe-KtsWvXpn7zmX87O9kgAM0oz3NabwQnRFQPvzOlhJfbpnMScdBO_9sxpeKNg'}};
+	
+	getData().catch(error => {
+      console.error(error);
+      });
+	async function getData() {
+	  const response = await fetch(apiURL, apiOptions);
+	  const json = await response.json();
+	  console.log(json);
+	  for (var i in json){
+		//console.log(json[i].accident_locations[0].id);
+		}
+	}
 	
 	var startDate, endDate, month=0, activity=0, mode=0;
 
