@@ -34,7 +34,11 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 	<link rel="stylesheet" type="text/css" href="Accidents.css">
 	<!-- Loading chart.js -->
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>		
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	
+	<!-- Loading jquery csv - can remove when lat/long included in api -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>
+
 	
 </head>
 <body>	
@@ -287,20 +291,86 @@
   		updateLegend();
 	});
 
+	var acc, accByType;
+	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/Accidents.json';
+	const csvURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
-	const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
-	const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UUXhORVEzTVVGR1JFTXpNREJETkVVeFEwWTFSVGRFTWpnMFFqUTFOa016TWpCRk5UUkNRdyJ9.eyJpc3MiOiJodHRwczovL2NhaWMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY0OTRjMTU3NGY1YjZjMDliNTFjMDBlMSIsImF1ZCI6WyJodHRwczovL2FwaS5hdmFsYW5jaGUuc3RhdGUuY28udXMiLCJodHRwczovL2NhaWMuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY4ODQwMzczOSwiZXhwIjoxNjg4NDkwMTM5LCJhenAiOiJsQ2RHMzJkdVd5OXVwSEVrYnZ5M2dqWno1WnVoZHFZaiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgb2ZmbGluZV9hY2Nlc3MiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnB1YmxpYyJdfQ.EoANkk_iAO46dwW7aC7bahfbCwdrdLGW9E8UpZV5U6yvv946fMWIRvgOmyJJdBVp8ofzmDKSG9HvpBJ6nBrpY4ldOV0R37x8S4dluMUB2fA0YIM0bTlPx-nBodmqhCx_vx1WxsCyMSDQWofXOjyuAXGOZRC2wC4HeHUg-tmBYqAQzeC5rHwRPxuI44ENgD8Pj13_hTCig54altdnjzfXISIZ6DH5CU4xbd6jRzYTuEbORA_lPchtoY5BvKtGIxcVhXLrUO9h_Ud1zJYzvhw-Qtfeqe-KtsWvXpn7zmX87O9kgAM0oz3NabwQnRFQPvzOlhJfbpnMScdBO_9sxpeKNg'}};
-	
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
+	//const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: ''}};
+	const apigeo = {
+        type: "FeatureCollection",
+        features: [],
+      };
 	getData().catch(error => {
       console.error(error);
       });
 	async function getData() {
-	  const response = await fetch(apiURL, apiOptions);
+	  //const response = await fetch(apiURL, apiOptions);
+	  //const json = await response.json();
+	  //console.log(json);
+	  const response = await fetch(jsonURL);
+	  const csvResponse = await fetch(csvURL);
+	  const csvText = await csvResponse.text();
 	  const json = await response.json();
-	  console.log(json);
+	  const csvObj = $.csv.toObjects(csvText);
+
 	  for (var i in json){
-		//console.log(json[i].accident_locations[0].id);
+		var classicID = json[i].classic_accident_id;
+		var latitude=0;
+		var longitude=0;
+		for (var j in csvObj){
+			var classicID2 = parseInt(csvObj[j].acc_id);
+			if (classicID2 === classicID){
+				latitude=csvObj[j].acc_lat;
+				longitude=csvObj[j].acc_lon;
+				}
+			}
+		if (latitude != 0){
+			//console.log(classicID);
+		
+	  	apigeo.features.push({
+			"type": "Feature",
+			"geometry": {
+			"type": "Point",
+			"coordinates": [longitude, latitude]
+			},
+			"properties": {
+				"id": json[i].id,
+				"acc_id":json[i].classic_accident_id,
+				"acc_type":json[i].classic_report_type,
+				"report":json[i].classic_url,
+				"url":json[i].url,
+				"water_year":json[i].water_year,
+				"datetime":json[i].observed_at,
+				"acc_location":json[i].location,
+				"acc_activity":json[i].activity,
+				"acc_travel_mode":json[i].travel_mode,
+				"acc_desc":json[i].description,
+				"no_caught":json[i].summary_counts.caught,
+				"no_buried":json[i].summary_counts.buried,
+				"no_killed":json[i].summary_counts.killed,
+				"atype":json[i].accident_avalanches[0].type_code,
+				"trigger1":json[i].accident_avalanches[0].primary_trigger,
+				"trigger2":json[i].accident_avalanches[0].secondary_trigger,
+				"RScale":json[i].accident_avalanches[0].relative_size,
+				"DScale":json[i].accident_avalanches[0].destructive_size,
+				"surface":json[i].accident_avalanches[0].surface,
+				"setting":json[i].accident_locations[0].setting,
+				"elevation":json[i].accident_locations[0].site_elevation,
+				"aspect":json[i].accident_locations[0].aspect,
+				"slope":json[i].accident_locations[0].angle,
+				//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
+				//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
+			}
+			});
 		}
+		};
+	  console.log(apigeo);
+	  //console.log(apigeoFull);
+	  L.geoJSON(apigeo, {}).addTo(map);
+	  //addInitialLayers(apigeo);
+
+	  
 	}
 	
 	var startDate, endDate, month=0, activity=0, mode=0;
@@ -825,17 +895,17 @@
 	
 	
 
-
+	//function addInitialLayers(apigeo){
 	// Create blank style geoJSON holder for CSV data
-	var styleLayer = L.geoJson(null, {
+	acc = L.geoJson(apigeo, {
 		pointToLayer: function(geoJsonPoint, latlng) {
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
 						style:style,
-	});
+	}).addTo(map);
 
 	// Create blank style geoJSON holder for CSV data BY ACC TRAVEL TYPE
-	var styleLayerByAccType = L.geoJson(null, {
+	accByType = L.geoJson(apigeo, {
 		pointToLayer: function(geoJsonPoint, latlng) {
                         return L.marker(latlng);},
 						onEachFeature: onEachFeatureTravelMode,
@@ -843,7 +913,10 @@
 						//filter: dateFilter
 						//icon: skiIcon
 	});
-
+	
+	
+	
+	//}
 
 	// Create geoJSON layer 
 	var zones = L.geoJson(forecastZones, {
@@ -852,8 +925,8 @@
 	});
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
-	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
-	var accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
+	//var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
+	//var accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
 
 	//define csv url
 	const url = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
