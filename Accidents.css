@@ -21,6 +21,7 @@
 		#CAIC {
 			font-family: 'Nanum Gothic', Arial, Helvetica, sans-serif;
 			text-align: center;
+			margin: 0.25em;
 		}
 
 		.info { padding: 6px 8px; font: 14px/16px, 'Nanum Gothic', Arial, Helvetica, sans-serif;  
