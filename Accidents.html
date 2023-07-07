@@ -291,87 +291,7 @@
   		updateLegend();
 	});
 
-	var acc, accByType;
-	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/Accidents.json';
-	const csvURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
-	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
-	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
-	//const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: ''}};
-	const apigeo = {
-        type: "FeatureCollection",
-        features: [],
-      };
-	getData().catch(error => {
-      console.error(error);
-      });
-	async function getData() {
-	  //const response = await fetch(apiURL, apiOptions);
-	  //const json = await response.json();
-	  //console.log(json);
-	  const response = await fetch(jsonURL);
-	  const csvResponse = await fetch(csvURL);
-	  const csvText = await csvResponse.text();
-	  const json = await response.json();
-	  const csvObj = $.csv.toObjects(csvText);
-
-	  for (var i in json){
-		var classicID = json[i].classic_accident_id;
-		var latitude=0;
-		var longitude=0;
-		for (var j in csvObj){
-			var classicID2 = parseInt(csvObj[j].acc_id);
-			if (classicID2 === classicID){
-				latitude=csvObj[j].acc_lat;
-				longitude=csvObj[j].acc_lon;
-				}
-			}
-		if (latitude != 0){
-			//console.log(classicID);
-		
-	  	apigeo.features.push({
-			"type": "Feature",
-			"geometry": {
-			"type": "Point",
-			"coordinates": [longitude, latitude]
-			},
-			"properties": {
-				"id": json[i].id,
-				"acc_id":json[i].classic_accident_id,
-				"acc_type":json[i].classic_report_type,
-				"report":json[i].classic_url,
-				"url":json[i].url,
-				"water_year":json[i].water_year,
-				"datetime":json[i].observed_at,
-				"acc_location":json[i].location,
-				"acc_activity":json[i].activity,
-				"acc_travel_mode":json[i].travel_mode,
-				"acc_desc":json[i].description,
-				"no_caught":json[i].summary_counts.caught,
-				"no_buried":json[i].summary_counts.buried,
-				"no_killed":json[i].summary_counts.killed,
-				"atype":json[i].accident_avalanches[0].type_code,
-				"trigger1":json[i].accident_avalanches[0].primary_trigger,
-				"trigger2":json[i].accident_avalanches[0].secondary_trigger,
-				"RScale":json[i].accident_avalanches[0].relative_size,
-				"DScale":json[i].accident_avalanches[0].destructive_size,
-				"surface":json[i].accident_avalanches[0].surface,
-				"setting":json[i].accident_locations[0].setting,
-				"elevation":json[i].accident_locations[0].site_elevation,
-				"aspect":json[i].accident_locations[0].aspect,
-				"slope":json[i].accident_locations[0].angle,
-				//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
-				//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
-			}
-			});
-		}
-		};
-	  console.log(apigeo);
-	  //console.log(apigeoFull);
-	  L.geoJSON(apigeo, {}).addTo(map);
-	  //addInitialLayers(apigeo);
-
-	  
-	}
+	
 	
 	var startDate, endDate, month=0, activity=0, mode=0;
 
@@ -633,6 +553,9 @@
 	
 	//Get style color by Dscale
 	function getColor(d) {
+		if (d !== null){
+			d=d.substring(1);
+			}
 		return d < 1.5 ?  '#ffff00' :
 				d < 2  ? '#ffe800' :
 				d < 2.5  ? '#ffd000' :
@@ -648,6 +571,9 @@
 
 	//Get radius by Rscale
 	function getSize(d) {
+		if (d !== null){
+			d=d.substring(1);
+			}
 		return d < 1.5 ?  6 :
 				d < 2  ? 6 :
 				d < 2.5  ? 7 :
@@ -707,7 +633,12 @@
 	function getIcon(feature) {
 		var icon;
 		var travelMode = feature.properties.acc_travel_mode;
-		var trigger = feature.properties.trigger.slice(0,2);
+		if (feature.properties.trigger1 !== null){
+			var trigger = feature.properties.trigger1.slice(0,2);
+			}
+		else {
+			var trigger = null;
+			}
 		var triggerCategory;
 		//Identify category the trigger type falls into based on Avalanche Coding
 		if (trigger == "AA" || trigger == "AE" || trigger == "AL" || trigger == "AB" || trigger == "AX" || trigger == "AH" || trigger == "AP")
@@ -893,36 +824,117 @@
 		
 	}
 	
-	
+	var acc, accByType, zones;
+	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/Accidents.json';
+	const csvURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
+	//const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: ''}};
+	const apigeo = {
+        type: "FeatureCollection",
+        features: [],
+      };
+	getData().catch(error => {
+      console.error(error);
+      });
+	async function getData() {
+	  //const response = await fetch(apiURL, apiOptions);
+	  //const json = await response.json();
+	  //console.log(json);
+	  const response = await fetch(jsonURL);
+	  const csvResponse = await fetch(csvURL);
+	  const csvText = await csvResponse.text();
+	  const json = await response.json();
+	  const csvObj = $.csv.toObjects(csvText);
 
-	//function addInitialLayers(apigeo){
-	// Create blank style geoJSON holder for CSV data
-	acc = L.geoJson(apigeo, {
+	  for (var i in json){
+		var classicID = json[i].classic_accident_id;
+		var latitude=0;
+		var longitude=0;
+		for (var j in csvObj){
+			var classicID2 = parseInt(csvObj[j].acc_id);
+			if (classicID2 === classicID){
+				latitude=csvObj[j].acc_lat;
+				longitude=csvObj[j].acc_lon;
+				}
+			}
+		if (latitude != 0){
+			//console.log(classicID);
+		//console.log(json[i].accident_avalanches[0].relative_size);
+	  	apigeo.features.push({
+			"type": "Feature",
+			"geometry": {
+			"type": "Point",
+			"coordinates": [longitude, latitude]
+			},
+			"properties": {
+				"id": json[i].id,
+				"acc_id":json[i].classic_accident_id,
+				"acc_type":json[i].classic_report_type,
+				"report":json[i].classic_url,
+				"url":json[i].url,
+				"water_year":json[i].water_year,
+				"datetime":json[i].observed_at,
+				"acc_location":json[i].location,
+				"acc_activity":json[i].activity,
+				"acc_travel_mode":json[i].travel_mode,
+				"acc_desc":json[i].description,
+				"no_caught":json[i].summary_counts.caught,
+				"no_buried":json[i].summary_counts.buried,
+				"no_killed":json[i].summary_counts.killed,
+				"atype":json[i].accident_avalanches[0].type_code,
+				"trigger1":json[i].accident_avalanches[0].primary_trigger,
+				"trigger2":json[i].accident_avalanches[0].secondary_trigger,
+				"Rscale":json[i].accident_avalanches[0].relative_size,
+				"Dscale":json[i].accident_avalanches[0].destructive_size,
+				"surface":json[i].accident_avalanches[0].surface,
+				"setting":json[i].accident_locations[0].setting,
+				"elevation":json[i].accident_locations[0].site_elevation,
+				"aspect":json[i].accident_locations[0].aspect,
+				"slope":json[i].accident_locations[0].angle,
+				//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
+				//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
+			}
+			});
+		}
+		};
+	  console.log(apigeo);
+	  //console.log(apigeoFull);
+	  //L.geoJSON(apigeo, {}).addTo(map);
+	  	acc = L.geoJson(apigeo, {
 		pointToLayer: function(geoJsonPoint, latlng) {
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
 						style:style,
-	}).addTo(map);
-
-	// Create blank style geoJSON holder for CSV data BY ACC TRAVEL TYPE
-	accByType = L.geoJson(apigeo, {
+		}).addTo(map);
+		
+		accByType = L.geoJson(apigeo, {
 		pointToLayer: function(geoJsonPoint, latlng) {
                         return L.marker(latlng);},
 						onEachFeature: onEachFeatureTravelMode,
 						style: styleAccidentType,
 						//filter: dateFilter
 						//icon: skiIcon
-	});
+		});
+		
+		console.log(accByType);
 	
+		zones = L.geoJson(forecastZones, {
+		style: styleForecastZones,
+		onEachFeature: onEachZone
+		});
+	  //addInitialLayers(apigeo);
+	}
+
+	//function addInitialLayers(apigeo){
+	// Create blank style geoJSON holder for CSV data
 	
 	
 	//}
+	
+	//}
 
-	// Create geoJSON layer 
-	var zones = L.geoJson(forecastZones, {
-		style: styleForecastZones,
-		onEachFeature: onEachZone
-	});
+
 	
 	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
 	//var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
@@ -938,9 +950,9 @@
 	};
 
 	var overlays = {
-		"Accidents": acc,
-		"Accidents by Travel Mode": accByType,
-		"Forecast Zones": zones,
+		//"Accidents": acc,
+		//"Accidents by Travel Mode": accByType,
+		//"Forecast Zones": zones,
 	};
 
 	//set heat as a global var
@@ -1091,18 +1103,24 @@
 	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
+		layerControl.addOverlay(acc, "Accidents");
+		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+		layerControl.addOverlay(zones, "CAIC Zones");
 		layerControl.addOverlay(heat, "Heatmap");
 		layerControl.addTo(map);
 	}
 
 	//add heat to overlays - wait for map to be created/data processing then create overlays
-	function addHeatToOverlays() {
-		if (heat!==undefined) {
+	function addOverlays() {
+		if (heat!==undefined && acc!==undefined && accByType!==undefined) {
+			overlays["Accidents"] = acc;
+			overlays["Accidents by Travel Mode"] = accByType;
+			overlays["CAIC Zones"] = zones;
 			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
 		}
 		else {
-			setTimeout(addHeatToOverlays, 50);
+			setTimeout(addOverlays, 50);
 		}
 	}
 
@@ -1115,7 +1133,7 @@
 		heat = createHeatmap(map, accPoints);
 	});
 
-	addHeatToOverlays();
+	addOverlays();
 	/* L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map); */
 	
 	
