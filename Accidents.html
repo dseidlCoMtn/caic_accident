@@ -46,6 +46,7 @@
 		    </div>
     	</div>
 		<div id='side-panel'>
+			<h2 id="CAIC">CAIC Accident Explorer</h2>
 			<div id='chart-container'>
 				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
 				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
@@ -853,7 +854,7 @@
 	var overlays = {
 		"Accidents": acc,
 		"Accidents by Travel Mode": accByType,
-		"Forecast Zones": zones,
+		"CAIC Zones": zones,
 	};
 
 	//set heat as a global var
@@ -1410,7 +1411,7 @@
 		let dateDataArr=Object.entries(dateData);
 		sortByMonth(dateDataArr);
 		function sortByMonth(arr) {
-			var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+			var months = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep' ];
 			arr.sort(function(a, b){
 			return months.indexOf(a[0]) - months.indexOf(b[0]);
 		});
