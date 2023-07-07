@@ -46,6 +46,7 @@
 		    </div>
     	</div>
 		<div id='side-panel'>
+			<h2 id="CAIC">CAIC Accident Explorer</h2>
 			<div id='chart-container'>
 				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
 				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
@@ -693,7 +694,7 @@
 			weight: 1.5,
 			opacity: 1,
 			color: 'black',
-			fillOpacity: 0.5,
+			fillOpacity: 0.25,
 			fillColor: 'grey',
 		};
 	}
@@ -853,7 +854,7 @@
 	var overlays = {
 		"Accidents": acc,
 		"Accidents by Travel Mode": accByType,
-		"Forecast Zones": zones,
+		"CAIC Zones": zones,
 	};
 
 	//set heat as a global var
@@ -1040,15 +1041,13 @@
 	//Sets the dropdowns and ranges for the date range picker
 	$('#reportrange').daterangepicker({
 		"showDropdowns": false,
-		"startDate": moment().subtract(15, 'year'),
+		"startDate": moment().subtract(5, 'year'),
 		"endDate": moment(),
 		ranges: {
-				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-				'Last Year': [moment().subtract(365, 'days'), moment()],
-				'Last 2 Years': [moment().subtract(2, 'years'), moment()],
-				'Last 5 Years': [moment().subtract(5, 'years'), moment()],
-				'Last 10 Years': [moment().subtract(10, 'years'), moment()],
+				'Current Avalanche Year': [moment('2023-10-01').subtract(365, 'days'), moment()],
+				'Last Avalanche Year': [moment('2022-10-01').subtract(365, 'days'), moment('2022-9-30')],
+				'Last 5 Avalanche Years': [moment('2023-10-01').subtract(5, 'years'), moment('2023-9-30')],
+				'Last 10 Avalanche Years': [moment('2023-10-01').subtract(10, 'years'), moment('2023-9-30')],
 				'All': [moment().subtract(15, 'years'), moment()],
 				},
 				maxDate: moment()
@@ -1056,7 +1055,7 @@
 	);
 	
 	//Sets the initial dates in the date range picker - 15 years ago to today, so all accidents
-	updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
+	updateDisplayedDateRange(moment('2023-10-01').subtract(5, 'year'), moment('2023-9-30'));
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
@@ -1410,7 +1409,7 @@
 		let dateDataArr=Object.entries(dateData);
 		sortByMonth(dateDataArr);
 		function sortByMonth(arr) {
-			var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+			var months = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep' ];
 			arr.sort(function(a, b){
 			return months.indexOf(a[0]) - months.indexOf(b[0]);
 		});
