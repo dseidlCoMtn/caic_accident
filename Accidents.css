@@ -2,6 +2,7 @@
 		html, body {
 			height: 100%;
 			margin: 0;
+			font-family: 'Nanum Gothic', Arial, Helvetica, sans-serif;
 		}
 				
 		#container {
@@ -89,6 +90,84 @@
 			width: 200px;
 			z-index:1000;
 		}
+		/* Avalanche Rose CSS */
+		.chart-title {
+			text-align: center;
+			color: black;
+		}
+
+		#chart-rose {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.chart-wrapper {
+			border-radius: 3px;
+			margin-bottom: 10px;
+		}
+		
+		.chart-wrapper .chart-title {
+			color: black;
+			font-size: 12px;
+			font-weight: 200;
+			padding: 7px 10px 4px;
+		}
+		
+		.chart-wrapper .chart-stage {
+			overflow: hidden;
+			padding: 5px 10px;
+			position: relative;
+		}
+
+		.chart-stage {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.chart-stage a {
+			color: black;
+		}
+		
+		.chart-wrapper .chart-footer {
+			border-top: 1px solid #d7d7d7;
+			color: #666;
+			font-size: 14px;
+			font-weight: 200;
+			padding: 7px 10px 4px;
+		}
+		.avy-rose-part {
+			fill: #d4d4d4;
+			stroke: black;
+			stroke-miterlimit: 10;
+			cursor: pointer;
+		}
+		
+		.avy-rose-part.hovered {
+			fill: #e7e7e7;
+		}
+		
+		.avy-rose-part.not-selected {
+			fill: white;
+		}
+		
+		.avy-rose-part text {
+			fill: black;
+			font-size: 26px;
+			cursor: pointer;
+		}
+		
+		.cardinal-direction {
+			font-size: 35px;
+		}
+		
+		.rose-multiselector {
+			cursor: pointer;
+		}
+		
+
+
+		/* Responsive display CSS */
 		@media (max-width: 767px) {
 			.page-switch-icon {
 				display: block;
