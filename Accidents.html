@@ -34,7 +34,10 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 	<link rel="stylesheet" type="text/css" href="Accidents.css">
 	<!-- Loading chart.js -->
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>		
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	
+	<!-- Loading jquery csv - can remove when lat/long included in api -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>	
 	
 </head>
 <body>	
@@ -276,6 +279,7 @@
 
 	
 	var startDate, endDate, month=0, activity=0, mode=0;
+	var lassoIDs=[];
 
 	function mapChange() {
 		var hasAcc = map.hasLayer(acc);
@@ -293,63 +297,126 @@
 		startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
 		endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
 		function layerFilter(feature) {
-				//Activity + Date filter
-				if (activity != 0 && monthSelected==0 && modeSelected==0){
-					if (feature.properties.acc_activity == activity && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+				//Activity filter
+				if (activity != 0 && monthSelected==0 && modeSelected==0 && lassoIDs.length==0){
+					if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
 						return true
 					}
 					else {
 						return false
 					}
 				}
-				//Travel Mode + Date filter
-				else if (mode != 0 && monthSelected==0 && actSelected==0){
-					if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+				//Activity & lasso filter
+				else if (activity != 0 && monthSelected==0 && modeSelected==0 && lassoIDs.length>0){
+					if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
 						return true
 					}
 					else {
 						return false
 					}
 				}
-				//Activity + Month + Date filter
-				else if (activity != 0 && monthSelected==1 && modeSelected==0){
-					if (feature.properties.acc_activity == activity && moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+				//Travel Mode filter
+				else if (mode != 0 && monthSelected==0 && actSelected==0 && lassoIDs.length==0){
+					if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
 						return true
 					}
 					else {
 						return false
 					}
 				}
-				//Activity + Travel Mode + Date filter
-				else if (activity != 0 && monthSelected==0 && modeSelected==1){
-					if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+				//Travel Mode + lasso filter
+				else if (mode != 0 && monthSelected==0 && actSelected==0 && lassoIDs.length>0){
+					if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
 						return true
 					}
 					else {
 						return false
 					}
 				}
-				//Travel Mode + Month + Date filter
-				else if (mode != 0 && monthSelected==1 && actSelected==0){
-					if (feature.properties.acc_travel_mode == mode && moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+				//Activity + Month filter
+				else if (activity != 0 && monthSelected==1 && modeSelected==0 && lassoIDs.length==0){
+					if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
 						return true
 					}
 					else {
 						return false
 					}
 				}
-				//Travel Mode + Month + Activity + Date filter
-				else if (mode != 0 && monthSelected==1 && actSelected==1){
-					if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+				//Activity + Month + lasso filter
+				else if (activity != 0 && monthSelected==1 && modeSelected==0 && lassoIDs.length>0){
+					if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
 						return true
 					}
 					else {
 						return false
 					}
 				}
-				//Month + Date filter
-				else if (month != 0 && actSelected==0 && modeSelected==0){
-					if (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM") == month && (moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate && (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){
+				//Activity + Travel Mode filter
+				else if (activity != 0 && monthSelected==0 && modeSelected==1 && lassoIDs.length==0){
+					if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Activity + Travel Mode + lasso filter
+				else if (activity != 0 && monthSelected==0 && modeSelected==1 && lassoIDs.length>0){
+					if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Travel Mode + Month filter
+				else if (mode != 0 && monthSelected==1 && actSelected==0 && lassoIDs.length==0){
+					if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Travel Mode + Month + lasso filter
+				else if (mode != 0 && monthSelected==1 && actSelected==0 && lassoIDs.length>0){
+					if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate  && lassoIDs.includes(feature.properties.acc_id)){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Travel Mode + Month + Activity filter
+				else if (mode != 0 && monthSelected==1 && actSelected==1 && lassoIDs.length==0){
+					if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Travel Mode + Month + Activity + lasso filter
+				else if (mode != 0 && monthSelected==1 && actSelected==1 && lassoIDs.length>0){
+					if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Month filter
+				else if (month != 0 && actSelected==0 && modeSelected==0 && lassoIDs.length==0){
+					if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
+						return true
+					}
+					else {
+						return false
+					}
+				}
+				//Month + lasso filter
+				else if (month != 0 && actSelected==0 && modeSelected==0 && lassoIDs.length>0){
+					if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
 						return true
 					}
 					else {
@@ -358,8 +425,8 @@
 				}
 				//Date filter
 				else{
-					if ((moment(feature.properties.acc_date, 'DD-MMM-YY')) >= startDate
-						&& (moment(feature.properties.acc_date, 'DD-MMM-YY')) < endDate){ 
+					if ((moment(feature.properties.datetime)) >= startDate
+						&& (moment(feature.properties.datetime)) < endDate){ 
 						return true
 					}
 					else {
@@ -367,31 +434,26 @@
 					}
 				}
 			}
-		styleLayer = L.geoJson(null, {
+		acc = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
 				return L.circleMarker(latlng);},
 				onEachFeature: onEachFeature,
 				style:style,
 				filter: layerFilter
 		});
-		styleLayerByAccType = L.geoJson(null, {
+		accByType = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
                 return L.marker(latlng);},
 				onEachFeature: onEachFeatureTravelMode,
 				style: styleAccidentType,
 				filter: layerFilter
 		});
-		acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
-		accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode);
+		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
 		if (hasHeat == true){heat.addTo(map)};
-		layerControl.addOverlay(acc, "Accidents");
-		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-		layerControl.addOverlay(zones, "Forecast Zones");
-		addHeatToOverlays();
+		addOverlays();
 	}
 		
 	//Adds home button to map
@@ -413,18 +475,17 @@
 		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
 		$('#reportrange').data('daterangepicker').endDate=moment();
 		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
-		mapChange();
 		barLabels.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
+		lassoIDs.length=0;
+		mapChange();
 		updateActivityChart();
 		processBarChartDates();
 		processBarChartMode();
-
-		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
-		$('#reportrange').data('daterangepicker').endDate=moment();
-		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
-
+		//$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
+		//$('#reportrange').data('daterangepicker').endDate=moment();
+		//updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
 		},'Clear Filters').addTo(map);
 		
 
@@ -486,12 +547,15 @@
 		layerControl.removeLayer(accByType);
 		layerControl.removeLayer(zones);
 		layerControl.removeLayer(heat);
-		var accIDs =[];
+		lassoIDs.length = 0;
         layers.forEach(layer => {
-				accIDs.push(layer.feature.properties.acc_id);
+				lassoIDs.push(layer.feature.properties.acc_id);
                 });
+		barLabels.length=0;
+		barChartDates.length=0;
+		barChartModeArr.length=0;
 		function layerFilter(feature) {
-				if (accIDs.includes(feature.properties.acc_id) === true){
+				if (lassoIDs.includes(feature.properties.acc_id) === true){
 						return true
 						
 				}
@@ -499,34 +563,26 @@
 						return false
 					}
 				}
-		styleLayer = L.geoJson(null, {
+		acc = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
 				return L.circleMarker(latlng);},
 				onEachFeature: onEachFeature,
 				style:style,
 				filter: layerFilter
 		});
-		styleLayerByAccType = L.geoJson(null, {
+		accByType = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
                 return L.marker(latlng);},
 				onEachFeature: onEachFeatureTravelMode,
 				style: styleAccidentType,
 				filter: layerFilter
 		});
-		acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer)
-		accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, accIDs);
+		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
 		if (hasHeat == true){heat.addTo(map)};
-		layerControl.addOverlay(acc, "Accidents");
-		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
-		layerControl.addOverlay(zones, "Forecast Zones");
-		addHeatToOverlays();
-		barLabels.length=0;
-		barChartDates.length=0;
-		barChartModeArr.length=0;
+		addOverlays();
 		updateActivityChart();
 		processBarChartDates();
 		processBarChartMode();
@@ -542,6 +598,9 @@
 
 	//Get style color by Dscale
 	function getColor(d) {
+		if (d !== null){
+			d=d.substring(1);
+			}
 		return d < 1.5 ?  '#ffff00' :
 				d < 2  ? '#ffe800' :
 				d < 2.5  ? '#ffd000' :
@@ -557,6 +616,9 @@
 
 	//Get radius by Rscale
 	function getSize(d) {
+		if (d !== null){
+			d=d.substring(1);
+			}
 		return d < 1.5 ?  6 :
 				d < 2  ? 6 :
 				d < 2.5  ? 7 :
@@ -684,22 +746,22 @@
 		});
 
 		//content of tool tip
-		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
-			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
-			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.no_caught + 
+			", Buried: " + feature.properties.no_buried + ", Killed: " + feature.properties.no_killed);
 
 		//content of the popup
-		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
 			"<br>" + feature.properties.acc_activity 
-			+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
-			"<br>Caught: " + feature.properties.acc_no_caught + 
-			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+			+ "<br>" + feature.properties.Rscale + " " + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.no_caught + 
+			", Buried: " + feature.properties.no_buried + ", Killed: " + feature.properties.no_killed + 
 			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 			
 		//Pushing the acc_activity to the bar graph
 		barLabels.push(feature.properties.acc_activity);
 		/* use moment to get the month and push to bar chart for activity type */
-		barChartDates.push(moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MMM"));
+		barChartDates.push(moment(feature.properties.datetime).format("MMM"));
 		/* push to bar chart for travel mode graph*/
 		barChartModeArr.push(feature.properties.acc_travel_mode);
 	}
@@ -712,16 +774,16 @@
 		});
 
 		//content of tool tip
-		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
 			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.acc_no_caught + 
-			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed);
+			", Buried: " + feature.properties.no_buried + ", Killed: " + feature.properties.acc_no_killed);
 
 		//content of the popup
-		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.acc_date, ["DD-MMM-YY"]).format("MM/DD/YYYY")) +
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
 			"<br>" + feature.properties.acc_activity 
-			+ "<br>R" + feature.properties.Rscale + " D" + feature.properties.Dscale +
-			"<br>Caught: " + feature.properties.acc_no_caught + 
-			", Buried: " + feature.properties.acc_no_buried + ", Killed: " + feature.properties.acc_no_killed + 
+			+ "<br>" + feature.properties.Rscale + " " + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.no_caught + 
+			", Buried: " + feature.properties.no_buried + ", Killed: " + feature.properties.no_killed + 
 			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 			
 		//get icon for activity
@@ -746,60 +808,132 @@
 	
 	
 
+	var acc, accByType, zones, heat;
+	//var heat;
+	var heatPoints =[];
+	var accPoints=[];
+	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/Accidents.json';
+	const csvURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
+	//const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: ''}};
+	const apigeo = {
+        type: "FeatureCollection",
+        features: [],
+      };
+	getData().catch(error => {
+      console.error(error);
+      });
+	async function getData() {
+	  //const response = await fetch(apiURL, apiOptions);
+	  //const json = await response.json();
+	  //console.log(json);
+	  const response = await fetch(jsonURL);
+	  const csvResponse = await fetch(csvURL);
+	  const csvText = await csvResponse.text();
+	  const json = await response.json();
+	  const csvObj = $.csv.toObjects(csvText);
 
-	// Create blank style geoJSON holder for CSV data
-	var styleLayer = L.geoJson(null, {
-		pointToLayer: function(geoJsonPoint, latlng) {
+	  for (var i in json){
+		var classicID = json[i].classic_accident_id;
+		var latitude=0;
+		var longitude=0;
+		var travmode;
+		//switching travel modes with null to Unknown
+		if (json[i].travel_mode === null){
+				travmode="Unknown";
+			}
+		else{
+			travmode = json[i].travel_mode;
+			}
+		//Grabbing lat/longs from the CSV
+		for (var j in csvObj){
+			var classicID2 = parseInt(csvObj[j].acc_id);
+			if (classicID2 === classicID){
+				latitude=csvObj[j].acc_lat;
+				longitude=csvObj[j].acc_lon;
+				}
+			}
+		if (latitude != 0){
+			apigeo.features.push({
+				"type": "Feature",
+				"geometry": {
+				"type": "Point",
+				"coordinates": [longitude, latitude]
+				},
+				"properties": {
+					"id": json[i].id,
+					"acc_id":json[i].classic_accident_id,
+					"acc_type":json[i].classic_report_type,
+					"report":json[i].classic_url,
+					"url":json[i].url,
+					"water_year":json[i].water_year,
+					"datetime":json[i].observed_at,
+					"acc_location":json[i].location,
+					"acc_activity":json[i].activity,
+					"acc_travel_mode":travmode,
+					"acc_desc":json[i].description,
+					"no_caught":json[i].summary_counts.caught,
+					"no_buried":json[i].summary_counts.buried,
+					"no_killed":json[i].summary_counts.killed,
+					"atype":json[i].accident_avalanches[0].type_code,
+					"trigger1":json[i].accident_avalanches[0].primary_trigger,
+					"trigger2":json[i].accident_avalanches[0].secondary_trigger,
+					"Rscale":json[i].accident_avalanches[0].relative_size,
+					"Dscale":json[i].accident_avalanches[0].destructive_size,
+					"surface":json[i].accident_avalanches[0].surface,
+					"setting":json[i].accident_locations[0].setting,
+					"elevation":json[i].accident_locations[0].site_elevation,
+					"aspect":json[i].accident_locations[0].aspect,
+					"slope":json[i].accident_locations[0].angle,
+					//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
+					//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
+				}
+				});
+				const lat = parseFloat(latitude);
+				const lon = parseFloat(longitude);
+				const date = json[i].observed_at;
+				const activ = json[i].activity;
+				const travMode = travmode;
+				const accID = json[i].classic_accident_id;
+				heatPoints.push([lat, lon, date, activ, travMode, accID])
+		}
+		};
+	  	acc = L.geoJson(apigeo, {
+			pointToLayer: function(geoJsonPoint, latlng) {
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
 						style:style,
-	});
-
-	// Create blank style geoJSON holder for CSV data BY ACC TRAVEL TYPE
-	var styleLayerByAccType = L.geoJson(null, {
-		pointToLayer: function(geoJsonPoint, latlng) {
+			}).addTo(map);
+		
+		accByType = L.geoJson(apigeo, {
+			pointToLayer: function(geoJsonPoint, latlng) {
                         return L.marker(latlng);},
 						onEachFeature: onEachFeatureTravelMode,
 						style: styleAccidentType,
-						//filter: dateFilter
-						//icon: skiIcon
-	});
-
-
-	// Create geoJSON layer 
-	var zones = L.geoJson(forecastZones, {
-		style: styleForecastZones,
-		onEachFeature: onEachZone
-	});
-	
-	// Adding CSV from github (made repository public). Cross-Origin Request error if loaded locally.
-	var acc = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayer).addTo(map);
-	var accByType = omnivore.csv('https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv', null, styleLayerByAccType);
-
-	//define csv url
-	const url = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
+			});
+			
+		zones = L.geoJson(forecastZones, {
+			style: styleForecastZones,
+			onEachFeature: onEachZone
+			});
+		accPoints= await(heatPoints);
+		heat = createHeatmap(map, accPoints);
+		}
 
 	var baseLayers = {
-	"Natural Atlas": Natural_Atlas,
-	"Imagery": imagery,
-    "Esri Terrain": Esri_WorldTerrain,
+		"Natural Atlas": Natural_Atlas,
+		"Imagery": imagery,
+		"Esri Terrain": Esri_WorldTerrain,
 	};
+	var overlays = {};
 
-	var overlays = {
-		"Accidents": acc,
-		"Accidents by Travel Mode": accByType,
-		"CAIC Zones": zones,
-	};
 
-	//set heat as a global var
-	var heat;
-
-	//Create heatmap layer -- need to wait for call to CSV online
 	//Function to call L.heatLayer
 	function createHeatmap(map, points, minDate, maxDate, activity, month, mode, lassoIDs) {
 		const pointsArray = [];
+		//No graph selections + lasso
 		if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0){
-			//check if lasso has been applied
 			for (i in points) {
 				const pointID = points[i][5];
 				if (lassoIDs.includes(pointID) === true){
@@ -807,77 +941,161 @@
 					}
 				}
 			}
-		else if (activity != undefined && activity !=0 && month !=undefined && month !=0 && mode !=undefined && mode!=0){
-			//check if activity and month and mode match
+		//Activity + month + mode
+		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
-					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
+					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointDate = moment(points[i][2]);
 					if ((pointActivity == activity) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		else if (activity != undefined && activity !=0 && month !=undefined && month !=0 && mode ==0){
-			//check if activity and month match
+		//Activity + month + mode + lasso
+		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					if ((pointActivity == activity) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Activity + month
+		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
-					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
-					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
 					if ((pointActivity == activity) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		else if (activity != undefined && activity !=0 && mode !=undefined && mode !=0 && month ==0){
-			//check if activity and mode match
+		//Activity + month + lasso
+		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					if ((pointActivity == activity) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Activity + mode
+		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
-					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointDate = moment(points[i][2]);
 					const pointMode = points[i][4];
 					if ((pointActivity == activity) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		else if (month != undefined && month !=0 && mode !=undefined && mode !=0 && activity ==0){
-			//check if month and mode match
+		//Activity + mode + lasso
+		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0){
 				for (i in points) {
-					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
-					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					if ((pointActivity == activity) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Month + mode
+		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length == 0){
+				for (i in points) {
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
 					const pointMode = points[i][4];
 					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		else if (activity != undefined && activity !=0 && mode==0 && month==0){
-				//check if activity matches 
+		//Month + mode + lasso
+		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Activity only
+		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
-					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointDate = moment(points[i][2]);
 					if ((pointActivity == activity) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		else if (month !=undefined && month !=0 && activity==0 && mode==0){
+		//Activity + lasso
+		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2]);
+					if ((pointActivity == activity) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Month only
+		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0){
 				//check if month matches 
 				for (i in points) {
-					const pointMonth = moment(points[i][2],['DD-MMM-YY']).format("MMM");
-					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
 					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		else if (mode !=undefined && mode !=0 && activity==0 && month==0){
-				//check if mode matches 
+		//Month + lasso
+		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0){
+				//check if month matches 
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Mode only
+		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0){
 				for (i in points) {
 					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2],'DD-MMM-YY');
+					const pointDate = moment(points[i][2]);
 					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Mode + lasso
+		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
@@ -886,7 +1104,7 @@
 				//check if the date picker has been used
 				if ((minDate != undefined) && (maxDate != undefined)) {
 					for (i in points) {
-						const pointDate = moment(points[i][2],'DD-MMM-YY');
+						const pointDate = moment(points[i][2]);
 						if ((pointDate >= minDate) && (pointDate < maxDate))  {
 							pointsArray.push([points[i][0], points[i][1]]);
 						}
@@ -908,29 +1126,29 @@
 	};
 	
 	//function to parse csv from url
-	function parseCSV(url) {
-		return fetch(url)
-			.then(response => response.text())
-			.then(csv => {
-				const rows = csv.split("\n");
-				const points = [];
+	<!-- function parseCSV(url) { -->
+		<!-- return fetch(url) -->
+			<!-- .then(response => response.text()) -->
+			<!-- .then(csv => { -->
+				<!-- const rows = csv.split("\n"); -->
+				<!-- const points = []; -->
 
-				for (const row of rows) {
-					const values = row.split(",");
-					const lat = parseFloat(values[4]);
-					const lon = parseFloat(values[5]);
-					const csvDate = values[6];
-					const activ = values[7];
-					const travMode = values[8];
-					const accID = values[0];
-					if (!isNaN(lat) && !isNaN(lon)) {
-						points.push([lat, lon, csvDate, activ, travMode, accID]);
-					}
-				}
+				<!-- for (const row of rows) { -->
+					<!-- const values = row.split(","); -->
+					<!-- const lat = parseFloat(values[4]); -->
+					<!-- const lon = parseFloat(values[5]); -->
+					<!-- const csvDate = values[6]; -->
+					<!-- const activ = values[7]; -->
+					<!-- const travMode = values[8]; -->
+					<!-- const accID = values[0]; -->
+					<!-- if (!isNaN(lat) && !isNaN(lon)) { -->
+						<!-- points.push([lat, lon, csvDate, activ, travMode, accID]); -->
+					<!-- } -->
+				<!-- } -->
 				
-				return points;
-			})
-	};
+				<!-- return points; -->
+			<!-- }) -->
+	<!-- }; -->
 	
 	
 	//needed to set the layerControl as a variable so we can call it in
@@ -939,33 +1157,37 @@
 	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
+		layerControl.addOverlay(acc, "Accidents");
+		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+		layerControl.addOverlay(zones, "CAIC Zones");
 		layerControl.addOverlay(heat, "Heatmap");
 		layerControl.addTo(map);
 	}
 
-	//add heat to overlays - wait for map to be created/data processing then create overlays
-	function addHeatToOverlays() {
-		if (heat!==undefined) {
+	//add layers to overlays - wait for map to be created/data processing then create overlays
+	function addOverlays() {
+		if (heat!==undefined && acc!==undefined && accByType!==undefined) {
+			overlays["Accidents"] = acc;
+			overlays["Accidents by Travel Mode"] = accByType;
+			overlays["CAIC Zones"] = zones;
 			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
 		}
 		else {
-			setTimeout(addHeatToOverlays, 50);
+			setTimeout(addOverlays, 50);
 		}
 	}
 
 	//call functions
 	//parse csv, create heatmap, assign var
-	var accPoints = [];
+	<!-- var accPoints = []; -->
 
-	parseCSV(url).then(function(points) {
-		accPoints = points;
-		heat = createHeatmap(map, accPoints);
-	});
+	<!-- parseCSV(url).then(function(points) { -->
+		<!-- accPoints = points; -->
+		<!-- heat = createHeatmap(map, accPoints); -->
+	<!-- }); -->
 
-	addHeatToOverlays();
-	/* L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map); */
-	
+	addOverlays();
 	
 	// once the dates are selected, format and display the range in the date selection box.
 	function updateDisplayedDateRange (start, end) {
@@ -978,17 +1200,17 @@
 		"startDate": moment().subtract(5, 'year'),
 		"endDate": moment(),
 		ranges: {
-				'Current Avalanche Year': [moment('2023-10-01').subtract(365, 'days'), moment()],
+				'Current Avalanche Year': [moment('2023-10-01').subtract(365, 'days'), moment('2023-9-30')],
 				'Last Avalanche Year': [moment('2022-10-01').subtract(365, 'days'), moment('2022-9-30')],
 				'Last 5 Avalanche Years': [moment('2023-10-01').subtract(5, 'years'), moment('2023-9-30')],
 				'Last 10 Avalanche Years': [moment('2023-10-01').subtract(10, 'years'), moment('2023-9-30')],
 				'All': [moment().subtract(15, 'years'), moment()],
 				},
-				maxDate: moment()
+				//maxDate: moment()
 		}, updateDisplayedDateRange,
 	);
 	
-	//Sets the initial dates in the date range picker - 15 years ago to today, so all accidents
+	//Sets the initial dates in the date range picker - 5 avalanche years
 	updateDisplayedDateRange(moment('2023-10-01').subtract(5, 'year'), moment('2023-9-30'));
 	
 	
@@ -1001,10 +1223,11 @@
 			firstSelect=0;
 			secondSelect=0;
 			thirdSelect=0;
-			mapChange();
 			barLabels.length=0;
 			barChartDates.length=0;
 			barChartModeArr.length=0;
+			lassoIDs.length=0;
+			mapChange();
 			actSelected = 0;
 			monthSelected = 0;
 			modeSelected = 0;
@@ -1015,60 +1238,69 @@
 	});
 	
 		
-		updateActivityChart();
-		processBarChartDates();
-		processBarChartMode();
+	updateActivityChart();
+	processBarChartDates();
+	processBarChartMode();
+		
+	//Setting empty arrays to hold activity bar graph data
+	let barLabels=[];
+	let barChartDates=[];
+	let barChartModeArr =[];
 
 		
-		function delay(time) {
-			return new Promise(resolve => setTimeout(resolve, time));
+		<!-- function delay(time) { -->
+			<!-- return new Promise(resolve => setTimeout(resolve, time)); -->
+		<!-- } -->
+		
+		
+	function updateActivityChart() {
+		//await delay (450);
+		//console.log(barLabels);
+		if (acc != undefined){
+			if (barLabels.length > 0 || Object.keys(acc._layers).length==0){
+				
+				//Reduce the array of all activity types to an object with counts of unique activities
+				const accCount = barLabels.reduce((allNames, name) => {
+					const currCount = allNames[name] ?? 0;
+					return {
+					...allNames,
+					[name]: currCount + 1,
+					};
+					}, {});
+			
+				//Grab the keys and values from the accCount
+				barLabels2=Object.keys(accCount);
+				barValues=Object.values(accCount);
+				
+				//Update the bar chart with the labels and values
+				barChartCanvas.data.labels = barLabels2;
+				barChartCanvas.data.datasets[0].data=barValues;
+				
+				//Reset the outline of any previously selected activity
+				const dataset = barChartCanvas.data.datasets[0];
+				dataset.borderWidth = [];
+				dataset.borderColor = [];
+				for (let i = 0; i < dataset.data.length; i++) {
+					dataset.borderWidth[i] = 1;
+					dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+					}
+				barChartCanvas.options.plugins.title.text = "Accidents by Activity Type";
+				barChartCanvas.update();	
+			}
+			else{
+				setTimeout(updateActivityChart, 50);
+			}
 		}
-		
-		
-		async function updateActivityChart() {
-			await delay (450);
-
-			//Reduce the array of all activity types to an object with counts of unique activities
-			const accCount = barLabels.reduce((allNames, name) => {
-				const currCount = allNames[name] ?? 0;
-				return {
-				...allNames,
-				[name]: currCount + 1,
-				};
-				}, {});
-		
-		
-			//Grab the keys and values from the accCount
-			barLabels2=Object.keys(accCount);
-			barValues=Object.values(accCount);
-			
-			
-			//Update the bar chart with the labels and values
-			barChartCanvas.data.labels = barLabels2;
-			barChartCanvas.data.datasets[0].data=barValues;
-			
-			//Reset the outline of any previously selected activity
-			const dataset = barChartCanvas.data.datasets[0];
-			dataset.borderWidth = [];
-			dataset.borderColor = [];
-			for (let i = 0; i < dataset.data.length; i++) {
-				dataset.borderWidth[i] = 1;
-				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
-				}
-			barChartCanvas.options.plugins.title.text = "Accidents by Activity Type";
-			barChartCanvas.update();
-					
-		  }
+	  else{
+		setTimeout(updateActivityChart, 50);
+		}
+	  }
 
 	
 	//default fonts for charts
 	Chart.defaults.font.family = 'Nanum Gothic';
 	Chart.defaults.font.color = '#333';
 
-	//Setting empty arrays to hold activity bar graph data
-	const barLabels=[];
-	const barData=[];
-	
 	//Stores whether selections have been made in charts
 	var actSelected = 0, monthSelected = 0, modeSelected = 0, firstSelect =0,
 	secondSelect=0, thirdSelect=0;
@@ -1081,7 +1313,7 @@
 			data: {
 				labels: barLabels,
 				datasets: [{
-					data: barData,
+					data: [],
 					borderColor: 'rgba(0, 0, 0, 0.1)',
 					borderWidth: 1,
 					backgroundColor:'#cdced6'
@@ -1171,12 +1403,10 @@
 							thirdSelect="activity";
 							titleText="3rd Filter";
 							}
-						console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
+						//console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
 						barChartCanvas.options.plugins.title.text = "Accidents by Activity Type | "+titleText+": "+value;
 						barChartCanvas.update();
 						mapChange();
-
-					
 				  }},
 
 				scales: {
@@ -1275,8 +1505,7 @@
 							thirdSelect=0;
 							activity=0;
 							actSelected=0;
-							}
-							
+							}	
 						else if (secondSelect=="month" && firstSelect=="activity") {
 							titleText="2nd Filter";
 							barChartModeArr.length=0;
@@ -1289,12 +1518,10 @@
 							thirdSelect="month";
 							titleText="3rd Filter";
 							}
-						console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
+						//console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
 						barChart.options.plugins.title.text = "Accidents by Month | "+titleText+": "+value;
 						barChart.update();
 						mapChange();
-
-					
 				  }},
 			scales: {
 				x: {
@@ -1324,47 +1551,55 @@
 		
 	});
 
-	let barChartDates = [];
+	function processBarChartDates() {
+		//await delay (450);
+		if (acc != undefined){
+			if (barChartDates.length > 0 || Object.keys(acc._layers).length==0){
+				/* console.log("barChartDates: ", barChartDates); */
+				/* Reduce the array of all accident dates  to an object with counts of unique months */
+				let dateData = barChartDates.reduce((allDates, month) => {
+						const currentCount = allDates[month] ?? 0;
+						return {
+						...allDates,
+						[month]: currentCount + 1,
+						};
+				}, {});
 
-	async function processBarChartDates() {
-		await delay (450);
-		/* console.log("barChartDates: ", barChartDates); */
-		/* Reduce the array of all accident dates  to an object with counts of unique months */
-		let dateData = barChartDates.reduce((allDates, month) => {
-				const currentCount = allDates[month] ?? 0;
-				return {
-				...allDates,
-				[month]: currentCount + 1,
-				};
-		}, {});
-
-
-		/* Convert the dates and counts to array and sort by month */
-		let dateDataArr=Object.entries(dateData);
-		sortByMonth(dateDataArr);
-		function sortByMonth(arr) {
-			var months = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep' ];
-			arr.sort(function(a, b){
-			return months.indexOf(a[0]) - months.indexOf(b[0]);
-		});
-		}
-		let barChartKeys = Object.keys(Object.fromEntries(dateDataArr));
-		barChartValues=Object.values(Object.fromEntries(dateDataArr));
-		
-		/* // Update the bar chart with the labels and values */
-		barChart.data.labels = barChartKeys;
-		barChart.data.datasets[0].data=barChartValues;
-		
-		// Reset highlighting of previously selected month
-		const dataset = barChart.data.datasets[0];
-			dataset.borderWidth = [];
-			dataset.borderColor = [];
-			for (let i = 0; i < dataset.data.length; i++) {
-				dataset.borderWidth[i] = 1;
-				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+				/* Convert the dates and counts to array and sort by month */
+				let dateDataArr=Object.entries(dateData);
+				sortByMonth(dateDataArr);
+				function sortByMonth(arr) {
+					var months = ['Oct', 'Nov', 'Dec','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+					arr.sort(function(a, b){
+					return months.indexOf(a[0]) - months.indexOf(b[0]);
+				});
 				}
-		barChart.options.plugins.title.text = "Accidents by Month";
-		barChart.update();
+				
+				let barChartKeys = Object.keys(Object.fromEntries(dateDataArr));
+				barChartValues=Object.values(Object.fromEntries(dateDataArr));
+				
+				/* // Update the bar chart with the labels and values */
+				barChart.data.labels = barChartKeys;
+				barChart.data.datasets[0].data=barChartValues;
+				
+				// Reset highlighting of previously selected month
+				const dataset = barChart.data.datasets[0];
+					dataset.borderWidth = [];
+					dataset.borderColor = [];
+					for (let i = 0; i < dataset.data.length; i++) {
+						dataset.borderWidth[i] = 1;
+						dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+						}
+				barChart.options.plugins.title.text = "Accidents by Month";
+				barChart.update();
+			}
+			else{
+				setTimeout(processBarChartDates, 50);
+			}
+		}
+		else{
+		  setTimeout(processBarChartDates, 50);
+		}
 	}
 
 	let barChartMode = new Chart('bar-chart-mode', {
@@ -1454,7 +1689,7 @@
 							thirdSelect="mode";
 							titleText="3rd Filter";
 							}
-						console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect, actSelected, monthSelected, modeSelected);
+						//console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect, actSelected, monthSelected, modeSelected);
 						barChartMode.options.plugins.title.text = "Accidents by Travel Mode | "+titleText+": "+value;
 						barChartMode.update();
 						mapChange();
@@ -1489,42 +1724,45 @@
 		
 	});
 
+	function processBarChartMode() {
+		//await delay (450);
+		if (acc != undefined){
+			if (barChartModeArr.length > 0 || Object.keys(acc._layers).length==0){
+				let dateDataMode = barChartModeArr.reduce((allDates, month) => {
+						const currentCountMode = allDates[month] ?? 0;
+						return {
+						...allDates,
+						[month]: currentCountMode + 1,
+						};
+				}, {});
 
-	let barChartModeArr = [];
-
-	async function processBarChartMode() {
-		await delay (450);
-		/* console.log("barChartDates: ", barChartDates); */
-		/* Reduce the array of all accident dates  to an object with counts of unique months */
-		let dateDataMode = barChartModeArr.reduce((allDates, month) => {
-				const currentCountMode = allDates[month] ?? 0;
-				return {
-				...allDates,
-				[month]: currentCountMode + 1,
-				};
-		}, {});
-
-
-		/* Convert the dates and counts to array and sort by month */
-		let dateDataArrMode=Object.entries(dateDataMode);
-		
-		let barChartKeysMode = Object.keys(Object.fromEntries(dateDataArrMode));
-		barChartValuesMode=Object.values(Object.fromEntries(dateDataArrMode));
-		
-		/* // Update the bar chart with the labels and values */
-		barChartMode.data.labels = barChartKeysMode;
-		barChartMode.data.datasets[0].data=barChartValuesMode;
-		
-		// Reset highlighting of previously selected mode
-		const dataset = barChartMode.data.datasets[0];
-			dataset.borderWidth = [];
-			dataset.borderColor = [];
-			for (let i = 0; i < dataset.data.length; i++) {
-				dataset.borderWidth[i] = 1;
-				dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
-				}
-		barChartMode.options.plugins.title.text = "Accidents by Travel Mode";
-		barChartMode.update();
+				let dateDataArrMode=Object.entries(dateDataMode);
+				
+				let barChartKeysMode = Object.keys(Object.fromEntries(dateDataArrMode));
+				barChartValuesMode=Object.values(Object.fromEntries(dateDataArrMode));
+				
+				/* // Update the bar chart with the labels and values */
+				barChartMode.data.labels = barChartKeysMode;
+				barChartMode.data.datasets[0].data=barChartValuesMode;
+				
+				// Reset highlighting of previously selected mode
+				const dataset = barChartMode.data.datasets[0];
+					dataset.borderWidth = [];
+					dataset.borderColor = [];
+					for (let i = 0; i < dataset.data.length; i++) {
+						dataset.borderWidth[i] = 1;
+						dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+						}
+				barChartMode.options.plugins.title.text = "Accidents by Travel Mode";
+				barChartMode.update();
+			}
+			else{
+				setTimeout(processBarChartMode, 50);
+			}
+		}
+		else{
+		  setTimeout(processBarChartMode, 50);
+		}
 	}
 
 
