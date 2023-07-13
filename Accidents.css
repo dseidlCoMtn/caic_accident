@@ -10,14 +10,12 @@
 			flex-direction: row;
 			height: 100%;
 		}
- 
-							
+ 					
 		#map {
 			width: 60%;
 			min-height: 100%;
 			font-family: 'Nanum Gothic', sans-serif; 
 		}
-
 
 		#CAIC {
 			font-family: 'Nanum Gothic', Arial, Helvetica, sans-serif;
@@ -34,13 +32,13 @@
 			background-color: #eff0fadf;
 			padding: 4px;
 			border-radius: 5px;
-			}
+		}
 
 		#side-panel {
 			width: 40%;
 			height: 100%;
 			overflow: auto;
-			background-color: #a0a1a5;
+			background-color: #CDCED7;
 		}
 		#chart-area, #chart-travel, #chart-rose, #chart-mode {
 			padding: 5px;
@@ -62,15 +60,18 @@
 			height: 30px;
 			margin-bottom: -5px;
 		}
+
 		#cmcLogo .text{
 			visibility: hidden;
 		}
+
 		#cmcLogo:hover{
 			background-image: none;
 			width: auto;
 			height: auto;
 			margin-bottom: -12px;
 		}
+
 		#cmcLogo:hover .text{
 			visibility:visible;
 			font-size: 11px;
@@ -90,6 +91,7 @@
 			width: 200px;
 			z-index:1000;
 		}
+
 		/* Avalanche Rose CSS */
 		.chart-title {
 			text-align: center;
@@ -104,6 +106,8 @@
 		.chart-wrapper {
 			border-radius: 3px;
 			margin-bottom: 10px;
+			overflow: none;
+			max-height: 100%;
 		}
 		
 		.chart-wrapper .chart-title {
@@ -111,12 +115,6 @@
 			font-size: 12px;
 			font-weight: 200;
 			padding: 7px 10px 4px;
-		}
-		
-		.chart-wrapper .chart-stage {
-			overflow: hidden;
-			padding: 5px 10px;
-			position: relative;
 		}
 
 		.chart-stage {
@@ -136,8 +134,9 @@
 			font-weight: 200;
 			padding: 7px 10px 4px;
 		}
+
 		.avy-rose-part {
-			fill: #d4d4d4;
+			fill: #e4e3e4;
 			stroke: black;
 			stroke-miterlimit: 10;
 			cursor: pointer;
@@ -164,8 +163,14 @@
 		.rose-multiselector {
 			cursor: pointer;
 		}
-		
 
+		a.rose-multiselector {
+			font-size: 12px;
+			color: #666666;
+			text-decoration: none;
+		}
+
+		
 
 		/* Responsive display CSS */
 		@media (max-width: 767px) {
