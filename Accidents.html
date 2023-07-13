@@ -1200,18 +1200,18 @@
 		"startDate": moment().subtract(5, 'year'),
 		"endDate": moment(),
 		ranges: {
-				'Current Avalanche Year': [moment('2023-10-01').subtract(365, 'days'), moment('2023-9-30')],
-				'Last Avalanche Year': [moment('2022-10-01').subtract(365, 'days'), moment('2022-9-30')],
-				'Last 5 Avalanche Years': [moment('2023-10-01').subtract(5, 'years'), moment('2023-9-30')],
-				'Last 10 Avalanche Years': [moment('2023-10-01').subtract(10, 'years'), moment('2023-9-30')],
-				'All': [moment().subtract(15, 'years'), moment()],
+				'Current Avalanche Year': [moment('2022-10-01'), moment('2023-9-30')],
+				'Last Avalanche Year': [moment('2021-10-01'), moment('2022-9-30')],
+				'Last 5 Avalanche Years': [moment('2018-10-01'), moment('2023-9-30')],
+				'Last 10 Avalanche Years': [moment('2013-10-01'), moment('2023-9-30')],
+				'All': [moment().subtract(15, 'years'), moment('2023-9-30')],
 				},
 				//maxDate: moment()
 		}, updateDisplayedDateRange,
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
-	updateDisplayedDateRange(moment('2023-10-01').subtract(5, 'year'), moment('2023-9-30'));
+	updateDisplayedDateRange(moment('2018-10-01'), moment('2023-9-30'));
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
