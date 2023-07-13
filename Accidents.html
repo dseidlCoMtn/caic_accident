@@ -281,6 +281,145 @@
 	var startDate, endDate, month=0, activity=0, mode=0;
 	var lassoIDs=[];
 
+	function layerFilter(feature) {
+		//Activity filter
+		if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0) {
+			if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Activity & lasso filter
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0) {
+			if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Travel Mode filter
+		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length == 0) {
+			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Travel Mode + lasso filter
+		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length > 0) {
+			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Activity + Month filter
+		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0) {
+			if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Activity + Month + lasso filter
+		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0) {
+			if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Activity + Travel Mode filter
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0) {
+			if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Activity + Travel Mode + lasso filter
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0) {
+			if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Travel Mode + Month filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length == 0) {
+			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Travel Mode + Month + lasso filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length > 0) {
+			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Travel Mode + Month + Activity filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length == 0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Travel Mode + Month + Activity + lasso filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length > 0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Month filter
+		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length == 0) {
+			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Month + lasso filter
+		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length > 0) {
+			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Date filter
+		else {
+			if ((moment(feature.properties.datetime)) >= startDate
+				&& (moment(feature.properties.datetime)) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+	}
+
 	function mapChange() {
 		var hasAcc = map.hasLayer(acc);
 		var hasAccByType = map.hasLayer(accByType);
@@ -296,144 +435,6 @@
 		layerControl.removeLayer(heat);
 		startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
 		endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
-		function layerFilter(feature) {
-				//Activity filter
-				if (activity != 0 && monthSelected==0 && modeSelected==0 && lassoIDs.length==0){
-					if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Activity & lasso filter
-				else if (activity != 0 && monthSelected==0 && modeSelected==0 && lassoIDs.length>0){
-					if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Travel Mode filter
-				else if (mode != 0 && monthSelected==0 && actSelected==0 && lassoIDs.length==0){
-					if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Travel Mode + lasso filter
-				else if (mode != 0 && monthSelected==0 && actSelected==0 && lassoIDs.length>0){
-					if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Activity + Month filter
-				else if (activity != 0 && monthSelected==1 && modeSelected==0 && lassoIDs.length==0){
-					if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Activity + Month + lasso filter
-				else if (activity != 0 && monthSelected==1 && modeSelected==0 && lassoIDs.length>0){
-					if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Activity + Travel Mode filter
-				else if (activity != 0 && monthSelected==0 && modeSelected==1 && lassoIDs.length==0){
-					if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Activity + Travel Mode + lasso filter
-				else if (activity != 0 && monthSelected==0 && modeSelected==1 && lassoIDs.length>0){
-					if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Travel Mode + Month filter
-				else if (mode != 0 && monthSelected==1 && actSelected==0 && lassoIDs.length==0){
-					if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Travel Mode + Month + lasso filter
-				else if (mode != 0 && monthSelected==1 && actSelected==0 && lassoIDs.length>0){
-					if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate  && lassoIDs.includes(feature.properties.acc_id)){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Travel Mode + Month + Activity filter
-				else if (mode != 0 && monthSelected==1 && actSelected==1 && lassoIDs.length==0){
-					if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Travel Mode + Month + Activity + lasso filter
-				else if (mode != 0 && monthSelected==1 && actSelected==1 && lassoIDs.length>0){
-					if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Month filter
-				else if (month != 0 && actSelected==0 && modeSelected==0 && lassoIDs.length==0){
-					if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Month + lasso filter
-				else if (month != 0 && actSelected==0 && modeSelected==0 && lassoIDs.length>0){
-					if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)){
-						return true
-					}
-					else {
-						return false
-					}
-				}
-				//Date filter
-				else{
-					if ((moment(feature.properties.datetime)) >= startDate
-						&& (moment(feature.properties.datetime)) < endDate){ 
-						return true
-					}
-					else {
-						return false
-					}
-				}
-			}
 		acc = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
 				return L.circleMarker(latlng);},
@@ -472,9 +473,9 @@
 		firstSelect=0;
 		secondSelect=0;
 		thirdSelect=0;
-		$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
-		$('#reportrange').data('daterangepicker').endDate=moment();
-		updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
+		$('#reportrange').data('daterangepicker').startDate=moment('2018-10-01');
+		$('#reportrange').data('daterangepicker').endDate=moment('2023-09-30');
+		updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
 		barLabels.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
@@ -483,9 +484,6 @@
 		updateActivityChart();
 		processBarChartDates();
 		processBarChartMode();
-		//$('#reportrange').data('daterangepicker').startDate=moment().subtract(15, 'year');
-		//$('#reportrange').data('daterangepicker').endDate=moment();
-		//updateDisplayedDateRange(moment().subtract(15, 'year'), moment());
 		},'Clear Filters').addTo(map);
 		
 
@@ -505,7 +503,8 @@
 	});
 	var cmcLogo = new L.Control.Button()
 	cmcLogo.addTo(map);
-	
+
+	//Add lasso button	
 	const lasso = L.lasso(map);
 		
 	L.easyButton('<img src="images/lasso.svg" style="width:19px; margin-top:6px">',function(btn,map){
@@ -515,8 +514,6 @@
 		lassoLayers(evt.layers);
 	});
 
-	
-	
 	function lassoLayers(layers) {
 		var hasAcc = map.hasLayer(acc);
 		var hasAccByType = map.hasLayer(accByType);
@@ -526,7 +523,10 @@
 		if (hasAcc == false && hasAccByType==false && hasHeat == true ){
 		alert("Please turn on one of the accident point layers to filter by lasso.");
 		}
-		
+
+		else if (layers.length==0){
+			alert("No points in lasso area; please try again.");
+		}
 		else{
 		
 	 	actSelected = 0;
@@ -899,11 +899,14 @@
 				heatPoints.push([lat, lon, date, activ, travMode, accID])
 		}
 		};
+		startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
+		endDate = moment(new Date($('#reportrange').data('daterangepicker').endDate));
 	  	acc = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
                         return L.circleMarker(latlng);},
 						onEachFeature: onEachFeature,
 						style:style,
+						filter:layerFilter
 			}).addTo(map);
 		
 		accByType = L.geoJson(apigeo, {
@@ -911,6 +914,7 @@
                         return L.marker(latlng);},
 						onEachFeature: onEachFeatureTravelMode,
 						style: styleAccidentType,
+						filter:layerFilter
 			});
 			
 		zones = L.geoJson(forecastZones, {
@@ -1124,33 +1128,7 @@
 			maxZoom: 25
 			});
 	};
-	
-	//function to parse csv from url
-	<!-- function parseCSV(url) { -->
-		<!-- return fetch(url) -->
-			<!-- .then(response => response.text()) -->
-			<!-- .then(csv => { -->
-				<!-- const rows = csv.split("\n"); -->
-				<!-- const points = []; -->
-
-				<!-- for (const row of rows) { -->
-					<!-- const values = row.split(","); -->
-					<!-- const lat = parseFloat(values[4]); -->
-					<!-- const lon = parseFloat(values[5]); -->
-					<!-- const csvDate = values[6]; -->
-					<!-- const activ = values[7]; -->
-					<!-- const travMode = values[8]; -->
-					<!-- const accID = values[0]; -->
-					<!-- if (!isNaN(lat) && !isNaN(lon)) { -->
-						<!-- points.push([lat, lon, csvDate, activ, travMode, accID]); -->
-					<!-- } -->
-				<!-- } -->
-				
-				<!-- return points; -->
-			<!-- }) -->
-	<!-- }; -->
-	
-	
+		
 	//needed to set the layerControl as a variable so we can call it in
 	//later filter function for dates
 	const layerControl = L.control.layers(baseLayers, overlays, {collapsed: false});
@@ -1178,15 +1156,6 @@
 		}
 	}
 
-	//call functions
-	//parse csv, create heatmap, assign var
-	<!-- var accPoints = []; -->
-
-	<!-- parseCSV(url).then(function(points) { -->
-		<!-- accPoints = points; -->
-		<!-- heat = createHeatmap(map, accPoints); -->
-	<!-- }); -->
-
 	addOverlays();
 	
 	// once the dates are selected, format and display the range in the date selection box.
@@ -1197,21 +1166,21 @@
 	//Sets the dropdowns and ranges for the date range picker
 	$('#reportrange').daterangepicker({
 		"showDropdowns": false,
-		"startDate": moment().subtract(5, 'year'),
-		"endDate": moment(),
+		"startDate": moment('2018-10-01'),
+		"endDate": moment('2023-09-30'),
 		ranges: {
-				'Current Avalanche Year': [moment('2022-10-01'), moment('2023-9-30')],
-				'Last Avalanche Year': [moment('2021-10-01'), moment('2022-9-30')],
-				'Last 5 Avalanche Years': [moment('2018-10-01'), moment('2023-9-30')],
-				'Last 10 Avalanche Years': [moment('2013-10-01'), moment('2023-9-30')],
-				'All': [moment().subtract(15, 'years'), moment('2023-9-30')],
+				'Current Avalanche Year': [moment('2022-10-01'), moment('2023-09-30')],
+				'Last Avalanche Year': [moment('2021-10-01'), moment('2022-09-30')],
+				'Last 5 Avalanche Years': [moment('2018-10-01'), moment('2023-09-30')],
+				'Last 10 Avalanche Years': [moment('2013-10-01'), moment('2023-09-30')],
+				'All': [moment('2008-01-01'), moment()],
 				},
 				//maxDate: moment()
 		}, updateDisplayedDateRange,
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
-	updateDisplayedDateRange(moment('2018-10-01'), moment('2023-9-30'));
+	updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
@@ -1247,10 +1216,6 @@
 	let barChartDates=[];
 	let barChartModeArr =[];
 
-		
-		<!-- function delay(time) { -->
-			<!-- return new Promise(resolve => setTimeout(resolve, time)); -->
-		<!-- } -->
 		
 		
 	function updateActivityChart() {
