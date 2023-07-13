@@ -922,7 +922,7 @@
 			onEachFeature: onEachZone
 			});
 		accPoints= await(heatPoints);
-		heat = createHeatmap(map, accPoints);
+		heat = createHeatmap(map, accPoints, startDate, endDate);
 		}
 
 	var baseLayers = {
