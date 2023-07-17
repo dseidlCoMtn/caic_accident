@@ -37,7 +37,17 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	
 	<!-- Loading jquery csv - can remove when lat/long included in api -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>
+	
+	<!-- Loading d3 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+	<!-- Loading dc -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/4.2.7/dc.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/4.2.7/style/dc.min.css" />
+
+	<!-- Loading crossfilter -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
 	
 </head>
 <body>	
@@ -554,7 +564,7 @@
 		barLabels.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
-		function layerFilter(feature) {
+		function layerFilterL(feature) {
 				if (lassoIDs.includes(feature.properties.acc_id) === true){
 						return true
 						
@@ -568,14 +578,14 @@
 				return L.circleMarker(latlng);},
 				onEachFeature: onEachFeature,
 				style:style,
-				filter: layerFilter
+				filter: layerFilterL
 		});
 		accByType = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
                 return L.marker(latlng);},
 				onEachFeature: onEachFeatureTravelMode,
 				style: styleAccidentType,
-				filter: layerFilter
+				filter: layerFilterL
 		});
 		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs);
 		if (hasAcc == true){acc.addTo(map)};
@@ -805,8 +815,14 @@
 		layer.bindPopup("<strong>" + feature.properties.name +"</strong><br>");
 		
 	}
-	
-	
+
+		//Classify elevation into treeline
+		function getTreeline(d) {
+		return d < 11000 ?  '<TL' :
+				d < 11700  ? 'TL' :
+				d < 20000  ? '>TL' :
+						 null;
+	};
 
 	var acc, accByType, zones, heat;
 	//var heat;
@@ -838,7 +854,7 @@
 		var classicID = json[i].classic_accident_id;
 		var latitude=0;
 		var longitude=0;
-		var travmode;
+		var travmode
 		//switching travel modes with null to Unknown
 		if (json[i].travel_mode === null){
 				travmode="Unknown";
@@ -846,6 +862,7 @@
 		else{
 			travmode = json[i].travel_mode;
 			}
+		let treeline = getTreeline(json[i].accident_locations[0].site_elevation);
 		//Grabbing lat/longs from the CSV
 		for (var j in csvObj){
 			var classicID2 = parseInt(csvObj[j].acc_id);
@@ -886,6 +903,7 @@
 					"elevation":json[i].accident_locations[0].site_elevation,
 					"aspect":json[i].accident_locations[0].aspect,
 					"slope":json[i].accident_locations[0].angle,
+					"treeline":treeline
 					//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
 					//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
 				}
@@ -908,7 +926,7 @@
 						style:style,
 						filter:layerFilter
 			}).addTo(map);
-		
+
 		accByType = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
                         return L.marker(latlng);},
