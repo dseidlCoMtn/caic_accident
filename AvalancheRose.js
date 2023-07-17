@@ -1,11 +1,9 @@
 
-        // this is not doing anything yet.
-		
-		//add link to d3 here
-
-		const charts = {
+/* 		const charts = {
 			rosePieChart: dc.pieChart('#rose-pie-chart')
-		};
+		}; */
+
+		const rosePieChart = dc.pieChart('#rose-pie-chart');
 
 		const ROSE_KEYS = [
 			'E <TL', 'E TL', 'E >TL', 'SE >TL', 'SE TL', 'SE <TL', 'S <TL', 'S TL',
@@ -13,8 +11,11 @@
 			'N >TL', 'NE >TL', 'NE TL', 'NE <TL', 'N <TL', 'N TL', 'NW TL', 'NW <TL'
 		];
 
+
+
+
         // avy rose
-		d3.selectAll(".avy-rose-part")
+/* 		d3.selectAll(".avy-rose-part")
 			.on("mouseover", function () {
 				d3.select(this).classed('hovered', true);
 				console.log("mouseover");
@@ -24,9 +25,9 @@
 			})
 			.on('click', function () {
 				// toggle the filter on the chart
-				charts.rosePieChart.filter([$(this).attr('filter')]);
+				rosePieChart.filter([$(this).attr('filter')]);
 				dc.redrawAll();
-			});
+			}); */
 
 		// rose multifilters
 /* 		$('.rose-multiselector').click(el => {
