@@ -1,23 +1,36 @@
 
-        // this is not doing anything yet.
-		
-		//add link to d3 here
+/* 		const charts = {
+			rosePieChart: dc.pieChart('#rose-pie-chart')
+		}; */
+
+		const rosePieChart = dc.pieChart('#rose-pie-chart');
+
+		const ROSE_KEYS = [
+			'E <TL', 'E TL', 'E >TL', 'SE >TL', 'SE TL', 'SE <TL', 'S <TL', 'S TL',
+			'S >TL', 'SW >TL', 'SW TL', 'SW <TL', 'W <TL', 'W TL', 'W >TL', 'NW >TL',
+			'N >TL', 'NE >TL', 'NE TL', 'NE <TL', 'N <TL', 'N TL', 'NW TL', 'NW <TL'
+		];
+
+
+
+
         // avy rose
-		d3.selectAll(".avy-rose-part")
+/* 		d3.selectAll(".avy-rose-part")
 			.on("mouseover", function () {
 				d3.select(this).classed('hovered', true);
+				console.log("mouseover");
 			})
 			.on("mouseout", function () {
 				d3.select(this).classed('hovered', false);
 			})
 			.on('click', function () {
 				// toggle the filter on the chart
-				charts.rosePieChart.filter([$(this).attr('filter')]);
+				rosePieChart.filter([$(this).attr('filter')]);
 				dc.redrawAll();
-			});
+			}); */
 
 		// rose multifilters
-		$('.rose-multiselector').click(el => {
+/* 		$('.rose-multiselector').click(el => {
 			// remove all the existing filters on the rose
 			charts.rosePieChart.filterAll();
 
@@ -43,4 +56,4 @@
 		// fire it the first time
 		_setAvyRoseValues();
 		// and also update the avy rose whenever other filters update
-		charts.ndx.onChange(_setAvyRoseValues);
+		charts.ndx.onChange(_setAvyRoseValues); */

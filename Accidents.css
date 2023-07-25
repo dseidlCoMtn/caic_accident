@@ -115,10 +115,10 @@
 		}
 		
 		.chart-wrapper .chart-title {
-			color: black;
 			font-size: 12px;
-			font-weight: 200;
+			font-weight: bold;
 			padding: 7px 10px 4px;
+			color: #666666;
 		}
 
 		.chart-stage {
@@ -147,7 +147,7 @@
 		}
 		
 		.avy-rose-part.hovered {
-			fill: #e7e7e7;
+			fill: #ffffff;
 		}
 		
 		.avy-rose-part.not-selected {

@@ -37,7 +37,17 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	
 	<!-- Loading jquery csv - can remove when lat/long included in api -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>
+	
+	<!-- Loading d3 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+	<!-- Loading dc -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/4.2.7/dc.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/4.2.7/style/dc.min.css" />
+
+	<!-- Loading crossfilter -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
 	
 </head>
 <body>	
@@ -53,7 +63,202 @@
 			<div id='chart-container'>
 				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
 				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
-				<div id="chart-rose"><object id="rose" data="AvalancheRose.html"></object></div>
+				<div id="chart-rose">
+					<div id="pie-rose" class="row pie-row">
+						<div class="col-xs-12 col-md-4">
+							<div class="chart-wrapper">
+								<div class="chart-title">
+									Avalanche Rose 
+									<span
+										id="unknown-avy-rose-number-display" data-toggle="tooltip" data-placement="top"
+										title="Incomplete elevation or aspect information has prevented some avalanches from being plotted on the rose.">
+									</span>
+								</div>
+								<div class="chart-stage text-center">
+									<a class="reset hidden within-chart" href="javascript:void(0)">
+										<!-- <span class="icon">↻</span> -->
+									</a>
+									<div id="rose-pie-chart" class='hidden'></div>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" width="180">
+										<g transform="matrix(1, 0, 0, 1, 28.720007, 28.720008)">
+											<g class="avy-rose-part" filter="E <TL">
+												<path d="M 376.21 127 L 376.21 273 L 329.82 253.78 L 329.82 146.26 L 376.21 127 Z" transform="translate(-8.72 -8.72)">
+													<title>E &lt;TL</title>
+												</path>
+												<text transform="translate(345 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="E TL">
+												<path d="M 329.83 146.22 L 329.83 253.74 L 282.95 234.33 L 282.95 165.62 L 329.83 146.22 Z" transform="translate(-8.72 -8.72)">
+													<title>E TL</title>
+												</path>
+												<text transform="translate(298 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="E >TL">
+												<path d="M 282.93 165.65 L 282.93 234.36 L 200 200 L 282.93 165.65 Z" transform="translate(-8.72 -8.72)">
+													<title>E &gt;TL</title>
+												</path>
+												<text transform="translate(250 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="SE >TL">
+												<path d="M 200 200 L 282.94 234.36 L 234.36 283 L 200 200 Z" transform="translate(-8.72 -8.72)">
+													<title>SE &gt;TL</title>
+												</path>
+												<text transform="translate(236 236)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="SE TL">
+												<path d="M 282.94 234.36 L 329.82 253.77 L 253.76 329.77 L 234.36 283 L 282.94 234.36 Z" transform="translate(-8.72 -8.72)">
+													<title>SE TL</title>
+												</path>
+												<text transform="translate(267 267)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="SE <TL">
+												<path d="M 329.82 253.77 L 376.21 273 L 273 376.21 L 253.77 329.79 L 329.82 253.77 Z" transform="translate(-8.72 -8.72)">
+													<title>SE &lt;TL</title>
+												</path>
+												<text transform="translate(300 300)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="S <TL">
+												<path d="M 253.76 329.79 L 273 376.21 L 127 376.21 L 146.22 329.81 L 253.76 329.79 Z" transform="translate(-8.72 -8.72)">
+													<title>S &lt;TL</title>
+												</path>
+												<text transform="translate(191 348)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="S TL">
+												<path d="M 234.36 283 L 253.76 329.84 L 146.23 329.84 L 165.64 283 L 234.36 283 Z" transform="translate(-8.72 -8.72)">
+													<title>S TL</title>
+												</path>
+												<text transform="translate(191 300)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="S >TL">
+												<path d="M 200 200 L 234.36 283 L 165.65 283 L 200 200 Z" transform="translate(-8.72 -8.72)">
+													<title>S &gt;TL</title>
+												</path>
+												<text transform="translate(191 255)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="SW >TL">
+												<path d="M 200 200 L 165.64 283 L 117.07 234.4 L 200 200 Z" transform="translate(-8.72 -8.72)">
+													<title>SW &gt;TL</title>
+												</path>
+												<text transform="translate(145 236)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="SW TL">
+												<path d="M 165.64 283 L 146.23 329.86 L 70.23 253.86 L 117.14 234.43 L 165.64 283 Z" transform="translate(-8.72 -8.72)">
+													<title>SW TL</title>
+												</path>
+												<text transform="translate(115 267)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="SW <TL">
+												<path d="M 146.23 329.81 L 127 376.21 L 23.79 273 L 70.16 253.79 L 146.16 329.79 L 146.23 329.81 Z" transform="translate(-8.72 -8.72)">
+													<title>SW &lt;TL</title>
+												</path>
+												<text transform="translate(83 300)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="W <TL">
+												<path d="M 70.16 253.78 L 23.79 273 L 23.79 127 L 70.12 146.2 L 70.16 253.78 Z" transform="translate(-8.72 -8.72)">
+													<title>W &lt;TL</title>
+												</path>
+												<text transform="translate(38 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="W TL">
+												<path d="M 117.07 165.65 L 117.07 234.34 L 70.16 253.78 L 70.16 146.2 L 117.07 165.65 Z" transform="translate(-8.72 -8.72)">
+													<title>W TL</title>
+												</path>
+												<text transform="translate(85 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="W >TL">
+												<path d="M 200 200 L 117.07 234.35 L 117.07 165.66 L 200 200 Z" transform="translate(-8.72 -8.72)">
+													<title>W &gt;TL</title>
+												</path>
+												<text transform="translate(130 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="NW >TL">
+												<path d="M 165.65 117.08 L 200 200 L 117.07 165.65 L 165.65 117.08 Z" transform="translate(-8.72 -8.72)">
+													<title>NW &gt;TL</title>
+												</path>
+												<text transform="translate(148 149)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="N >TL">
+												<path d="M 234.35 117.08 L 200 200 L 165.65 117.08 L 234.35 117.08 Z" transform="translate(-8.72 -8.72)">
+													<title>N &gt;TL</title>
+												</path>
+												<text transform="translate(191 136)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="NE >TL">
+												<path d="M 234.35 117.08 L 282.92 165.65 L 200 200 L 234.35 117.08 Z" transform="translate(-8.72 -8.72)">
+													<title>NE &gt;TL</title>
+												</path>
+												<text transform="translate(235 149)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="NE TL">
+												<path d="M 329.83 146.22 L 282.93 165.65 L 234.36 117.08 L 253.8 70.13 L 329.83 146.22 Z" transform="translate(-8.72 -8.72)">
+													<title>NE TL</title>
+												</path>
+												<text transform="translate(266 120)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="NE <TL">
+												<path d="M 376.21 127 L 329.83 146.21 L 253.83 70.12 L 273 23.79 L 376.21 127 Z" transform="translate(-8.72 -8.72)">
+													<title>NE &lt;TL</title>
+												</path>
+												<text transform="translate(300 85)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="N <TL">
+												<path d="M 273 23.79 L 253.8 70.13 L 146.24 70.13 L 127 23.79 L 273 23.79 Z" transform="translate(-8.72 -8.72)">
+													<title>N &lt;TL</title>
+												</path>
+												<text transform="translate(191 40)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="N TL">
+												<path d="M 253.76 70.11 L 234.31 117.11 L 165.61 117.11 L 146.16 70.11 L 253.76 70.11 Z" transform="translate(-8.72 -8.72)">
+													<title>N TL</title>
+												</path>
+												<text transform="translate(191 88)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="NW TL">
+												<path d="M 146.2 70.11 L 165.65 117.11 L 117.07 165.68 L 70.12 146.2 L 146.2 70.11 Z" transform="translate(-8.72 -8.72)">
+													<title>NW TL</title>
+												</path>
+												<text transform="translate(117 120)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<g class="avy-rose-part" filter="NW <TL">
+												<path d="M 127 23.79 L 146.2 70.11 L 70.13 146.17 L 23.79 127 L 127 23.79 Z" transform="translate(-8.72 -8.72)">
+													<title>NW &lt;TL</title>
+												</path>
+												<text transform="translate(85 85)" dominant-baseline="middle" text-anchor="middle">0</text>
+											</g>
+											<text 
+												class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle" x="191" y="-5"
+												filter='["N >TL", "N TL", "N <TL", "NE >TL", "NE TL", "NE <TL", "NW >TL", "NW TL", "NW <TL"]'>
+												N
+											</text>
+											<text 
+												class="cardinal-direction rose-multiselector"  dominant-baseline="middle" text-anchor="middle" y="195" x="-12"
+												filter='["W >TL", "W TL", "W <TL", "SW >TL", "SW TL", "SW <TL", "NW >TL", "NW TL", "NW <TL"]'>
+												W
+											</text>
+											<text
+												class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle" x="387" y="195"
+												filter='["E >TL", "E TL", "E <TL", "SE >TL", "SE TL", "SE <TL", "NE >TL", "NE TL", "NE <TL"]'>
+												E
+											</text>
+											<text
+												class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle"  x="191" y="395"
+												filter='["S >TL", "S TL", "S <TL", "SE >TL", "SE TL", "SE <TL", "SW >TL", "SW TL", "SW <TL"]'>
+												S
+											</text>
+										</g>
+									</svg>
+									<span>
+										<a href="javascript:void(0)" class="rose-multiselector" filter='["N <TL", "NE <TL", "E <TL", "SE <TL", "S <TL", "SW <TL", "W <TL", "NW <TL"]'>Below</a>
+										<a href="javascript:void(0)" class="rose-multiselector" filter='["N <TL", "NE <TL", "E <TL", "SE <TL", "S <TL", "SW <TL", "W <TL", "NW <TL", "N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL"]'>|</a>
+										<a href="javascript:void(0)" class="rose-multiselector" filter='["N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL"]'>Near</a>
+										<a href="javascript:void(0)" class="rose-multiselector" filter='["N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL", "N >TL", "NE >TL", "E >TL", "SE >TL", "S >TL", "SW >TL", "W >TL", "NW >TL"]'>|</a>
+										<a href="javascript:void(0)" class="rose-multiselector" filter='["N >TL", "NE >TL", "E >TL", "SE >TL", "S >TL", "SW >TL", "W >TL", "NW >TL"]'>Above</a>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div id="chart-mode"><canvas id="bar-chart-mode"></canvas></div>
 			</div>
 		</div>
@@ -280,10 +485,23 @@
 	
 	var startDate, endDate, month=0, activity=0, mode=0;
 	var lassoIDs=[];
+	var roseFilters = rosePieChart.filters();
+	var roseFiltersFlat = roseFilters.flat();
 
 	function layerFilter(feature) {
+		var roseFiltersFlat = roseFilters.flat();
+
+		//Rose filter
+		if (activity == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (roseFiltersFlat.includes(feature.properties.roseField)&& moment(feature.properties.datetime) >= startDate && moment(feature.properties.datetime) < endDate) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Activity filter
-		if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0) {
+		if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -291,8 +509,17 @@
 				return false
 			}
 		}
+		//Activity & rose filter
+				if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Activity & lasso filter
-		else if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0) {
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -300,8 +527,17 @@
 				return false
 			}
 		}
+		//Activity & lasso & rose filter
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Travel Mode filter
-		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length == 0) {
+		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -309,8 +545,17 @@
 				return false
 			}
 		}
+		//Travel Mode + rose filter
+		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Travel Mode + lasso filter
-		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length > 0) {
+		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -318,8 +563,17 @@
 				return false
 			}
 		}
+		//Travel Mode + lasso + rose filter
+		else if (mode != 0 && monthSelected == 0 && actSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Activity + Month filter
-		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0) {
+		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -327,8 +581,17 @@
 				return false
 			}
 		}
+		//Activity + Month + rose filter
+		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Activity + Month + lasso filter
-		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0) {
+		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -336,8 +599,17 @@
 				return false
 			}
 		}
+		//Activity + Month + lasso + rose filter
+		else if (activity != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Activity + Travel Mode filter
-		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0) {
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -345,8 +617,17 @@
 				return false
 			}
 		}
+		//Activity + Travel Mode + rose filter
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Activity + Travel Mode + lasso filter
-		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0) {
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -354,8 +635,17 @@
 				return false
 			}
 		}
+		//Activity + Travel Mode + lasso + rose filter
+		else if (activity != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.acc_activity == activity && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Travel Mode + Month filter
-		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length == 0) {
+		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -363,8 +653,17 @@
 				return false
 			}
 		}
+		//Travel Mode + Month + rose filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Travel Mode + Month + lasso filter
-		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length > 0) {
+		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -372,8 +671,17 @@
 				return false
 			}
 		}
+		//Travel Mode + Month + lasso + rose filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Travel Mode + Month + Activity filter
-		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length == 0) {
+		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -381,8 +689,17 @@
 				return false
 			}
 		}
+		//Travel Mode + Month + Activity + rose filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Travel Mode + Month + Activity + lasso filter
-		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length > 0) {
+		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -390,8 +707,17 @@
 				return false
 			}
 		}
+		//Travel Mode + Month + Activity + lasso + rose filter
+		else if (mode != 0 && monthSelected == 1 && actSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.acc_activity == activity && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Month filter
-		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length == 0) {
+		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -399,9 +725,27 @@
 				return false
 			}
 		}
+		//Month + rose filter
+		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Month + lasso filter
-		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length > 0) {
+		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//Month + lasso + rose filter
+		else if (month != 0 && actSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
@@ -449,7 +793,7 @@
 				style: styleAccidentType,
 				filter: layerFilter
 		});
-		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs);
+		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
@@ -467,23 +811,29 @@
 		actSelected = 0;
 		monthSelected = 0;
 		modeSelected = 0;
+		roseSelected =0;
 		month=0;
 		activity=0;
 		mode = 0;
 		firstSelect=0;
 		secondSelect=0;
 		thirdSelect=0;
+		fourthSelect=0;
 		$('#reportrange').data('daterangepicker').startDate=moment('2018-10-01');
 		$('#reportrange').data('daterangepicker').endDate=moment('2023-09-30');
 		updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
 		barLabels.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
+		roseData.length=0;
 		lassoIDs.length=0;
+		rosePieChart.filterAll();
+		roseFilters = rosePieChart.filters();
 		mapChange();
 		updateActivityChart();
 		processBarChartDates();
 		processBarChartMode();
+		processRose();
 		},'Clear Filters').addTo(map);
 		
 
@@ -532,12 +882,14 @@
 	 	actSelected = 0;
 		monthSelected = 0;
 		modeSelected = 0;
+		roseSelected = 0;
 		month=0;
 		activity=0;
 		mode = 0;
 		firstSelect=0;
 		secondSelect=0;
 		thirdSelect=0;
+		fourthSelect=0;
 
 		map.removeLayer(acc);
 		map.removeLayer(accByType);
@@ -554,7 +906,10 @@
 		barLabels.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
-		function layerFilter(feature) {
+		roseData.length=0;
+		rosePieChart.filterAll();
+		roseFilters = rosePieChart.filters();
+		function layerFilterL(feature) {
 				if (lassoIDs.includes(feature.properties.acc_id) === true){
 						return true
 						
@@ -568,16 +923,16 @@
 				return L.circleMarker(latlng);},
 				onEachFeature: onEachFeature,
 				style:style,
-				filter: layerFilter
+				filter: layerFilterL
 		});
 		accByType = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
                 return L.marker(latlng);},
 				onEachFeature: onEachFeatureTravelMode,
 				style: styleAccidentType,
-				filter: layerFilter
+				filter: layerFilterL
 		});
-		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs);
+		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
@@ -586,6 +941,7 @@
 		updateActivityChart();
 		processBarChartDates();
 		processBarChartMode();
+		processRose();
 		}
 		
         };
@@ -764,6 +1120,7 @@
 		barChartDates.push(moment(feature.properties.datetime).format("MMM"));
 		/* push to bar chart for travel mode graph*/
 		barChartModeArr.push(feature.properties.acc_travel_mode);
+		roseData.push({roseField:feature.properties.roseField});
 	}
 
 	//Actions for mouseover, mouseout for accident points BY TRAVEL MODE
@@ -805,8 +1162,14 @@
 		layer.bindPopup("<strong>" + feature.properties.name +"</strong><br>");
 		
 	}
-	
-	
+
+		//Classify elevation into treeline
+		function getTreeline(d) {
+		return d < 11000 ?  '<TL' :
+				d < 11700  ? 'TL' :
+				d < 20000  ? '>TL' :
+						 null;
+	};
 
 	var acc, accByType, zones, heat;
 	//var heat;
@@ -838,7 +1201,7 @@
 		var classicID = json[i].classic_accident_id;
 		var latitude=0;
 		var longitude=0;
-		var travmode;
+		var travmode
 		//switching travel modes with null to Unknown
 		if (json[i].travel_mode === null){
 				travmode="Unknown";
@@ -846,6 +1209,7 @@
 		else{
 			travmode = json[i].travel_mode;
 			}
+		let treeline = getTreeline(json[i].accident_locations[0].site_elevation);
 		//Grabbing lat/longs from the CSV
 		for (var j in csvObj){
 			var classicID2 = parseInt(csvObj[j].acc_id);
@@ -886,6 +1250,8 @@
 					"elevation":json[i].accident_locations[0].site_elevation,
 					"aspect":json[i].accident_locations[0].aspect,
 					"slope":json[i].accident_locations[0].angle,
+					"treeline":treeline,
+					"roseField":json[i].accident_locations[0].aspect+" "+treeline
 					//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
 					//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
 				}
@@ -896,7 +1262,8 @@
 				const activ = json[i].activity;
 				const travMode = travmode;
 				const accID = json[i].classic_accident_id;
-				heatPoints.push([lat, lon, date, activ, travMode, accID])
+				const roseID = json[i].accident_locations[0].aspect+" "+treeline;
+				heatPoints.push([lat, lon, date, activ, travMode, accID, roseID])
 		}
 		};
 		startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
@@ -908,7 +1275,7 @@
 						style:style,
 						filter:layerFilter
 			}).addTo(map);
-		
+
 		accByType = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
                         return L.marker(latlng);},
@@ -934,10 +1301,11 @@
 
 
 	//Function to call L.heatLayer
-	function createHeatmap(map, points, minDate, maxDate, activity, month, mode, lassoIDs) {
+	function createHeatmap(map, points, minDate, maxDate, activity, month, mode, lassoIDs, roseFiltersFlat) {
 		const pointsArray = [];
+		roseFiltersFlat = roseFilters.flat();
 		//No graph selections + lasso
-		if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0){
+		if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 			for (i in points) {
 				const pointID = points[i][5];
 				if (lassoIDs.includes(pointID) === true){
@@ -945,8 +1313,18 @@
 					}
 				}
 			}
+		//Rose
+		if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+			for (i in points) {
+				const pointRose = points[i][6];
+				const pointDate = moment(points[i][2]);
+				if (roseFiltersFlat.includes(pointRose) === true && (pointDate >= minDate) && (pointDate < maxDate)){
+					pointsArray.push([points[i][0], points[i][1]]);
+					}
+				}
+			}
 		//Activity + month + mode
-		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0){
+		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
@@ -957,8 +1335,21 @@
 						}
 					} 
 			}
+		//Activity + month + mode + rose
+		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Activity + month + mode + lasso
-		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0){
+		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointActivity = points[i][3];
@@ -970,8 +1361,22 @@
 						}
 					} 
 			}
+		//Activity + month + mode + lasso + rose
+		else if (activity !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Activity + month
-		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0){
+		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
@@ -981,8 +1386,20 @@
 						}
 					} 
 			}
+		//Activity + month + rose
+		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Activity + month + lasso
-		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0){
+		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointActivity = points[i][3];
@@ -993,8 +1410,21 @@
 						}
 					} 
 			}
+		//Activity + month + lasso + rose
+		else if (activity !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Activity + mode
-		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0){
+		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
 					const pointDate = moment(points[i][2]);
@@ -1004,20 +1434,45 @@
 						}
 					} 
 			}
+		//Activity + mode + rose
+		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Activity + mode + lasso
-		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0){
+		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointActivity = points[i][3];
 					const pointDate = moment(points[i][2]);
 					const pointMode = points[i][4];
-					if ((pointActivity == activity) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
+					if ((pointActivity == activity) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Activity + mode + lasso + rose
+		else if (activity !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
 		//Month + mode
-		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length == 0){
+		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
@@ -1027,20 +1482,45 @@
 						}
 					} 
 			}
+		//Month + mode + rose
+		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					const pointRose = points[i][6];
+					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Month + mode + lasso
-		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length > 0){
+		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
 					const pointMode = points[i][4];
-					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
+					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Month + mode + lasso + rose
+		else if (month !=0 && mode !=0 && activity ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					const pointRose = points[i][6];
+					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
 		//Activity only
-		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0){
+		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointActivity = points[i][3];
 					const pointDate = moment(points[i][2]);
@@ -1049,8 +1529,19 @@
 						}
 					} 
 			}
+		//Activity + rose
+		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Activity + lasso
-		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0){
+		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointActivity = points[i][3];
@@ -1060,9 +1551,20 @@
 						}
 					} 
 			}
+		//Activity + lasso + rose
+		else if (activity !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointActivity = points[i][3];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointActivity == activity) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Month only
-		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0){
-				//check if month matches 
+		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
@@ -1071,9 +1573,19 @@
 						}
 					} 
 			}
+		//Month + rose
+		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Month + lasso
-		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0){
-				//check if month matches 
+		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMonth = moment(points[i][2]).format("MMM");
@@ -1083,8 +1595,20 @@
 						}
 					} 
 			}
+		//Month + lasso + rose
+		else if (month !=0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Mode only
-		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0){
+		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointMode = points[i][4];
 					const pointDate = moment(points[i][2]);
@@ -1093,13 +1617,36 @@
 						}
 					} 
 			}
+		//Mode + rose
+		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
 		//Mode + lasso
-		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0){
+		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMode = points[i][4];
 					const pointDate = moment(points[i][2]);
 					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Mode + lasso + rose
+		else if (mode !=0 && activity==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
@@ -1150,6 +1697,7 @@
 			overlays["CAIC Zones"] = zones;
 			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
+			updateLegend();
 		}
 		else {
 			setTimeout(addOverlays, 50);
@@ -1192,17 +1740,23 @@
 			firstSelect=0;
 			secondSelect=0;
 			thirdSelect=0;
+			fourthSelect=0;
 			barLabels.length=0;
 			barChartDates.length=0;
 			barChartModeArr.length=0;
+			roseData.length=0;
+			rosePieChart.filterAll();
+			roseFilters = rosePieChart.filters();
 			lassoIDs.length=0;
 			mapChange();
 			actSelected = 0;
 			monthSelected = 0;
 			modeSelected = 0;
+			roseSelected =0;
 			updateActivityChart();
 			processBarChartDates();			
-			processBarChartMode();			
+			processBarChartMode();
+			processRose();			
 
 	});
 	
@@ -1210,11 +1764,13 @@
 	updateActivityChart();
 	processBarChartDates();
 	processBarChartMode();
+	processRose();
 		
-	//Setting empty arrays to hold activity bar graph data
+	//Setting empty arrays to hold graph data
 	let barLabels=[];
 	let barChartDates=[];
 	let barChartModeArr =[];
+	let roseData = [];
 
 		
 		
@@ -1267,8 +1823,8 @@
 	Chart.defaults.font.color = '#333';
 
 	//Stores whether selections have been made in charts
-	var actSelected = 0, monthSelected = 0, modeSelected = 0, firstSelect =0,
-	secondSelect=0, thirdSelect=0;
+	var actSelected = 0, monthSelected = 0, modeSelected = 0, roseSelected = 0, firstSelect =0,
+	secondSelect=0, thirdSelect=0, fourthSelect=0;
 	
 	//Properties for activity bar graph
 	const canvas = document.getElementById("barChartCanvas");
@@ -1315,58 +1871,87 @@
 								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 							}
 						}
-						if (monthSelected ==0 && modeSelected==0 && firstSelect==0) {
+						if (monthSelected ==0 && modeSelected==0 && firstSelect==0 && roseSelected==0) {
 							firstSelect= "activity";
 							titleText="1st Filter";
 							barChartDates.length=0;
 							processBarChartDates();
 							barChartModeArr.length=0;
 							processBarChartMode();
+							roseData.length=0;
+							processRose();
 							}
 						else if (firstSelect == "activity") {
 							titleText="1st Filter";
-							monthSelected=0;
-							month = 0;
-							modeSelected=0;
-							mode=0;
-							secondSelect=0;
-							thirdSelect=0;
+							monthSelected,month,modeSelected,mode,roseSelected=0;
+							secondSelect,thirdSelect,fourthSelect=0;
 							barChartDates.length=0;
 							processBarChartDates();
 							barChartModeArr.length=0;
 							processBarChartMode();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect==0 && firstSelect=="mode")  {
+						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="activity" && firstSelect=="mode"))  {
 							secondSelect="activity";
 							titleText="2nd Filter";
+							thirdSelect,fourthSelect=0;
+							monthSelected,month = 0;
+							roseSelected=0;
 							barChartDates.length=0;
 							processBarChartDates();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect==0 && firstSelect=="month")  {
+						else if ((secondSelect==0 && firstSelect=="month") || (secondSelect=="activity" && firstSelect=="month"))  {
 							secondSelect="activity";
 							titleText="2nd Filter";
+							thirdSelect,fourthSelect=0;
+							modeSelected,mode = 0;
+							roseSelected=0;
 							barChartModeArr.length=0;
 							processBarChartMode();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect=="activity" && firstSelect=="mode")  {
+						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="activity" && firstSelect=="rose"))  {
+							secondSelect="activity";
 							titleText="2nd Filter";
+							thirdSelect,fourthSelect=0;
+							modeSelected,mode = 0;
+							monthSelected,month = 0;
+							barChartModeArr.length=0;
+							processBarChartMode();
 							barChartDates.length=0;
 							processBarChartDates();
-							thirdSelect=0;
-							monthSelected=0;
-							month=0;
 							}
-						else if (secondSelect=="activity" && firstSelect=="month"){
-							titleText="2nd Filter";
-							barChartModeArr.length=0;
-							processBarChartMode();
-							thirdSelect=0;
-							modeSelected=0;
-							mode=0;
-							}
-						else  {
+						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="month") || (thirdSelect==0 && secondSelect=="month" && firstSelect=="rose") || (thirdSelect=="activity" && secondSelect=="rose" && firstSelect=="month") || (thirdSelect=="activity" && secondSelect=="month" && firstSelect=="rose")){
 							thirdSelect="activity";
 							titleText="3rd Filter";
+							fourthSelect=0;
+							modeSelected,mode = 0;
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="rose" || thirdSelect=="activity" && secondSelect=="rose" && firstSelect=="mode" || thirdSelect=="activity" && secondSelect=="mode" && firstSelect=="rose"){
+							thirdSelect="activity";
+							titleText="3rd Filter";
+							fourthSelect=0;
+							monthSelected,month = 0;
+							barChartDates.length=0;
+							processBarChartDates();
+							}
+						else if (thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="activity" && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="activity" && secondSelect=="mode" && firstSelect=="month"){
+							thirdSelect="activity";
+							titleText="3rd Filter";
+							fourthSelect=0;
+							roseSelected=0;
+							roseData.length=0;
+							processRose();
+							}
+						else  {
+							fourthSelect="activity";
+							titleText="4th Filter";
 							}
 						//console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
 						barChartCanvas.options.plugins.title.text = "Accidents by Activity Type | "+titleText+": "+value;
@@ -1430,58 +2015,84 @@
 								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 							}
 						}
-						if (actSelected==0 && modeSelected==0 && firstSelect==0) {
+						if (actSelected==0 && modeSelected==0 && firstSelect==0 && roseSelected==0) {
 							firstSelect= "month";
 							titleText="1st Filter";
 							barLabels.length=0;
 							updateActivityChart();
 							barChartModeArr.length=0;
 							processBarChartMode();
+							roseData.length=0;
+							processRose();
 							}
 						else if (firstSelect == "month") {
 							titleText="1st Filter";
-							actSelected=0;
-							activity=0;
-							modeSelected=0;
-							mode=0;
-							secondSelect=0;
-							thirdSelect=0;
+							actSelected,activity,modeSelected,mode,roseSelected=0;
+							secondSelect,thirdSelect,fourthSelect=0;
 							barLabels.length=0;
 							updateActivityChart();
 							barChartModeArr.length=0;
 							processBarChartMode();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect==0 && firstSelect=="activity")  {
+						else if ((secondSelect==0 && firstSelect=="activity") || (secondSelect=="month" && firstSelect=="activity"))  {
 							secondSelect="month";
 							titleText="2nd Filter";
+							thirdSelect, fourthSelect=0;
+							mode, modeSelected, roseSelected =0;
 							barChartModeArr.length=0;
 							processBarChartMode();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect==0 && firstSelect=="mode")  {
+						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="month" && firstSelect=="mode")) {
 							secondSelect="month";
 							titleText="2nd Filter";
+							thirdSelect, fourthSelect=0;
+							activity, actSelected, roseSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect=="month" && firstSelect=="mode")  {
+						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="month" && firstSelect=="rose")) {
+							secondSelect="month";
 							titleText="2nd Filter";
+							thirdSelect, fourthSelect=0;
+							activity, actSelected, mode, modeSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
-							thirdSelect=0;
-							activity=0;
-							actSelected=0;
-							}	
-						else if (secondSelect=="month" && firstSelect=="activity") {
-							titleText="2nd Filter";
 							barChartModeArr.length=0;
 							processBarChartMode();
-							thirdSelect=0;
-							mode=0;
-							modeSelected=0;
 							}
-						else {
+						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="activity") || (thirdSelect==0 && secondSelect=="activity" && firstSelect=="rose") || (thirdSelect=="month" && secondSelect=="rose" && firstSelect=="activity") || (thirdSelect=="month" && secondSelect=="activity" && firstSelect=="rose")){
 							thirdSelect="month";
 							titleText="3rd Filter";
+							fourthSelect=0;
+							modeSelected,mode = 0;
+							barChartModeArr.length=0;
+							processBarChartMode();
+							}
+						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="rose" || thirdSelect=="month" && secondSelect=="rose" && firstSelect=="mode" || thirdSelect=="month" && secondSelect=="mode" && firstSelect=="rose"){
+							thirdSelect="month";
+							titleText="3rd Filter";
+							fourthSelect=0;
+							actSelected,activity = 0;
+							barLabels.length=0;
+							updateActivityChart();
+							}
+						else if (thirdSelect==0 && secondSelect=="activity" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="activity" || thirdSelect=="month" && secondSelect=="activity" && firstSelect=="mode" || thirdSelect=="month" && secondSelect=="mode" && firstSelect=="activity"){
+							thirdSelect="month";
+							titleText="3rd Filter";
+							fourthSelect=0;
+							roseSelected=0;
+							roseData.length=0;
+							processRose();
+							}		
+						else {
+							fourthSelect="month";
+							titleText="4th Filter";
 							}
 						//console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect,actSelected, monthSelected, modeSelected);
 						barChart.options.plugins.title.text = "Accidents by Month | "+titleText+": "+value;
@@ -1601,58 +2212,84 @@
 								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 							}
 						}
-						if (monthSelected ==0 && actSelected==0 && firstSelect==0) {
+						if (monthSelected ==0 && actSelected==0 && firstSelect==0 && roseSelected ==0) {
 							firstSelect= "mode";
 							titleText="1st Filter";
 							barLabels.length=0;
 							updateActivityChart();
 							barChartDates.length=0;
 							processBarChartDates();
+							roseData.length=0;
+							processRose();
 							}
 						else if (firstSelect == "mode") {
 							titleText="1st Filter";
-							monthSelected=0;
-							month = 0;
-							actSelected=0;
-							activity=0;
-							secondSelect=0;
-							thirdSelect=0;
+							monthSelected, month, actSelected, activity, roseSelected =0;
+							secondSelect, thirdSelect, fourthSelect=0;
 							barLabels.length=0;
 							updateActivityChart();
 							barChartDates.length=0;
 							processBarChartDates();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect==0 && firstSelect=="activity")  {
+						else if ((secondSelect==0 && firstSelect=="activity") || (secondSelect=="mode" && firstSelect=="activity"))  {
 							secondSelect="mode";
 							titleText="2nd Filter";
+							thirdSelect,fourthSelect=0;
+							month, monthSelected, roseSelected=0;
 							barChartDates.length=0;
 							processBarChartDates();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect==0 && firstSelect=="month")  {
+						else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="mode" && firstSelect=="month"))  {
 							secondSelect="mode";
 							titleText="2nd Filter";
+							thirdSelect,fourthSelect=0;
+							activity, actSelected, roseSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
+							roseData.length=0;
+							processRose();
 							}
-						else if (secondSelect=="mode" && firstSelect=="month")  {
+						else if ((secondSelect==0 && firstSelect=="rose") ||(secondSelect=="mode" && firstSelect=="rose"))  {
+							secondSelect="mode";
 							titleText="2nd Filter";
+							thirdSelect,fourthSelect=0;
+							activity, actSelected, month, monthSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
-							thirdSelect=0;
-							actSelected=0;
-							activity=0;
-							}
-						else if (secondSelect=="mode" && firstSelect=="activity"){
-							titleText="2nd Filter";
 							barChartDates.length=0;
 							processBarChartDates();
-							thirdSelect=0;
-							month=0;
-							monthSelected=0;
 							}
-						else {
+						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="activity") || (thirdSelect==0 && secondSelect=="activity" && firstSelect=="rose") || (thirdSelect=="mode" && secondSelect=="rose" && firstSelect=="activity") || (thirdSelect=="mode" && secondSelect=="activity" && firstSelect=="rose")){
 							thirdSelect="mode";
 							titleText="3rd Filter";
+							fourthSelect=0;
+							monthSelected,month = 0;
+							barChartDates.length=0;
+							processBarChartDates();
+							}
+						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="rose" || thirdSelect=="mode" && secondSelect=="rose" && firstSelect=="month" || thirdSelect=="mode" && secondSelect=="month" && firstSelect=="rose"){
+							thirdSelect="mode";
+							titleText="3rd Filter";
+							fourthSelect=0;
+							actSelected,activity = 0;
+							barLabels.length=0;
+							updateActivityChart();
+							}
+						else if (thirdSelect==0 && secondSelect=="activity" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="activity" || thirdSelect=="mode" && secondSelect=="activity" && firstSelect=="month" || thirdSelect=="mode" && secondSelect=="month" && firstSelect=="activity"){
+							thirdSelect="mode";
+							titleText="3rd Filter";
+							fourthSelect=0;
+							roseSelected=0;
+							roseData.length=0;
+							processRose();
+							}	
+						else {
+							fourthSelect="mode";
+							titleText="4th Filter";
 							}
 						//console.log(activity, month, mode, firstSelect, secondSelect, thirdSelect, actSelected, monthSelected, modeSelected);
 						barChartMode.options.plugins.title.text = "Accidents by Travel Mode | "+titleText+": "+value;
@@ -1730,6 +2367,279 @@
 		}
 	}
 
+
+
+	function processRose() {
+		if (acc != undefined) {
+			//if the length of the roseData array >0 or there is nothing in the acc layer
+			if (roseData.length > 0 || Object.keys(acc._layers).length == 0) {
+				var ndx = crossfilter(roseData),
+					roseDimension = ndx.dimension(function (d) {
+						return d.roseField;
+					});
+
+				var rosePieVals = roseDimension.group().top(Infinity);
+				//console.log(rosePieVals);
+				var pieSum = 0;
+
+				ROSE_KEYS.forEach(key => {
+					var pieVal = rosePieVals.find(groupedVal => groupedVal.key === key) || { value: 0 };
+					$(`[filter='${key}']`).find('text').text(pieVal.value || '');
+				});
+				
+				//console.log(pieSum);
+				// if there are no filters, shows everything as selected by removing not-selected class
+				if (roseFilters.length === 0) {
+					$('.avy-rose-part').removeClass('not-selected');
+					$('.chart-title').html('Avalanche Rose');
+				}
+				// if there are filters, add up the sums for the rosePieVals
+				else {
+					//console.log(roseFilters);
+					// De-select all the avy-rose-parts
+					$('.avy-rose-part').addClass('not-selected');
+					// and then remove this deselected class from the ones that are indeed selected.
+					roseFilters.forEach(filter => {
+						var pieValFilt = rosePieVals.find(groupedVal => groupedVal.key === filter) || { value: 0 };
+						$(`[filter='${filter}']`).removeClass('not-selected');
+						pieSum += parseInt(pieValFilt.value);
+					});
+
+						$('.chart-title').html('Avalanche Rose | '+titleText+': '+pieSum);
+					}
+				}
+		
+			else {
+				setTimeout(processRose, 50);
+			}
+		}
+		else {
+			setTimeout(processRose, 50);
+		}
+	}
+
+	d3.selectAll(".avy-rose-part")
+		.on("mouseover", function () {
+			d3.select(this).classed('hovered', true);
+		})
+		.on("mouseout", function () {
+			d3.select(this).classed('hovered', false);
+		})
+		.on('click', function () {
+			// toggle the filter on the chart
+			//console.log($(this).attr('filter'));
+			rosePieChart.filter($(this).attr('filter'));
+			roseSelected = 1;
+			roseData.length=0;
+			if (monthSelected ==0 && actSelected==0 && firstSelect==0 && modeSelected ==0) {
+				firstSelect= "rose";
+				titleText="1st Filter";
+				barLabels.length=0;
+				updateActivityChart();
+				barChartDates.length=0;
+				processBarChartDates();
+				barChartModeArr.length=0;
+				processBarChartMode();
+				}
+			else if (firstSelect == "rose") {
+				titleText="1st Filter";
+				monthSelected, month, actSelected, activity, modeSelected, mode =0;
+				secondSelect, thirdSelect, fourthSelect=0;
+				barLabels.length=0;
+				updateActivityChart();
+				barChartDates.length=0;
+				processBarChartDates();
+				barChartModeArr.length=0;
+				processBarChartMode();
+				//roseData.length=0;
+				//processRose();
+				}
+			else if ((secondSelect==0 && firstSelect=="activity") || (secondSelect=="rose" && firstSelect=="activity"))  {
+				secondSelect="rose";
+				titleText="2nd Filter";
+				thirdSelect,fourthSelect=0;
+				month, monthSelected, mode, modeSelected=0;
+				barChartDates.length=0;
+				processBarChartDates();
+				barChartModeArr.length=0;
+				processBarChartMode();
+				}
+			else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="rose" && firstSelect=="month"))  {
+				secondSelect="rose";
+				titleText="2nd Filter";
+				thirdSelect,fourthSelect=0;
+				activity, actSelected, mode, modeSelected=0;
+				barLabels.length=0;
+				updateActivityChart();
+				barChartModeArr.length=0;
+				processBarChartMode();
+				}
+			else if ((secondSelect==0 && firstSelect=="mode") ||(secondSelect=="rose" && firstSelect=="mode"))  {
+				secondSelect="rose";
+				titleText="2nd Filter";
+				thirdSelect,fourthSelect=0;
+				activity, actSelected, month, monthSelected =0;
+				barLabels.length=0;
+				updateActivityChart();
+				barChartDates.length=0;
+				processBarChartDates();
+				}
+			else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="activity") || (thirdSelect==0 && secondSelect=="activity" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="activity") || (thirdSelect=="rose" && secondSelect=="activity" && firstSelect=="mode")){
+				thirdSelect="rose";
+				titleText="3rd Filter";
+				fourthSelect=0;
+				monthSelected,month = 0;
+				barChartDates.length=0;
+				processBarChartDates();
+				}
+			else if (thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="mode"){
+				thirdSelect="rose";
+				titleText="3rd Filter";
+				fourthSelect=0;
+				actSelected,activity = 0;
+				barLabels.length=0;
+				updateActivityChart();
+				}
+			else if (thirdSelect==0 && secondSelect=="activity" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="activity" || thirdSelect=="rose" && secondSelect=="activity" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="activity"){
+				thirdSelect="mode";
+				titleText="3rd Filter";
+				fourthSelect=0;
+				modeSelected, mode=0;
+				barChartModeArr.length=0;
+				processBarChartMode();
+				}	
+			else {
+				fourthSelect="mode";
+				titleText="4th Filter";
+				}
+			mapChange();
+			var ndx = crossfilter(roseData),
+					roseDimension = ndx.dimension(function (d) {
+						return d.roseField;
+					});
+
+			var rosePieVals = roseDimension.group().top(Infinity);
+			var pieSum = 0;
+			$('.avy-rose-part').addClass('not-selected');
+					// and then remove this deselected class from the ones that are indeed selected.
+			roseFilters.forEach(filter => {
+				var pieValFilt = rosePieVals.find(groupedVal => groupedVal.key === filter) || { value: 0 };
+				$(`[filter='${filter}']`).removeClass('not-selected');
+				pieSum += parseInt(pieValFilt.value);
+			});
+			$('.chart-title').html('Avalanche Rose | '+titleText+': '+pieSum);	
+		});
+	
+	$('.rose-multiselector').click(el => {
+		// remove all the existing filters on the rose
+		rosePieChart.filterAll();
+
+		// get the filters to be applied from the element's filter attr
+		let filter = JSON.parse($(el.target).attr('filter') || '[]');
+
+		// apply and redraw
+		rosePieChart.filter([filter]);
+		roseFilters = rosePieChart.filters();
+		roseSelected = 1;
+		roseData.length=0;
+		if (monthSelected ==0 && actSelected==0 && firstSelect==0 && modeSelected ==0) {
+			firstSelect= "rose";
+			titleText="1st Filter";
+			barLabels.length=0;
+			updateActivityChart();
+			barChartDates.length=0;
+			processBarChartDates();
+			barChartModeArr.length=0;
+			processBarChartMode();
+			}
+		else if (firstSelect == "rose") {
+			titleText="1st Filter";
+			monthSelected, month, actSelected, activity, modeSelected, mode =0;
+			secondSelect, thirdSelect, fourthSelect=0;
+			barLabels.length=0;
+			updateActivityChart();
+			barChartDates.length=0;
+			processBarChartDates();
+			barChartModeArr.length=0;
+			processBarChartMode();
+			//roseData.length=0;
+			//processRose();
+			}
+		else if ((secondSelect==0 && firstSelect=="activity") || (secondSelect=="rose" && firstSelect=="activity"))  {
+			secondSelect="rose";
+			titleText="2nd Filter";
+			thirdSelect,fourthSelect=0;
+			month, monthSelected, mode, modeSelected=0;
+			barChartDates.length=0;
+			processBarChartDates();
+			barChartModeArr.length=0;
+			processBarChartMode();
+			}
+		else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="rose" && firstSelect=="month"))  {
+			secondSelect="rose";
+			titleText="2nd Filter";
+			thirdSelect,fourthSelect=0;
+			activity, actSelected, mode, modeSelected=0;
+			barLabels.length=0;
+			updateActivityChart();
+			barChartModeArr.length=0;
+			processBarChartMode();
+			}
+		else if ((secondSelect==0 && firstSelect=="mode") ||(secondSelect=="rose" && firstSelect=="mode"))  {
+			secondSelect="rose";
+			titleText="2nd Filter";
+			thirdSelect,fourthSelect=0;
+			activity, actSelected, month, monthSelected =0;
+			barLabels.length=0;
+			updateActivityChart();
+			barChartDates.length=0;
+			processBarChartDates();
+			}
+		else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="activity") || (thirdSelect==0 && secondSelect=="activity" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="activity") || (thirdSelect=="rose" && secondSelect=="activity" && firstSelect=="mode")){
+			thirdSelect="rose";
+			titleText="3rd Filter";
+			fourthSelect=0;
+			monthSelected,month = 0;
+			barChartDates.length=0;
+			processBarChartDates();
+			}
+		else if (thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="mode"){
+			thirdSelect="rose";
+			titleText="3rd Filter";
+			fourthSelect=0;
+			actSelected,activity = 0;
+			barLabels.length=0;
+			updateActivityChart();
+			}
+		else if (thirdSelect==0 && secondSelect=="activity" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="activity" || thirdSelect=="rose" && secondSelect=="activity" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="activity"){
+			thirdSelect="mode";
+			titleText="3rd Filter";
+			fourthSelect=0;
+			modeSelected, mode=0;
+			barChartModeArr.length=0;
+			processBarChartMode();
+			}	
+		else {
+			fourthSelect="mode";
+			titleText="4th Filter";
+			}
+		mapChange();
+		var ndx = crossfilter(roseData),
+				roseDimension = ndx.dimension(function (d) {
+					return d.roseField;
+				});
+		var rosePieVals = roseDimension.group().top(Infinity);
+		var pieSum = 0;
+		$('.avy-rose-part').addClass('not-selected');
+				// and then remove this deselected class from the ones that are indeed selected.
+		roseFilters.forEach(filter => {
+			var pieValFilt = rosePieVals.find(groupedVal => groupedVal.key === filter) || { value: 0 };
+			$(`[filter='${filter}']`).removeClass('not-selected');
+			pieSum += parseInt(pieValFilt.value);
+		});
+		
+		$('.chart-title').html('Avalanche Rose | '+titleText+': '+pieSum);
+	});
 
 	L.control.scale().addTo(map);
 
