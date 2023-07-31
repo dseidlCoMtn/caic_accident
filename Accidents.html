@@ -61,8 +61,6 @@
 		<div id='side-panel'>
 			<h2 id="CAIC">CAIC Accident Explorer</h2>
 			<div id='chart-container'>
-				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
-				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 				<div id="chart-rose">
 					<div id="pie-rose" class="row pie-row">
 						<div class="col-xs-12 col-md-4">
@@ -259,6 +257,8 @@
 						</div>
 					</div>
 				</div>
+				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
+				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 				<div id="chart-mode"><canvas id="bar-chart-mode"></canvas></div>
 			</div>
 		</div>
@@ -806,37 +806,21 @@
 		map.setView([home.lat, home.lng], home.zoom);
 		},'Zoom To Home').addTo(map);
 
-	//Button to clear map filters
-	L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
-		actSelected = 0;
-		monthSelected = 0;
-		modeSelected = 0;
-		roseSelected =0;
-		month=0;
-		activity=0;
-		mode = 0;
-		firstSelect=0;
-		secondSelect=0;
-		thirdSelect=0;
-		fourthSelect=0;
-		$('#reportrange').data('daterangepicker').startDate=moment('2018-10-01');
-		$('#reportrange').data('daterangepicker').endDate=moment('2023-09-30');
-		updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
-		barLabels.length=0;
-		barChartDates.length=0;
-		barChartModeArr.length=0;
-		roseData.length=0;
-		lassoIDs.length=0;
-		rosePieChart.filterAll();
-		roseFilters = rosePieChart.filters();
-		mapChange();
-		updateActivityChart();
-		processBarChartDates();
-		processBarChartMode();
-		processRose();
-		},'Clear Filters').addTo(map);
-		
-
+	//Add CAIC logo
+	L.Control.Button = L.Control.extend({
+		options: {
+			position: 'bottomright',
+			width:'120px'
+		},
+		onAdd: function (map) {
+			var caicContainer = L.DomUtil.create('div', 'leaflet-control');
+			$(caicContainer).html('<div id="caicLogo"></div>');
+			return caicContainer;
+		},
+		onRemove: function(map) {},
+	});
+	var caicLogo = new L.Control.Button()
+	caicLogo.addTo(map);
 	
 	//Add CMC GIS attribution
 	L.Control.Button = L.Control.extend({
@@ -853,6 +837,7 @@
 	});
 	var cmcLogo = new L.Control.Button()
 	cmcLogo.addTo(map);
+
 
 	//Add lasso button	
 	const lasso = L.lasso(map);
@@ -951,6 +936,38 @@
 	L.easyButton('fa-regular fa-circle-question', function(btn, map){
 		onClick: window.open("Help.html", "_blank");
 	},'Help with this map').addTo(map);
+
+//Button to clear map filters
+L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
+		actSelected = 0;
+		monthSelected = 0;
+		modeSelected = 0;
+		roseSelected =0;
+		month=0;
+		activity=0;
+		mode = 0;
+		firstSelect=0;
+		secondSelect=0;
+		thirdSelect=0;
+		fourthSelect=0;
+		$('#reportrange').data('daterangepicker').startDate=moment('2018-10-01');
+		$('#reportrange').data('daterangepicker').endDate=moment('2023-09-30');
+		updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
+		barLabels.length=0;
+		barChartDates.length=0;
+		barChartModeArr.length=0;
+		roseData.length=0;
+		lassoIDs.length=0;
+		rosePieChart.filterAll();
+		roseFilters = rosePieChart.filters();
+		mapChange();
+		updateActivityChart();
+		processBarChartDates();
+		processBarChartMode();
+		processRose();
+		},'Clear Filters').addTo(map);
+		
+
 
 	//Get style color by Dscale
 	function getColor(d) {
