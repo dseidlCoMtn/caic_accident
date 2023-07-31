@@ -806,7 +806,21 @@
 		map.setView([home.lat, home.lng], home.zoom);
 		},'Zoom To Home').addTo(map);
 
-	
+	//Add CAIC logo
+	L.Control.Button = L.Control.extend({
+		options: {
+			position: 'bottomright',
+			width:'120px'
+		},
+		onAdd: function (map) {
+			var caicContainer = L.DomUtil.create('div', 'leaflet-control');
+			$(caicContainer).html('<div id="caicLogo"></div>');
+			return caicContainer;
+		},
+		onRemove: function(map) {},
+	});
+	var caicLogo = new L.Control.Button()
+	caicLogo.addTo(map);
 	
 	//Add CMC GIS attribution
 	L.Control.Button = L.Control.extend({
@@ -823,6 +837,7 @@
 	});
 	var cmcLogo = new L.Control.Button()
 	cmcLogo.addTo(map);
+
 
 	//Add lasso button	
 	const lasso = L.lasso(map);
