@@ -2,16 +2,29 @@
 <html>
  <head>
     <title>Accident Explorer Help</title>
+  
+  <!-- Loading fontawesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+
  </head>
   <body>
     <h1>Accidents</h1>
     <p>Avalanche accidents occur when there is human involvement with an avalanche. This can mean someone was caught, buried, or killed. It can also mean there was a human triggered avalanche where no one was caught, buried, or killed. Accident report data goes back to December 2009. For more information, please follow this <a href="https://avalanche.state.co.us/accidents/statistics-and-reporting">link</a>.</p>
+
     <h2>Background</h2>
-    <p>This map is a collaborative effort between the CAIC and Colorado Mountain College. Accidents are shown on a map with three different base layers. The default, Natural Atlas, blends natural and man-made features with contour lines. Roads, trails, and peak names are all labeled. More detail is showed when zoomed in. The Imagery basemap displays satellite imagery from summer. When zoomed in, higher resolution imagery is shown. The Esri Terrain basemap is a simple layer that uses shaded relief so hills and mountains can easily be seen.</p>
+    <p>This map is a collaborative effort between the CAIC and Colorado Mountain College.  Lucy Kepner, Dara Seidl, and Joe Tayabji created the map using <a href="https://leafletjs.com/">Leaflet</a>, based on data provided from the CAIC. Accidents are shown on a map with three different base layers. The default, Natural Atlas, blends natural and man-made features with contour lines. Roads, trails, and peak names are all labeled. More detail is showed when zoomed in. The Imagery basemap displays satellite imagery from summer. When zoomed in, higher resolution imagery is shown. The Esri Terrain basemap is a simple layer that uses shaded relief so hills and mountains can easily be seen.</p>
+
     <h2>Layers</h2>
     <p>The default layer is the Accidents layer. Accident points are mapped, with D scale being indicated by color and R scale by circle size. The Accidents by Travel Mode layer shows the activity of the user(s) involved in the activity. The CAIC Zones layer shows the areas that forecasting is available for (https://lb.avalanche.state.co.us/forecasts/help/forecast-zones/). The Heatmap layer shows where accidents are focused. This layer adjusts based on how zoomed in the map is.</p>
+
     <h2>Map Buttons</h2>
-    <p>By default, the map loads with the previous 5 Water Years of data (one year is October 1 - September 30). This can be adjusted by clicking/tapping the dropdown with the calendar and date range. The + and - buttons can be used to control the zoom of the map. The Home button will take you to the default center and zoom of the map. Underneath that is the Clear Filters button, which will reset the data selection the the default data range and remove any filters from the graphs. Below this is the Lasso tool. With this selected, you can click, hold, and move your mouse on the map to select specific accident data. At the bottom of these buttons is the help button. </p>
+    
+    <p style="display:inline-block;"><img src="images/dateFilter.png" style="height: 10%; width: 10%"></img>By default, the map loads with the previous 5 Water Years of data (one year is October 1 - September 30). This can be adjusted by clicking/tapping the dropdown with the calendar and date range. <br><br>
+    <img src="images/zoomButton.png"><img>The + and - buttons can be used to control the zoom of the map. The Home button will take you to the default center and zoom of the map.<br><br> 
+    <i class="fa fa-filter-circle-xmark"></i> Underneath that is the Clear Filters button, which will reset the data selection the the default data range and remove any filters from the graphs. Use this button to bring the original dataset back.<br><br>
+    <img src="images/lasso.svg" style="width: 20px; height: auto"></img> Below this is the Lasso tool. With this selected, you can click, hold, and move your mouse on the map to select specific accident data. <br><br>
+    <i class="fa-regular fa-circle-question"></i> At the bottom of these buttons is the help button. </p>
+
     <h2>Charts</h2>
     <p>The map includes charts that change based on the data that is selected. The charts can be used to filter the map, as well. Click on any of the bars to only select data in that category. The filters are stackable, i.e. multiple charts can be used to filter. </p>
   </body>
