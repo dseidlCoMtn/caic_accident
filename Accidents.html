@@ -592,6 +592,15 @@
 				return false
 			}
 		}
+		//Lasso & rose filter
+		else if (activity == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if ((moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
 		//Activity & lasso & rose filter
 		else if (activity != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
 			if (feature.properties.acc_activity == activity && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
@@ -858,6 +867,8 @@
 				style: styleAccidentType,
 				filter: layerFilter
 		});
+		roseFilters = rosePieChart.filters();
+		roseFiltersFlat = roseFilters.flat();
 		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
@@ -959,6 +970,7 @@
 		roseData.length=0;
 		rosePieChart.filterAll();
 		roseFilters = rosePieChart.filters();
+		roseFiltersFlat = roseFilters.flat();
 		function layerFilterL(feature) {
 				if (lassoIDs.includes(feature.properties.acc_id) === true){
 						return true
@@ -983,6 +995,7 @@
 				filter: layerFilterL
 		});
 		heat = createHeatmap(map, accPoints, startDate, endDate, activity, month, mode, lassoIDs, roseFiltersFlat);
+		//console.log(startDate, endDate, activity, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
@@ -1385,7 +1398,15 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 	//Function to call L.heatLayer
 	function createHeatmap(map, points, minDate, maxDate, activity, month, mode, lassoIDs, roseFiltersFlat) {
 		const pointsArray = [];
-		roseFiltersFlat = roseFilters.flat();
+		//roseFiltersFlat = roseFilters.flat();
+		//console.log(activity, month, mode, lassoIDs, roseFiltersFlat);
+		//console.log(roseFilters);
+		if (roseFiltersFlat == "undefined"){
+			console.log("yes");
+			roseFilters = rosePieChart.filters();
+			roseFiltersFlat = roseFilters.flat();
+		}
+
 		//No graph selections + lasso
 		if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 			for (i in points) {
@@ -1396,7 +1417,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 				}
 			}
 		//Rose
-		if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (activity == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 			for (i in points) {
 				const pointRose = points[i][6];
 				const pointDate = moment(points[i][2]);
@@ -1673,6 +1694,17 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
 					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//Lasso + rose
+		else if (month ==0 && activity==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
@@ -1965,43 +1997,49 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							}
 						else if (firstSelect == "activity") {
 							titleText="1st Filter";
-							monthSelected,month,modeSelected,mode,roseSelected=0;
-							secondSelect,thirdSelect,fourthSelect=0;
+							monthSelected=0,month=0,modeSelected=0,mode=0,roseSelected=0;
+							secondSelect=0,thirdSelect=0,fourthSelect=0;
 							barChartDates.length=0;
 							processBarChartDates();
 							barChartModeArr.length=0;
 							processBarChartMode();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="activity" && firstSelect=="mode"))  {
 							secondSelect="activity";
 							titleText="2nd Filter";
-							thirdSelect,fourthSelect=0;
-							monthSelected,month = 0;
+							thirdSelect=0,fourthSelect=0;
+							monthSelected=0,month = 0;
 							roseSelected=0;
 							barChartDates.length=0;
 							processBarChartDates();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="month") || (secondSelect=="activity" && firstSelect=="month"))  {
 							secondSelect="activity";
 							titleText="2nd Filter";
-							thirdSelect,fourthSelect=0;
-							modeSelected,mode = 0;
+							thirdSelect=0,fourthSelect=0;
+							modeSelected=0,mode = 0;
 							roseSelected=0;
 							barChartModeArr.length=0;
 							processBarChartMode();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="activity" && firstSelect=="rose"))  {
 							secondSelect="activity";
 							titleText="2nd Filter";
-							thirdSelect,fourthSelect=0;
-							modeSelected,mode = 0;
-							monthSelected,month = 0;
+							thirdSelect=0,fourthSelect=0;
+							modeSelected=0,mode = 0;
+							monthSelected=0,month = 0;
 							barChartModeArr.length=0;
 							processBarChartMode();
 							barChartDates.length=0;
@@ -2011,7 +2049,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							thirdSelect="activity";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							modeSelected,mode = 0;
+							modeSelected=0,mode = 0;
 							barChartModeArr.length=0;
 							processBarChartMode();
 							}
@@ -2019,7 +2057,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							thirdSelect="activity";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							monthSelected,month = 0;
+							monthSelected=0,month = 0;
 							barChartDates.length=0;
 							processBarChartDates();
 							}
@@ -2029,6 +2067,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							fourthSelect=0;
 							roseSelected=0;
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else  {
@@ -2109,40 +2149,46 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							}
 						else if (firstSelect == "month") {
 							titleText="1st Filter";
-							actSelected,activity,modeSelected,mode,roseSelected=0;
-							secondSelect,thirdSelect,fourthSelect=0;
+							actSelected=0,activity=0,modeSelected=0,mode=0,roseSelected=0;
+							secondSelect=0,thirdSelect=0,fourthSelect=0;
 							barLabels.length=0;
 							updateActivityChart();
 							barChartModeArr.length=0;
 							processBarChartMode();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="activity") || (secondSelect=="month" && firstSelect=="activity"))  {
 							secondSelect="month";
 							titleText="2nd Filter";
-							thirdSelect, fourthSelect=0;
-							mode, modeSelected, roseSelected =0;
+							thirdSelect=0, fourthSelect=0;
+							mode=0, modeSelected=0, roseSelected =0;
 							barChartModeArr.length=0;
 							processBarChartMode();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="month" && firstSelect=="mode")) {
 							secondSelect="month";
 							titleText="2nd Filter";
-							thirdSelect, fourthSelect=0;
-							activity, actSelected, roseSelected =0;
+							thirdSelect=0, fourthSelect=0;
+							activity=0, actSelected=0, roseSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="month" && firstSelect=="rose")) {
 							secondSelect="month";
 							titleText="2nd Filter";
-							thirdSelect, fourthSelect=0;
-							activity, actSelected, mode, modeSelected =0;
+							thirdSelect=0, fourthSelect=0;
+							activity=0, actSelected=0, mode=0, modeSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
 							barChartModeArr.length=0;
@@ -2152,7 +2198,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							thirdSelect="month";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							modeSelected,mode = 0;
+							modeSelected=0,mode = 0;
 							barChartModeArr.length=0;
 							processBarChartMode();
 							}
@@ -2160,7 +2206,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							thirdSelect="month";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							actSelected,activity = 0;
+							actSelected=0,activity = 0;
 							barLabels.length=0;
 							updateActivityChart();
 							}
@@ -2170,6 +2216,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							fourthSelect=0;
 							roseSelected=0;
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}		
 						else {
@@ -2306,40 +2354,46 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							}
 						else if (firstSelect == "mode") {
 							titleText="1st Filter";
-							monthSelected, month, actSelected, activity, roseSelected =0;
-							secondSelect, thirdSelect, fourthSelect=0;
+							monthSelected=0, month=0, actSelected=0, activity=0, roseSelected =0;
+							secondSelect=0, thirdSelect=0, fourthSelect=0;
 							barLabels.length=0;
 							updateActivityChart();
 							barChartDates.length=0;
 							processBarChartDates();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="activity") || (secondSelect=="mode" && firstSelect=="activity"))  {
 							secondSelect="mode";
 							titleText="2nd Filter";
-							thirdSelect,fourthSelect=0;
-							month, monthSelected, roseSelected=0;
+							thirdSelect=0,fourthSelect=0;
+							month=0, monthSelected=0, roseSelected=0;
 							barChartDates.length=0;
 							processBarChartDates();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="mode" && firstSelect=="month"))  {
 							secondSelect="mode";
 							titleText="2nd Filter";
-							thirdSelect,fourthSelect=0;
-							activity, actSelected, roseSelected =0;
+							thirdSelect=0,fourthSelect=0;
+							activity=0, actSelected=0, roseSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}
 						else if ((secondSelect==0 && firstSelect=="rose") ||(secondSelect=="mode" && firstSelect=="rose"))  {
 							secondSelect="mode";
 							titleText="2nd Filter";
-							thirdSelect,fourthSelect=0;
-							activity, actSelected, month, monthSelected =0;
+							thirdSelect=0,fourthSelect=0;
+							activity=0, actSelected=0, month=0, monthSelected =0;
 							barLabels.length=0;
 							updateActivityChart();
 							barChartDates.length=0;
@@ -2349,7 +2403,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							thirdSelect="mode";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							monthSelected,month = 0;
+							monthSelected=0,month = 0;
 							barChartDates.length=0;
 							processBarChartDates();
 							}
@@ -2357,7 +2411,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							thirdSelect="mode";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							actSelected,activity = 0;
+							actSelected=0,activity = 0;
 							barLabels.length=0;
 							updateActivityChart();
 							}
@@ -2367,6 +2421,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 							fourthSelect=0;
 							roseSelected=0;
 							roseData.length=0;
+							rosePieChart.filterAll();
+							roseFilters = rosePieChart.filters();
 							processRose();
 							}	
 						else {
@@ -2525,22 +2581,20 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 				}
 			else if (firstSelect == "rose") {
 				titleText="1st Filter";
-				monthSelected, month, actSelected, activity, modeSelected, mode =0;
-				secondSelect, thirdSelect, fourthSelect=0;
+				monthSelected=0, month=0, actSelected=0, activity=0, modeSelected=0, mode =0;
+				secondSelect=0, thirdSelect=0, fourthSelect=0;
 				barLabels.length=0;
 				updateActivityChart();
 				barChartDates.length=0;
 				processBarChartDates();
 				barChartModeArr.length=0;
 				processBarChartMode();
-				//roseData.length=0;
-				//processRose();
 				}
 			else if ((secondSelect==0 && firstSelect=="activity") || (secondSelect=="rose" && firstSelect=="activity"))  {
 				secondSelect="rose";
 				titleText="2nd Filter";
-				thirdSelect,fourthSelect=0;
-				month, monthSelected, mode, modeSelected=0;
+				thirdSelect=0,fourthSelect=0;
+				month=0, monthSelected=0, mode=0, modeSelected=0;
 				barChartDates.length=0;
 				processBarChartDates();
 				barChartModeArr.length=0;
@@ -2549,8 +2603,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 			else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="rose" && firstSelect=="month"))  {
 				secondSelect="rose";
 				titleText="2nd Filter";
-				thirdSelect,fourthSelect=0;
-				activity, actSelected, mode, modeSelected=0;
+				thirdSelect=0,fourthSelect=0;
+				activity=0, actSelected=0, mode=0, modeSelected=0;
 				barLabels.length=0;
 				updateActivityChart();
 				barChartModeArr.length=0;
@@ -2559,8 +2613,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 			else if ((secondSelect==0 && firstSelect=="mode") ||(secondSelect=="rose" && firstSelect=="mode"))  {
 				secondSelect="rose";
 				titleText="2nd Filter";
-				thirdSelect,fourthSelect=0;
-				activity, actSelected, month, monthSelected =0;
+				thirdSelect=0,fourthSelect=0;
+				activity=0, actSelected=0, month=0, monthSelected =0;
 				barLabels.length=0;
 				updateActivityChart();
 				barChartDates.length=0;
@@ -2570,7 +2624,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 				thirdSelect="rose";
 				titleText="3rd Filter";
 				fourthSelect=0;
-				monthSelected,month = 0;
+				monthSelected=0,month = 0;
 				barChartDates.length=0;
 				processBarChartDates();
 				}
@@ -2578,7 +2632,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 				thirdSelect="rose";
 				titleText="3rd Filter";
 				fourthSelect=0;
-				actSelected,activity = 0;
+				actSelected=0,activity = 0;
 				barLabels.length=0;
 				updateActivityChart();
 				}
@@ -2586,7 +2640,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 				thirdSelect="mode";
 				titleText="3rd Filter";
 				fourthSelect=0;
-				modeSelected, mode=0;
+				modeSelected=0, mode=0;
 				barChartModeArr.length=0;
 				processBarChartMode();
 				}	
