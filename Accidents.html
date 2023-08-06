@@ -876,11 +876,6 @@
 		if (hasHeat == true){heat.addTo(map)};
 		addOverlays();
 	}
-		
-	//Adds home button to map
-	L.easyButton('fa fa-home',function(btn,map){
-		map.setView([home.lat, home.lng], home.zoom);
-		},'Zoom To Home').addTo(map);
 
 	//Add CAIC logo
 	L.Control.Button = L.Control.extend({
@@ -1017,6 +1012,7 @@
 
 //Button to clear map filters
 L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
+		map.setView([home.lat, home.lng], home.zoom);
 		actSelected = 0;
 		monthSelected = 0;
 		modeSelected = 0;
