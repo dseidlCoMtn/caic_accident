@@ -519,8 +519,8 @@
 
 	//update what legend is showing based on what layers are on
 	function updateLegend() {
-		var hasAcc = map.hasLayer(acc);
 		var hasAccByType = map.hasLayer(accByType);
+		var hasAcc = map.hasLayer(acc);
 		var hasHeat = map.hasLayer(heat);
 		legendAll.remove();
 		legendAcc.remove();
@@ -1792,8 +1792,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
-		layerControl.addOverlay(acc, "Accidents");
 		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+		layerControl.addOverlay(acc, "Accidents");
 		layerControl.addOverlay(zones, "CAIC Zones");
 		layerControl.addOverlay(heat, "Heatmap");
 		layerControl.addTo(map);
@@ -1802,8 +1802,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 	//add layers to overlays - wait for map to be created/data processing then create overlays
 	function addOverlays() {
 		if (heat!==undefined && acc!==undefined && accByType!==undefined) {
-			overlays["Accidents"] = acc;
 			overlays["Accidents by Travel Mode"] = accByType;
+			overlays["Accidents"] = acc;
 			overlays["CAIC Zones"] = zones;
 			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
