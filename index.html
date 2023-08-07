@@ -1365,7 +1365,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 						onEachFeature: onEachFeature,
 						style:style,
 						filter:layerFilter
-			}).addTo(map);
+			});
 
 		accByType = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
@@ -1373,7 +1373,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 						onEachFeature: onEachFeatureTravelMode,
 						style: styleAccidentType,
 						filter:layerFilter
-			});
+			}).addTo(map);
 			
 		zones = L.geoJson(forecastZones, {
 			style: styleForecastZones,
