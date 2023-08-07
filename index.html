@@ -53,13 +53,16 @@
 <body>	
 	<div id='container'>
 		<div id='map'>
-			<div id="reportrange">
-			    <i class="fa fa-calendar"></i>&nbsp;
-			    <span></span> <i class="fa fa-caret-down"></i>
-		    </div>
     	</div>
 		<div id='side-panel'>
-			<h2 id="CAIC">CAIC Accident Explorer</h2>
+			<div id='title-block'>
+				<h2 id="CAIC">CAIC Accident Explorer</h2>
+				<div id="reportrange">
+			    	<i class="fa fa-calendar"></i>&nbsp;
+			    	<span></span> <i class="fa fa-caret-down"></i>
+		    	</div>
+			</div>	
+			
 			<div id='chart-container'>
 				<div id="chart-rose">
 					<div id="pie-rose" class="row pie-row">
@@ -519,8 +522,8 @@
 
 	//update what legend is showing based on what layers are on
 	function updateLegend() {
-		var hasAcc = map.hasLayer(acc);
 		var hasAccByType = map.hasLayer(accByType);
+		var hasAcc = map.hasLayer(acc);
 		var hasHeat = map.hasLayer(heat);
 		legendAll.remove();
 		legendAcc.remove();
@@ -876,11 +879,6 @@
 		if (hasHeat == true){heat.addTo(map)};
 		addOverlays();
 	}
-		
-	//Adds home button to map
-	L.easyButton('fa fa-home',function(btn,map){
-		map.setView([home.lat, home.lng], home.zoom);
-		},'Zoom To Home').addTo(map);
 
 	//Add CAIC logo
 	L.Control.Button = L.Control.extend({
@@ -1017,6 +1015,7 @@
 
 //Button to clear map filters
 L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
+		map.setView([home.lat, home.lng], home.zoom);
 		actSelected = 0;
 		monthSelected = 0;
 		modeSelected = 0;
@@ -1369,7 +1368,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 						onEachFeature: onEachFeature,
 						style:style,
 						filter:layerFilter
-			}).addTo(map);
+			});
 
 		accByType = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
@@ -1377,7 +1376,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 						onEachFeature: onEachFeatureTravelMode,
 						style: styleAccidentType,
 						filter:layerFilter
-			});
+			}).addTo(map);
 			
 		zones = L.geoJson(forecastZones, {
 			style: styleForecastZones,
@@ -1796,8 +1795,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
-		layerControl.addOverlay(acc, "Accidents");
 		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
+		layerControl.addOverlay(acc, "Accidents by D & R Scale");
 		layerControl.addOverlay(zones, "CAIC Zones");
 		layerControl.addOverlay(heat, "Heatmap");
 		layerControl.addTo(map);
@@ -1806,8 +1805,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 	//add layers to overlays - wait for map to be created/data processing then create overlays
 	function addOverlays() {
 		if (heat!==undefined && acc!==undefined && accByType!==undefined) {
-			overlays["Accidents"] = acc;
 			overlays["Accidents by Travel Mode"] = accByType;
+			overlays["Accidents"] = acc;
 			overlays["CAIC Zones"] = zones;
 			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
