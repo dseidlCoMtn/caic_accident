@@ -40,7 +40,14 @@
 			overflow: auto;
 			background-color: #CDCED7;
 		}
-		#chart-area, #chart-travel, #chart-rose, #chart-mode {
+
+		#title-block {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+		}
+
+		#chart-area, #chart-travel, #chart-rose, #chart-mode, #reportrange {
 			padding: 5px;
 			margin: 5px;
 			border-radius: 5px;
@@ -87,22 +94,18 @@
 		}
 		
 		#reportrange {
-			background: #fff;
 			cursor: pointer; 
 		    font-family: Nanum Gothic;
 			font-size: 12px;
 			text-align: center;
-			margin-left: 80px;
-			margin-top: 10px;
-			padding: 5px 10px;
-			border: 1px solid #ccc;
-			position: relative;
-			width: 200px;
+			margin-top: 6px;
+			min-width: 200px;
 			z-index:1000;
 		}
 
 		.daterangepicker {
 			font-family: Nanum Gothic;
+			background-color: #fbfbfcdf;
 		}
 
 		/* Avalanche Rose CSS */
