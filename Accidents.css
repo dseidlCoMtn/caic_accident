@@ -152,14 +152,14 @@
 		}
 
 		.avy-rose-part {
-			fill: #e4e3e4;
+			fill: #d4d4d4;
 			stroke: black;
 			stroke-miterlimit: 10;
 			cursor: pointer;
 		}
 		
 		.avy-rose-part.hovered {
-			fill: #ffffff;
+			fill: #ececec;
 		}
 		
 		.avy-rose-part.not-selected {
