@@ -1195,11 +1195,6 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 			mouseout: resetHighlight
 		});
 
-		//content of tool tip
-		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
-			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.no_caught + 
-			", Buried: " + feature.properties.no_buried + ", Killed: " + feature.properties.no_killed);
-
 		//content of the popup
 		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
 			"<br>" + feature.properties.acc_activity 
@@ -1225,11 +1220,6 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 			//mouseover: highlightFeature,
 			//mouseout: resetHighlightTravelMode
 		});
-
-		//content of tool tip
-		layer.bindTooltip(feature.properties.acc_location + "<br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
-			"<br>" + feature.properties.acc_activity + "<br>Caught: " + feature.properties.no_caught + 
-			", Buried: " + feature.properties.no_buried + ", Killed: " + feature.properties.no_killed);
 
 		//content of the popup
 		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
