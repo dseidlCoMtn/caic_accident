@@ -273,20 +273,51 @@
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 
+
+
+	//add Natural Atlas logo when zoom is above 10 and it is set as base layer
+	var naturalAtlasImg = L.control({position: "topright", orientation: 'horizontal'});
+	naturalAtlasImg.onAdd = function(map) {
+		var div = L.DomUtil.create("div");
+		div.innerHTML = '<img src="images/na-attribution.png" style="height: 40%; width: 40%; float: right"></img>';
+		return div;
+	};
+
+	map.on('zoom', function(evt){
+		var zoomLevel = map.getZoom();
+		var naturalAtlasOn = map.hasLayer(Natural_Atlas);
+		naturalAtlasImg.remove();		
+
+		if ((zoomLevel >= 10) && naturalAtlasOn){
+			naturalAtlasImg.addTo(map);
+		};
+
+	});
+
 	var Natural_Atlas = L.tileLayer(
 		'https://a-naturalatlas-tiles.global.ssl.fastly.net/topo/{z}/{x}/{y}/t@2x.jpg', {
 		attribution: 'Tiles &copy; <a href="https://naturalatlas.com/"> Natural Atlas </a>',
-		maxZoom: 13
-		}).addTo(map);
+		maxZoom: 13,
+	}).addTo(map);
+
+	Natural_Atlas.onRemove = function(map) {naturalAtlasImg.remove()};
+	Natural_Atlas.onAdd = function(map) {
+		var zoomLevel = map.getZoom();
+
+		if (zoomLevel >= 10){
+			naturalAtlasImg.addTo(map);
+		};
+
+	};
 
 	var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 		attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-		maxZoom: 13
+		maxZoom: 13,
 	});
 	
 	var Esri_WorldTerrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}', {
 		attribution: 'Tiles &copy; Esri &mdash; Source: Esri',
-		maxZoom: 13
+		maxZoom: 13,
 	});
 
 	
@@ -295,7 +326,7 @@
 		lat: 39.118413163683854,
 		lng: -106.44565988833477,
 		zoom: 7.5
-		};
+	};
 
 	
 	//what to show when legend isn't active
