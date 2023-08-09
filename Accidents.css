@@ -103,6 +103,17 @@
 			z-index:1000;
 		}
 
+		#reportrange2 {
+			cursor: pointer; 
+		    font-family: Nanum Gothic;
+			font-size: 12px;
+			text-align: center;
+			margin-top: 6px;
+			min-width: 200px;
+			z-index:1000;
+		}
+
+
 		.daterangepicker {
 			font-family: Nanum Gothic;
 			background-color: #fbfbfcdf;
