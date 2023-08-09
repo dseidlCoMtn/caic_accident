@@ -103,15 +103,22 @@
 			z-index:1000;
 		}
 
-		#reportrange2 {
-			cursor: pointer; 
-		    font-family: Nanum Gothic;
-			font-size: 12px;
-			text-align: center;
-			margin-top: 6px;
-			min-width: 200px;
-			z-index:1000;
-		}
+		.fa-calendar{
+			position: absolute;
+			left: 10px;
+			top: calc(50% - 0.6em);
+		  }
+		.fa-caret-down{
+			position: absolute;
+			right: 12px;
+			top: calc(50% - 0.6em);
+		  }
+		input{
+			padding-left: 17px;
+		  }
+		.input-wrapper{
+			position: relative;
+		  }
 
 
 		.daterangepicker {

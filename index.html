@@ -57,10 +57,10 @@
 		<div id='side-panel'>
 			<div id='title-block'>
 				<h2 id="CAIC">CAIC Accident Explorer</h2>
-				<div id="reportrange2">
-			    	<i class="fa fa-calendar"></i>&nbsp;
-					<input type="text" id="reportrange">
-			    	<span></span> <i class="fa fa-caret-down"></i>
+				<div class="input-wrapper">
+			    	<input id="reportrange"/>
+					<label for="reportrange" class="fa fa-calendar"></label>
+					<label for="reportrange" class="fa fa-caret-down"></label>
 		    	</div>
 			</div>	
 			
@@ -1832,8 +1832,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 	
 	// once the dates are selected, format and display the range in the date selection box.
 	function updateDisplayedDateRange (start, end) {
-			$('#reportrange input').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
-		}
+	 		$('#reportrange input').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+	 	}
 	
 	//Sets the dropdowns and ranges for the date range picker
 	$('#reportrange').daterangepicker({
@@ -1841,8 +1841,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		"startDate": moment('2018-10-01'),
 		"endDate": moment('2023-09-30'),
 		locale: {
-      format: 'MMM D, YYYY'
-    },
+      		format: 'MMM D, YYYY'
+   		 },
 		ranges: {
 				'Current Avalanche Year': [moment('2022-10-01'), moment('2023-09-30')],
 				'Last Avalanche Year': [moment('2021-10-01'), moment('2022-09-30')],
@@ -1851,7 +1851,8 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 				'All': [moment('2008-01-01'), moment()],
 				},
 				//maxDate: moment()
-		}, updateDisplayedDateRange,
+		}, 
+		updateDisplayedDateRange,
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
