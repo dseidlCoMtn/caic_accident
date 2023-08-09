@@ -1791,7 +1791,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		
 	//needed to set the layerControl as a variable so we can call it in
 	//later filter function for dates
-	const layerControl = L.control.layers(baseLayers, overlays, {collapsed: false});
+	const layerControl = L.control.layers(baseLayers, overlays, {collapsed: true});
 	
 	//function to add control layers to map
 	function addControlLayersToMap(baseLayers, overlays, map) {
