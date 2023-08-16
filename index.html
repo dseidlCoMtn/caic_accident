@@ -57,11 +57,14 @@
 		<div id='side-panel'>
 			<div id='title-block'>
 				<h2 id="CAIC">CAIC Accident Explorer</h2>
-				<div class="input-wrapper">
-			    	<input id="reportrange"/>
-					<label for="reportrange" class="fa fa-calendar"></label>
-					<label for="reportrange" class="fa fa-caret-down"></label>
-		    	</div>
+				<div id="controlBundle">
+					<button id="resetFiltersBtn" class="fa fa-filter-circle-xmark" onclick="clearFilters()"></button>
+					<div class="input-wrapper">
+						<input id="reportrange"/>
+						<label for="reportrange" class="fa fa-calendar"></label>
+						<label for="reportrange" class="fa fa-caret-down"></label>
+					</div>
+				</div>	
 			</div>	
 			
 			<div id='chart-container'>
@@ -1036,8 +1039,7 @@
 		processBarChartMode();
 		processRose();
 		}
-		
-        };
+	};
 
 	
 	//add Help button
@@ -1045,8 +1047,8 @@
 		onClick: window.open("Help.html", "_blank");
 	},'Help with this map').addTo(map);
 
-//Button to clear map filters
-L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
+//Function to run to clear the filters
+let clearFilters = function(btn,map){
 		map.setView([home.lat, home.lng], home.zoom);
 		fatalSelected = 0;
 		monthSelected = 0;
@@ -1074,8 +1076,13 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		processBarChartDates();
 		processBarChartMode();
 		processRose();
-		},'Clear Filters').addTo(map);
+	}
+
+//Button to clear map filters on map
+L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map);
 		
+//Button to clear map filters on chart title
+// L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Chart Filters').addTo(map);
 
 
 	//Get style color by Dscale
