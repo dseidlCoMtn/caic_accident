@@ -1048,7 +1048,7 @@
 	},'Help with this map').addTo(map);
 
 //Function to run to clear the filters
-let clearFilters = function(btn,map){
+let clearFilters = function(btn){
 		map.setView([home.lat, home.lng], home.zoom);
 		fatalSelected = 0;
 		monthSelected = 0;
@@ -1080,10 +1080,6 @@ let clearFilters = function(btn,map){
 
 //Button to clear map filters on map
 L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map);
-		
-//Button to clear map filters on chart title
-// L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Chart Filters').addTo(map);
-
 
 	//Get style color by Dscale
 	function getColor(d) {
