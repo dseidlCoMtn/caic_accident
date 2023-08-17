@@ -944,6 +944,32 @@
 	var cmcLogo = new L.Control.Button()
 	cmcLogo.addTo(map);
 
+	//add Current Location button
+	L.easyButton('fa-solid fa-location-crosshairs', function(btn, map){
+		map.locate({setView: true, maxZoom: 13});
+	},'Go to current location').addTo(map);
+
+	//add circle and error radius for current location
+	//found at https://leafletjs.com/examples/mobile/
+	var currLocation;
+	var currLocationError;
+
+	function onLocationFound(e) {
+    	var error = e.accuracy;
+
+    	currLocation = L.circleMarker(e.latlng, {radius: 1}).addTo(map);
+    	currLocationError = L.circle(e.latlng, error).addTo(map);
+	}
+	map.on('locationfound', onLocationFound);
+
+	//remove location marker, to be called when filters are cleared
+	function removeLocationMarker() {
+		if (map.hasLayer(currLocation)) {currLocation.remove()};
+		if (map.hasLayer(currLocationError)) {currLocationError.remove()};
+	}
+
+	
+
 
 	//Add lasso button	
 	const lasso = L.lasso(map);
@@ -1074,6 +1100,7 @@ L.easyButton('fa fa-filter-circle-xmark',function(btn,map){
 		processBarChartDates();
 		processBarChartMode();
 		processRose();
+		removeLocationMarker();
 		},'Clear Filters').addTo(map);
 		
 
