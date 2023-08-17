@@ -47,6 +47,22 @@
 			justify-content: space-around;
 		}
 
+		#controlBundle {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+
+		#resetFiltersBtn {
+			font-size: 7pt;
+			cursor: pointer;
+			border-radius: 5px;
+			background-color: #fbfbfcdf;
+			border: 1px solid rgba(57, 57, 70, 0.875);
+			padding: 2px 4px;
+			height: 26px;
+		}
+
 		#chart-area, #chart-travel, #chart-rose, #chart-mode, #reportrange {
 			padding: 5px;
 			margin: 5px;
