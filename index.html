@@ -969,8 +969,8 @@
 	function onLocationFound(e) {
     	var error = e.accuracy;
 
-    	currLocation = L.circleMarker(e.latlng, {radius: 1}).addTo(map);
-    	currLocationError = L.circle(e.latlng, error).addTo(map);
+    	currLocationError = L.circle(e.latlng, error, {color: '#1DA1F2', weight: 0, fillOpacity: 0.3}).addTo(map);
+		currLocation = L.circleMarker(e.latlng, {radius: 8, weight: 2, fillColor: '#1DA1F2', fillOpacity: 1, color: 'white'}).addTo(map);
 	}
 	map.on('locationfound', onLocationFound);
 
@@ -1119,6 +1119,7 @@ let clearFilters = function(btn){
 		processBarChartDates();
 		processBarChartMode();
 		processRose();
+		removeLocationMarker();
 	}
 
 //Button to clear map filters on map
