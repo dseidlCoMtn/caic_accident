@@ -277,11 +277,43 @@
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 
+		//Add CAIC logo
+		L.Control.Button = L.Control.extend({
+		options: {
+			position: 'bottomright',
+			width:'120px'
+		},
+		onAdd: function (map) {
+			var caicContainer = L.DomUtil.create('div', 'leaflet-control');
+			$(caicContainer).html('<a href="https://avalanche.state.co.us/" target="_blank"><div id="caicLogo"></div></a>');
+			return caicContainer;
+		},
+		onRemove: function(map) {},
+	});
+	var caicLogo = new L.Control.Button()
+	caicLogo.addTo(map);
+	
+	//Add CMC GIS attribution
+	L.Control.Button = L.Control.extend({
+		options: {
+			position: 'bottomright',
+			width:'120px'
+		},
+		onAdd: function (map) {
+			var cmcContainer = L.DomUtil.create('div', 'leaflet-control');
+			$(cmcContainer).html('<div id="cmcLogo"> <p class="text">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</p> </div>');
+			return cmcContainer;
+		},
+		onRemove: function(map) {},
+	});
+	var cmcLogo = new L.Control.Button()
+	cmcLogo.addTo(map);
+
 	//add Natural Atlas logo when zoom is above 10 and it is set as base layer
-	var naturalAtlasImg = L.control({position: "topright", orientation: 'horizontal'});
+	var naturalAtlasImg = L.control({position: "bottomright", orientation: 'horizontal'});
 	naturalAtlasImg.onAdd = function(map) {
 		var div = L.DomUtil.create("div");
-		div.innerHTML = '<img src="images/na-attribution.png" style="height: 40%; width: 40%; float: right"></img>';
+		div.innerHTML = '<img src="images/na-attribution.png" style="width: 120px; float: right"></img>';
 		return div;
 	};
 
@@ -289,11 +321,15 @@
 		var zoomLevel = map.getZoom();
 		var naturalAtlasOn = map.hasLayer(Natural_Atlas);
 		naturalAtlasImg.remove();		
+		caicLogo.remove();
+		cmcLogo.remove();
 
 		if ((zoomLevel >= 10) && naturalAtlasOn){
 			naturalAtlasImg.addTo(map);
 		};
 
+		caicLogo.addTo(map);
+		cmcLogo.addTo(map);
 	});
 
 	var Natural_Atlas = L.tileLayer(
@@ -305,11 +341,13 @@
 	Natural_Atlas.onRemove = function(map) {naturalAtlasImg.remove()};
 	Natural_Atlas.onAdd = function(map) {
 		var zoomLevel = map.getZoom();
-
+		caicLogo.remove();
+		cmcLogo.remove();
 		if (zoomLevel >= 10){
 			naturalAtlasImg.addTo(map);
 		};
-
+		caicLogo.addTo(map);
+		cmcLogo.addTo(map);
 	};
 
 	var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -924,7 +962,7 @@
 		addOverlays();
 	}
 
-	//Add CAIC logo
+/* 	//Add CAIC logo
 	L.Control.Button = L.Control.extend({
 		options: {
 			position: 'bottomright',
@@ -955,7 +993,7 @@
 	});
 	var cmcLogo = new L.Control.Button()
 	cmcLogo.addTo(map);
-
+ */
 	//add Current Location button
 	L.easyButton('fa-solid fa-location-crosshairs', function(btn, map){
 		map.locate({setView: true, maxZoom: 13});
