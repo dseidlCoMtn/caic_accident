@@ -584,7 +584,7 @@
 
 
 	
-	var startDate, endDate, month=0, fatality=0, mode=0;
+	var startDate, endDate, month=0, aType=0, mode=0;
 	var lassoIDs=[];
 	var roseFilters = rosePieChart.filters();
 	var roseFiltersFlat = roseFilters.flat();
@@ -593,7 +593,7 @@
 		var roseFiltersFlat = roseFilters.flat();
 
 		//Rose filter
-		if (fatality == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+		if (aType == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
 			if (roseFiltersFlat.includes(feature.properties.roseField)&& moment(feature.properties.datetime) >= startDate && moment(feature.properties.datetime) < endDate) {
 				return true
 			}
@@ -601,27 +601,27 @@
 				return false
 			}
 		}
-		//fatality filter
-		if (fatality != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.fatalVar == fatality && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+		//aType filter
+		if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
+			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality & rose filter
-				if (fatality != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.fatalVar == fatality && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//aType & rose filter
+				if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality & lasso filter
-		else if (fatality != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.fatalVar == fatality && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+		//aType & lasso filter
+		else if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
+			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
 			else {
@@ -629,7 +629,7 @@
 			}
 		}
 		//Lasso & rose filter
-		else if (fatality == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+		else if (aType == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
 			if ((moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
@@ -637,9 +637,9 @@
 				return false
 			}
 		}
-		//fatality & lasso & rose filter
-		else if (fatality != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.fatalVar == fatality && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//aType & lasso & rose filter
+		else if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
@@ -647,7 +647,7 @@
 			}
 		}
 		//Travel Mode filter
-		else if (mode != 0 && monthSelected == 0 && fatalSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
+		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -656,7 +656,7 @@
 			}
 		}
 		//Travel Mode + rose filter
-		else if (mode != 0 && monthSelected == 0 && fatalSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
 			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
@@ -665,7 +665,7 @@
 			}
 		}
 		//Travel Mode + lasso filter
-		else if (mode != 0 && monthSelected == 0 && fatalSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
+		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -674,7 +674,7 @@
 			}
 		}
 		//Travel Mode + lasso + rose filter
-		else if (mode != 0 && monthSelected == 0 && fatalSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
 			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
@@ -682,72 +682,72 @@
 				return false
 			}
 		}
-		//fatality + Month filter
-		else if (fatality != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+		//aType + Month filter
+		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
+			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality + Month + rose filter
-		else if (fatality != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//aType + Month + rose filter
+		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality + Month + lasso filter
-		else if (fatality != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+		//aType + Month + lasso filter
+		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
+			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality + Month + lasso + rose filter
-		else if (fatality != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//aType + Month + lasso + rose filter
+		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality + Travel Mode filter
-		else if (fatality != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.fatalVar == fatality && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+		//aType + Travel Mode filter
+		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
+			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality + Travel Mode + rose filter
-		else if (fatality != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.fatalVar == fatality && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//aType + Travel Mode + rose filter
+		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality + Travel Mode + lasso filter
-		else if (fatality != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.fatalVar == fatality && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+		//aType + Travel Mode + lasso filter
+		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
+			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//fatality + Travel Mode + lasso + rose filter
-		else if (fatality != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.fatalVar == fatality && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//aType + Travel Mode + lasso + rose filter
+		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
@@ -755,7 +755,7 @@
 			}
 		}
 		//Travel Mode + Month filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -764,7 +764,7 @@
 			}
 		}
 		//Travel Mode + Month + rose filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
 			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
@@ -773,7 +773,7 @@
 			}
 		}
 		//Travel Mode + Month + lasso filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -782,7 +782,7 @@
 			}
 		}
 		//Travel Mode + Month + lasso + rose filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
 			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
@@ -790,36 +790,36 @@
 				return false
 			}
 		}
-		//Travel Mode + Month + fatality filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
+		//Travel Mode + Month + aType filter
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//Travel Mode + Month + fatality + rose filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//Travel Mode + Month + aType + rose filter
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//Travel Mode + Month + fatality + lasso filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
+		//Travel Mode + Month + aType + lasso filter
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
 			else {
 				return false
 			}
 		}
-		//Travel Mode + Month + fatality + lasso + rose filter
-		else if (mode != 0 && monthSelected == 1 && fatalSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.fatalVar == fatality && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
+		//Travel Mode + Month + aType + lasso + rose filter
+		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
+			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
 			else {
@@ -827,7 +827,7 @@
 			}
 		}
 		//Month filter
-		else if (month != 0 && fatalSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
+		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
 			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
 				return true
 			}
@@ -836,7 +836,7 @@
 			}
 		}
 		//Month + rose filter
-		else if (month != 0 && fatalSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
+		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
 			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
@@ -845,7 +845,7 @@
 			}
 		}
 		//Month + lasso filter
-		else if (month != 0 && fatalSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
+		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
 			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
 				return true
 			}
@@ -854,7 +854,7 @@
 			}
 		}
 		//Month + lasso + rose filter
-		else if (month != 0 && fatalSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
+		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
 			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
 				return true
 			}
@@ -915,7 +915,7 @@
 		});
 		roseFilters = rosePieChart.filters();
 		roseFiltersFlat = roseFilters.flat();
-		heat = createHeatmap(map, accPoints, startDate, endDate, fatality, month, mode, lassoIDs, roseFiltersFlat);
+		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccLocationPt == true){accLocationPts.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
@@ -1009,12 +1009,12 @@
 		}
 		else{
 		
-	 	fatalSelected = 0;
+	 	aTypeSelected = 0;
 		monthSelected = 0;
 		modeSelected = 0;
 		roseSelected = 0;
 		month=0;
-		fatality=0;
+		aType=0;
 		mode = 0;
 		firstSelect=0;
 		secondSelect=0;
@@ -1033,7 +1033,7 @@
         layers.forEach(layer => {
 				lassoIDs.push(layer.feature.properties.acc_id);
                 });
-		barChartFatalArr.length=0;
+		barChartATypeArr.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
 		roseData.length=0;
@@ -1070,14 +1070,14 @@
 				style: styleAccidentType,
 				filter: layerFilterL
 		});
-		heat = createHeatmap(map, accPoints, startDate, endDate, fatality, month, mode, lassoIDs, roseFiltersFlat);
-		//console.log(startDate, endDate, fatality, month, mode, lassoIDs, roseFiltersFlat);
+		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
+		//console.log(startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
 		if (hasHeat == true){heat.addTo(map)};
 		addOverlays();
-		updateFatalChart();
+		updateATypeChart();
 		processBarChartDates();
 		processBarChartMode();
 		processRose();
@@ -1093,12 +1093,12 @@
 //Function to run to clear the filters
 let clearFilters = function(btn){
 		map.setView([home.lat, home.lng], home.zoom);
-		fatalSelected = 0;
+		aTypeSelected = 0;
 		monthSelected = 0;
 		modeSelected = 0;
 		roseSelected =0;
 		month=0;
-		fatality=0;
+		aType=0;
 		mode = 0;
 		firstSelect=0;
 		secondSelect=0;
@@ -1107,7 +1107,7 @@ let clearFilters = function(btn){
 		$('#reportrange').data('daterangepicker').startDate=moment('2018-10-01');
 		$('#reportrange').data('daterangepicker').endDate=moment('2023-09-30');
 		updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
-		barChartFatalArr.length=0;
+		barChartATypeArr.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
 		roseData.length=0;
@@ -1115,7 +1115,7 @@ let clearFilters = function(btn){
 		rosePieChart.filterAll();
 		roseFilters = rosePieChart.filters();
 		mapChange();
-		updateFatalChart();
+		updateATypeChart();
 		processBarChartDates();
 		processBarChartMode();
 		processRose();
@@ -1291,8 +1291,8 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			
 		//Pushing the acc_activity to the bar graph
 		//barLabels.push(feature.properties.acc_activity);
-		//Pushing the ffatal/non-fatal to the bar graph
-		barChartFatalArr.push(feature.properties.fatalVar);
+		//Pushing the avalanche type to the bar graph
+		barChartATypeArr.push(feature.properties.atype);
 		/* use moment to get the month and push to bar chart for activity type */
 		barChartDates.push(moment(feature.properties.datetime).format("MMM"));
 		/* push to bar chart for travel mode graph*/
@@ -1397,7 +1397,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				longitude=csvObj[j].acc_lon;
 				}
 			}
-		if (latitude != 0){
+		if (latitude != 0 && fatalVar=="Fatal"){
 			apigeo.features.push({
 				"type": "Feature",
 				"geometry": {
@@ -1443,7 +1443,8 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				const travMode = travmode;
 				const accID = json[i].classic_accident_id;
 				const roseID = json[i].accident_locations[0].aspect+" "+treeline;
-				heatPoints.push([lat, lon, date, fatalVar, travMode, accID, roseID])
+				const avType = json[i].accident_avalanches[0].type_code;
+				heatPoints.push([lat, lon, date, avType, travMode, accID, roseID])
 		}
 		};
 		startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
@@ -1489,10 +1490,10 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 
 
 	//Function to call L.heatLayer
-	function createHeatmap(map, points, minDate, maxDate, fatality, month, mode, lassoIDs, roseFiltersFlat) {
+	function createHeatmap(map, points, minDate, maxDate, aType, month, mode, lassoIDs, roseFiltersFlat) {
 		const pointsArray = [];
 		//roseFiltersFlat = roseFilters.flat();
-		//console.log(fatality, month, mode, lassoIDs, roseFiltersFlat);
+		//console.log(aType, month, mode, lassoIDs, roseFiltersFlat);
 		//console.log(roseFilters);
 		if (roseFiltersFlat == "undefined"){
 			console.log("yes");
@@ -1501,7 +1502,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 		}
 
 		//No graph selections + lasso
-		if (fatality == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		if (aType == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 			for (i in points) {
 				const pointID = points[i][5];
 				if (lassoIDs.includes(pointID) === true){
@@ -1510,7 +1511,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				}
 			}
 		//Rose
-		else if (fatality == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (aType == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 			for (i in points) {
 				const pointRose = points[i][6];
 				const pointDate = moment(points[i][2]);
@@ -1519,156 +1520,156 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					}
 				}
 			}
-		//fatality + month + mode
-		else if (fatality !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		//aType + month + mode
+		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointMode = points[i][4];
 					const pointDate = moment(points[i][2]);
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
+					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + month + mode + rose
-		else if (fatality !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		//aType + month + mode + rose
+		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//fatality + month + mode + lasso
-		else if (fatality !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointFatality = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//fatality + month + mode + lasso + rose
-		else if (fatality !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointMode = points[i][4];
 					const pointDate = moment(points[i][2]);
 					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + month
-		else if (fatality !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		//aType + month + mode + lasso
+		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
+					const pointID = points[i][5];
+					const pointaType = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//aType + month + mode + lasso + rose
+		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointaType = points[i][3];
+					const pointMonth = moment(points[i][2]).format("MMM");
+					const pointMode = points[i][4];
+					const pointDate = moment(points[i][2]);
+					const pointRose = points[i][6];
+					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//aType + month
+		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+				for (i in points) {
+					const pointaType = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
+					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + month + rose
-		else if (fatality !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		//aType + month + rose
+		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
 					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + month + lasso
-		else if (fatality !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		//aType + month + lasso
+		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
+					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + month + lasso + rose
-		else if (fatality !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		//aType + month + lasso + rose
+		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointID = points[i][5];
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
 					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + mode
-		else if (fatality !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		//aType + mode
+		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointDate = moment(points[i][2]);
 					const pointMode = points[i][4];
-					if ((pointFatality == fatality) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
+					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + mode + rose
-		else if (fatality !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		//aType + mode + rose
+		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//fatality + mode + lasso
-		else if (fatality !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointFatality = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					if ((pointFatality == fatality) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//fatality + mode + lasso + rose
-		else if (fatality !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointDate = moment(points[i][2]);
 					const pointMode = points[i][4];
 					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//aType + mode + lasso
+		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointaType = points[i][3];
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
+						pointsArray.push([points[i][0], points[i][1]]);	
+						}
+					} 
+			}
+		//aType + mode + lasso + rose
+		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+				for (i in points) {
+					const pointID = points[i][5];
+					const pointaType = points[i][3];
+					const pointDate = moment(points[i][2]);
+					const pointMode = points[i][4];
+					const pointRose = points[i][6];
+					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
 		//Month + mode
-		else if (month !=0 && mode !=0 && fatality ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
@@ -1679,7 +1680,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Month + mode + rose
-		else if (month !=0 && mode !=0 && fatality ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
@@ -1691,7 +1692,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Month + mode + lasso
-		else if (month !=0 && mode !=0 && fatality ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMonth = moment(points[i][2]).format("MMM");
@@ -1703,7 +1704,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Month + mode + lasso + rose
-		else if (month !=0 && mode !=0 && fatality ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMonth = moment(points[i][2]).format("MMM");
@@ -1715,52 +1716,52 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 						}
 					} 
 			}
-		//fatality only
-		else if (fatality !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		//aType only
+		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointDate = moment(points[i][2]);
-					if ((pointFatality == fatality) && (pointDate >= minDate) && (pointDate < maxDate))  {
+					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate))  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + rose
-		else if (fatality !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		//aType + rose
+		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointDate = moment(points[i][2]);
 					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
+					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + lasso
-		else if (fatality !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		//aType + lasso
+		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointDate = moment(points[i][2]);
-					if ((pointFatality == fatality) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
+					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
-		//fatality + lasso + rose
-		else if (fatality !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		//aType + lasso + rose
+		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointID = points[i][5];
-					const pointFatality = points[i][3];
+					const pointaType = points[i][3];
 					const pointDate = moment(points[i][2]);
 					const pointRose = points[i][6];
-					if ((pointFatality == fatality) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
+					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
 						pointsArray.push([points[i][0], points[i][1]]);	
 						}
 					} 
 			}
 		//Month only
-		else if (month !=0 && fatality==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
@@ -1770,7 +1771,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Month + rose
-		else if (month !=0 && fatality==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointMonth = moment(points[i][2]).format("MMM");
 					const pointDate = moment(points[i][2]);
@@ -1781,7 +1782,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Month + lasso
-		else if (month !=0 && fatality==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMonth = moment(points[i][2]).format("MMM");
@@ -1792,7 +1793,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Lasso + rose
-		else if (month ==0 && fatality==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (month ==0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointDate = moment(points[i][2]);
@@ -1803,7 +1804,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Month + lasso + rose
-		else if (month !=0 && fatality==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMonth = moment(points[i][2]).format("MMM");
@@ -1815,7 +1816,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Mode only
-		else if (mode !=0 && fatality==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointMode = points[i][4];
 					const pointDate = moment(points[i][2]);
@@ -1825,7 +1826,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Mode + rose
-		else if (mode !=0 && fatality==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointMode = points[i][4];
 					const pointDate = moment(points[i][2]);
@@ -1836,7 +1837,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Mode + lasso
-		else if (mode !=0 && fatality==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
+		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMode = points[i][4];
@@ -1847,7 +1848,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					} 
 			}
 		//Mode + lasso + rose
-		else if (mode !=0 && fatality==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
+		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
 				for (i in points) {
 					const pointID = points[i][5];
 					const pointMode = points[i][4];
@@ -1946,14 +1947,14 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 	//Upon changes to the date ranges, checks if each accident is after the start date
 	//Removes the accident layer and re-adds it with the date filter settings
 	$('#reportrange').on('apply.daterangepicker', function (ev, picker) {			
-			fatality = 0;
+			aType = 0;
 			month = 0;
 			mode = 0;
 			firstSelect=0;
 			secondSelect=0;
 			thirdSelect=0;
 			fourthSelect=0;
-			barChartFatalArr.length=0;
+			barChartATypeArr.length=0;
 			barChartDates.length=0;
 			barChartModeArr.length=0;
 			roseData.length=0;
@@ -1961,11 +1962,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			roseFilters = rosePieChart.filters();
 			lassoIDs.length=0;
 			mapChange();
-			fatalSelected = 0;
+			aTypeSelected = 0;
 			monthSelected = 0;
 			modeSelected = 0;
 			roseSelected =0;
-			updateFatalChart();
+			updateATypeChart();
 			processBarChartDates();			
 			processBarChartMode();
 			processRose();			
@@ -1973,28 +1974,28 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 	});
 	
 		
-	updateFatalChart();
+	updateATypeChart();
 	processBarChartDates();
 	processBarChartMode();
 	processRose();
 		
 	//Setting empty arrays to hold graph data
 	//let barLabels=[];
-	let barChartFatalArr=[]
+	let barChartATypeArr=[]
 	let barChartDates=[];
 	let barChartModeArr =[];
 	let roseData = [];
 
 		
 		
-	function updateFatalChart() {
+	function updateATypeChart() {
 		//await delay (450);
 		//console.log(barLabels);
 		if (acc != undefined){
-			if (barChartFatalArr.length > 0 || Object.keys(acc._layers).length==0){
+			if (barChartATypeArr.length > 0 || Object.keys(acc._layers).length==0){
 				
-				//Reduce the array of all fatality types to an object with counts of unique activities
-				const accCount = barChartFatalArr.reduce((allNames, name) => {
+				//Reduce the array of all aType types to an object with counts of unique activities
+				const accCount = barChartATypeArr.reduce((allNames, name) => {
 					const currCount = allNames[name] ?? 0;
 					return {
 					...allNames,
@@ -2010,7 +2011,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				barChartCanvas.data.labels = barLabels2;
 				barChartCanvas.data.datasets[0].data=barValues;
 				
-				//Reset the outline of any previously selected fatality
+				//Reset the outline of any previously selected aType
 				const dataset = barChartCanvas.data.datasets[0];
 				dataset.borderWidth = [];
 				dataset.borderColor = [];
@@ -2018,15 +2019,15 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 					dataset.borderWidth[i] = 1;
 					dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 					}
-				barChartCanvas.options.plugins.title.text = "Accidents by Fatality";
+				barChartCanvas.options.plugins.title.text = "Accidents by Avalanche Type";
 				barChartCanvas.update();	
 			}
 			else{
-				setTimeout(updateFatalChart, 50);
+				setTimeout(updateATypeChart, 50);
 			}
 		}
 	  else{
-		setTimeout(updateFatalChart, 50);
+		setTimeout(updateATypeChart, 50);
 		}
 	  }
 
@@ -2036,16 +2037,16 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 	Chart.defaults.font.color = '#333';
 
 	//Stores whether selections have been made in charts
-	var fatalSelected = 0, monthSelected = 0, modeSelected = 0, roseSelected = 0, firstSelect =0,
+	var aTypeSelected = 0, monthSelected = 0, modeSelected = 0, roseSelected = 0, firstSelect =0,
 	secondSelect=0, thirdSelect=0, fourthSelect=0;
 	
-	//Properties for fatality bar graph
+	//Properties for aType bar graph
 	const canvas = document.getElementById("barChartCanvas");
 	const ctx = canvas.getContext('2d');
 	const barChartCanvas = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: barChartFatalArr,
+				labels: barChartATypeArr,
 				datasets: [{
 					data: [],
 					borderColor: 'rgba(0, 0, 0, 0.1)',
@@ -2059,7 +2060,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				legend: false,
 				title: {
 					display: true,
-					text: 'Accidents by Fatality',
+					text: 'Accidents by Avalanche Type',
 					position: 'top'
 					}
 				},
@@ -2067,9 +2068,9 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				onClick : evt=> {
 					const points = barChartCanvas.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
 					if (points.length) {
-						fatalSelected = 1;
+						aTypeSelected = 1;
 						const clickedPoint = points[0];
-						fatality = barChartCanvas.data.labels[clickedPoint.index];
+						aType = barChartCanvas.data.labels[clickedPoint.index];
 						const value = barChartCanvas.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
 						const actLabels = barChartCanvas.options.scales.x.ticks;
 						const dataset = barChartCanvas.data.datasets[0];
@@ -2085,7 +2086,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							}
 						}
 						if (monthSelected ==0 && modeSelected==0 && firstSelect==0 && roseSelected==0) {
-							firstSelect= "fatality";
+							firstSelect= "aType";
 							titleText="1st Filter";
 							barChartDates.length=0;
 							processBarChartDates();
@@ -2094,7 +2095,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							roseData.length=0;
 							processRose();
 							}
-						else if (firstSelect == "fatality") {
+						else if (firstSelect == "aType") {
 							titleText="1st Filter";
 							monthSelected=0,month=0,modeSelected=0,mode=0,roseSelected=0;
 							secondSelect=0,thirdSelect=0,fourthSelect=0;
@@ -2107,8 +2108,8 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							roseFilters = rosePieChart.filters();
 							processRose();
 							}
-						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="fatality" && firstSelect=="mode"))  {
-							secondSelect="fatality";
+						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="aType" && firstSelect=="mode"))  {
+							secondSelect="aType";
 							titleText="2nd Filter";
 							thirdSelect=0,fourthSelect=0;
 							monthSelected=0,month = 0;
@@ -2120,8 +2121,8 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							roseFilters = rosePieChart.filters();
 							processRose();
 							}
-						else if ((secondSelect==0 && firstSelect=="month") || (secondSelect=="fatality" && firstSelect=="month"))  {
-							secondSelect="fatality";
+						else if ((secondSelect==0 && firstSelect=="month") || (secondSelect=="aType" && firstSelect=="month"))  {
+							secondSelect="aType";
 							titleText="2nd Filter";
 							thirdSelect=0,fourthSelect=0;
 							modeSelected=0,mode = 0;
@@ -2133,8 +2134,8 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							roseFilters = rosePieChart.filters();
 							processRose();
 							}
-						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="fatality" && firstSelect=="rose"))  {
-							secondSelect="fatality";
+						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="aType" && firstSelect=="rose"))  {
+							secondSelect="aType";
 							titleText="2nd Filter";
 							thirdSelect=0,fourthSelect=0;
 							modeSelected=0,mode = 0;
@@ -2144,24 +2145,24 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							barChartDates.length=0;
 							processBarChartDates();
 							}
-						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="month") || (thirdSelect==0 && secondSelect=="month" && firstSelect=="rose") || (thirdSelect=="fatality" && secondSelect=="rose" && firstSelect=="month") || (thirdSelect=="fatality" && secondSelect=="month" && firstSelect=="rose")){
-							thirdSelect="fatality";
+						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="month") || (thirdSelect==0 && secondSelect=="month" && firstSelect=="rose") || (thirdSelect=="aType" && secondSelect=="rose" && firstSelect=="month") || (thirdSelect=="aType" && secondSelect=="month" && firstSelect=="rose")){
+							thirdSelect="aType";
 							titleText="3rd Filter";
 							fourthSelect=0;
 							modeSelected=0,mode = 0;
 							barChartModeArr.length=0;
 							processBarChartMode();
 							}
-						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="rose" || thirdSelect=="fatality" && secondSelect=="rose" && firstSelect=="mode" || thirdSelect=="fatality" && secondSelect=="mode" && firstSelect=="rose"){
-							thirdSelect="fatality";
+						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="rose" || thirdSelect=="aType" && secondSelect=="rose" && firstSelect=="mode" || thirdSelect=="aType" && secondSelect=="mode" && firstSelect=="rose"){
+							thirdSelect="aType";
 							titleText="3rd Filter";
 							fourthSelect=0;
 							monthSelected=0,month = 0;
 							barChartDates.length=0;
 							processBarChartDates();
 							}
-						else if (thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="fatality" && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="fatality" && secondSelect=="mode" && firstSelect=="month"){
-							thirdSelect="fatality";
+						else if (thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="aType" && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="aType" && secondSelect=="mode" && firstSelect=="month"){
+							thirdSelect="aType";
 							titleText="3rd Filter";
 							fourthSelect=0;
 							roseSelected=0;
@@ -2171,11 +2172,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							processRose();
 							}
 						else  {
-							fourthSelect="fatality";
+							fourthSelect="aType";
 							titleText="4th Filter";
 							}
-						//console.log(fatality, month, mode, firstSelect, secondSelect, thirdSelect,fatalSelected, monthSelected, modeSelected);
-						barChartCanvas.options.plugins.title.text = "Accidents by Fatality | "+titleText+": "+value;
+						//console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect,aTypeSelected, monthSelected, modeSelected);
+						barChartCanvas.options.plugins.title.text = "Accidents by Avalanche Type | "+titleText+": "+value;
 						barChartCanvas.update();
 						mapChange();
 				  }},
@@ -2236,11 +2237,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 							}
 						}
-						if (fatalSelected==0 && modeSelected==0 && firstSelect==0 && roseSelected==0) {
+						if (aTypeSelected==0 && modeSelected==0 && firstSelect==0 && roseSelected==0) {
 							firstSelect= "month";
 							titleText="1st Filter";
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							barChartModeArr.length=0;
 							processBarChartMode();
 							roseData.length=0;
@@ -2248,10 +2249,10 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							}
 						else if (firstSelect == "month") {
 							titleText="1st Filter";
-							fatalSelected=0,fatality=0,modeSelected=0,mode=0,roseSelected=0;
+							aTypeSelected=0,aType=0,modeSelected=0,mode=0,roseSelected=0;
 							secondSelect=0,thirdSelect=0,fourthSelect=0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							barChartModeArr.length=0;
 							processBarChartMode();
 							roseData.length=0;
@@ -2259,7 +2260,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							roseFilters = rosePieChart.filters();
 							processRose();
 							}
-						else if ((secondSelect==0 && firstSelect=="fatality") || (secondSelect=="month" && firstSelect=="fatality"))  {
+						else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="month" && firstSelect=="aType"))  {
 							secondSelect="month";
 							titleText="2nd Filter";
 							thirdSelect=0, fourthSelect=0;
@@ -2275,9 +2276,9 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							secondSelect="month";
 							titleText="2nd Filter";
 							thirdSelect=0, fourthSelect=0;
-							fatality=0, fatalSelected=0, roseSelected =0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							aType=0, aTypeSelected=0, roseSelected =0;
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							roseData.length=0;
 							rosePieChart.filterAll();
 							roseFilters = rosePieChart.filters();
@@ -2287,13 +2288,13 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							secondSelect="month";
 							titleText="2nd Filter";
 							thirdSelect=0, fourthSelect=0;
-							fatality=0, fatalSelected=0, mode=0, modeSelected =0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							aType=0, aTypeSelected=0, mode=0, modeSelected =0;
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							barChartModeArr.length=0;
 							processBarChartMode();
 							}
-						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="fatality") || (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="rose") || (thirdSelect=="month" && secondSelect=="rose" && firstSelect=="fatality") || (thirdSelect=="month" && secondSelect=="fatality" && firstSelect=="rose")){
+						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="rose") || (thirdSelect=="month" && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect=="month" && secondSelect=="aType" && firstSelect=="rose")){
 							thirdSelect="month";
 							titleText="3rd Filter";
 							fourthSelect=0;
@@ -2305,11 +2306,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							thirdSelect="month";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							fatalSelected=0,fatality = 0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							aTypeSelected=0,aType = 0;
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							}
-						else if (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="fatality" || thirdSelect=="month" && secondSelect=="fatality" && firstSelect=="mode" || thirdSelect=="month" && secondSelect=="mode" && firstSelect=="fatality"){
+						else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="aType" || thirdSelect=="month" && secondSelect=="aType" && firstSelect=="mode" || thirdSelect=="month" && secondSelect=="mode" && firstSelect=="aType"){
 							thirdSelect="month";
 							titleText="3rd Filter";
 							fourthSelect=0;
@@ -2323,7 +2324,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							fourthSelect="month";
 							titleText="4th Filter";
 							}
-						//console.log(fatality, month, mode, firstSelect, secondSelect, thirdSelect,fatalSelected, monthSelected, modeSelected);
+						//console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect,aTypeSelected, monthSelected, modeSelected);
 						barChart.options.plugins.title.text = "Accidents by Month | "+titleText+": "+value;
 						barChart.update();
 						mapChange();
@@ -2441,11 +2442,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
 							}
 						}
-						if (monthSelected ==0 && fatalSelected==0 && firstSelect==0 && roseSelected ==0) {
+						if (monthSelected ==0 && aTypeSelected==0 && firstSelect==0 && roseSelected ==0) {
 							firstSelect= "mode";
 							titleText="1st Filter";
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							barChartDates.length=0;
 							processBarChartDates();
 							roseData.length=0;
@@ -2453,10 +2454,10 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							}
 						else if (firstSelect == "mode") {
 							titleText="1st Filter";
-							monthSelected=0, month=0, fatalSelected=0, fatality=0, roseSelected =0;
+							monthSelected=0, month=0, aTypeSelected=0, aType=0, roseSelected =0;
 							secondSelect=0, thirdSelect=0, fourthSelect=0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							barChartDates.length=0;
 							processBarChartDates();
 							roseData.length=0;
@@ -2464,7 +2465,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							roseFilters = rosePieChart.filters();
 							processRose();
 							}
-						else if ((secondSelect==0 && firstSelect=="fatality") || (secondSelect=="mode" && firstSelect=="fatality"))  {
+						else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="mode" && firstSelect=="aType"))  {
 							secondSelect="mode";
 							titleText="2nd Filter";
 							thirdSelect=0,fourthSelect=0;
@@ -2480,9 +2481,9 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							secondSelect="mode";
 							titleText="2nd Filter";
 							thirdSelect=0,fourthSelect=0;
-							fatality=0, fatalSelected=0, roseSelected =0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							aType=0, aTypeSelected=0, roseSelected =0;
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							roseData.length=0;
 							rosePieChart.filterAll();
 							roseFilters = rosePieChart.filters();
@@ -2492,13 +2493,13 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							secondSelect="mode";
 							titleText="2nd Filter";
 							thirdSelect=0,fourthSelect=0;
-							fatality=0, fatalSelected=0, month=0, monthSelected =0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							aType=0, aTypeSelected=0, month=0, monthSelected =0;
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							barChartDates.length=0;
 							processBarChartDates();
 							}
-						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="fatality") || (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="rose") || (thirdSelect=="mode" && secondSelect=="rose" && firstSelect=="fatality") || (thirdSelect=="mode" && secondSelect=="fatality" && firstSelect=="rose")){
+						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="rose") || (thirdSelect=="mode" && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect=="mode" && secondSelect=="aType" && firstSelect=="rose")){
 							thirdSelect="mode";
 							titleText="3rd Filter";
 							fourthSelect=0;
@@ -2510,11 +2511,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							thirdSelect="mode";
 							titleText="3rd Filter";
 							fourthSelect=0;
-							fatalSelected=0,fatality = 0;
-							barChartFatalArr.length=0;
-							updateFatalChart();
+							aTypeSelected=0,aType = 0;
+							barChartATypeArr.length=0;
+							updateATypeChart();
 							}
-						else if (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="fatality" || thirdSelect=="mode" && secondSelect=="fatality" && firstSelect=="month" || thirdSelect=="mode" && secondSelect=="month" && firstSelect=="fatality"){
+						else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="aType" || thirdSelect=="mode" && secondSelect=="aType" && firstSelect=="month" || thirdSelect=="mode" && secondSelect=="month" && firstSelect=="aType"){
 							thirdSelect="mode";
 							titleText="3rd Filter";
 							fourthSelect=0;
@@ -2528,7 +2529,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 							fourthSelect="mode";
 							titleText="4th Filter";
 							}
-						//console.log(fatality, month, mode, firstSelect, secondSelect, thirdSelect, fatalSelected, monthSelected, modeSelected);
+						//console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect, aTypeSelected, monthSelected, modeSelected);
 						barChartMode.options.plugins.title.text = "Accidents by Travel Mode | "+titleText+": "+value;
 						barChartMode.update();
 						mapChange();
@@ -2668,11 +2669,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			rosePieChart.filter($(this).attr('filter'));
 			roseSelected = 1;
 			roseData.length=0;
-			if (monthSelected ==0 && fatalSelected==0 && firstSelect==0 && modeSelected ==0) {
+			if (monthSelected ==0 && aTypeSelected==0 && firstSelect==0 && modeSelected ==0) {
 				firstSelect= "rose";
 				titleText="1st Filter";
-				barChartFatalArr.length=0;
-				updateFatalChart();
+				barChartATypeArr.length=0;
+				updateATypeChart();
 				barChartDates.length=0;
 				processBarChartDates();
 				barChartModeArr.length=0;
@@ -2680,16 +2681,16 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				}
 			else if (firstSelect == "rose") {
 				titleText="1st Filter";
-				monthSelected=0, month=0, fatalSelected=0, fatality=0, modeSelected=0, mode =0;
+				monthSelected=0, month=0, aTypeSelected=0, aType=0, modeSelected=0, mode =0;
 				secondSelect=0, thirdSelect=0, fourthSelect=0;
-				barChartFatalArr.length=0;
-				updateFatalChart();
+				barChartATypeArr.length=0;
+				updateATypeChart();
 				barChartDates.length=0;
 				processBarChartDates();
 				barChartModeArr.length=0;
 				processBarChartMode();
 				}
-			else if ((secondSelect==0 && firstSelect=="fatality") || (secondSelect=="rose" && firstSelect=="fatality"))  {
+			else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="rose" && firstSelect=="aType"))  {
 				secondSelect="rose";
 				titleText="2nd Filter";
 				thirdSelect=0,fourthSelect=0;
@@ -2703,9 +2704,9 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				secondSelect="rose";
 				titleText="2nd Filter";
 				thirdSelect=0,fourthSelect=0;
-				fatality=0, fatalSelected=0, mode=0, modeSelected=0;
-				barChartFatalArr.length=0;
-				updateFatalChart();
+				aType=0, aTypeSelected=0, mode=0, modeSelected=0;
+				barChartATypeArr.length=0;
+				updateATypeChart();
 				barChartModeArr.length=0;
 				processBarChartMode();
 				}
@@ -2713,13 +2714,13 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				secondSelect="rose";
 				titleText="2nd Filter";
 				thirdSelect=0,fourthSelect=0;
-				fatality=0, fatalSelected=0, month=0, monthSelected =0;
-				barChartFatalArr.length=0;
-				updateFatalChart();
+				aType=0, aTypeSelected=0, month=0, monthSelected =0;
+				barChartATypeArr.length=0;
+				updateATypeChart();
 				barChartDates.length=0;
 				processBarChartDates();
 				}
-			else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="fatality") || (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="fatality") || (thirdSelect=="rose" && secondSelect=="fatality" && firstSelect=="mode")){
+			else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="mode")){
 				thirdSelect="rose";
 				titleText="3rd Filter";
 				fourthSelect=0;
@@ -2731,11 +2732,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 				thirdSelect="rose";
 				titleText="3rd Filter";
 				fourthSelect=0;
-				fatalSelected=0,fatality = 0;
-				barChartFatalArr.length=0;
-				updateFatalChart();
+				aTypeSelected=0,aType = 0;
+				barChartATypeArr.length=0;
+				updateATypeChart();
 				}
-			else if (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="fatality" || thirdSelect=="rose" && secondSelect=="fatality" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="fatality"){
+			else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="aType" || thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="aType"){
 				thirdSelect="mode";
 				titleText="3rd Filter";
 				fourthSelect=0;
@@ -2777,11 +2778,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 		roseFilters = rosePieChart.filters();
 		roseSelected = 1;
 		roseData.length=0;
-		if (monthSelected ==0 && fatalSelected==0 && firstSelect==0 && modeSelected ==0) {
+		if (monthSelected ==0 && aTypeSelected==0 && firstSelect==0 && modeSelected ==0) {
 			firstSelect= "rose";
 			titleText="1st Filter";
-			barChartFatalArr.length=0;
-			updateFatalChart();
+			barChartATypeArr.length=0;
+			updateATypeChart();
 			barChartDates.length=0;
 			processBarChartDates();
 			barChartModeArr.length=0;
@@ -2789,10 +2790,10 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			}
 		else if (firstSelect == "rose") {
 			titleText="1st Filter";
-			monthSelected=0, month=0, fatalSelected=0, fatality=0, modeSelected=0, mode =0;
+			monthSelected=0, month=0, aTypeSelected=0, aType=0, modeSelected=0, mode =0;
 			secondSelect=0, thirdSelect=0, fourthSelect=0;
-			barChartFatalArr.length=0;
-			updateFatalChart();
+			barChartATypeArr.length=0;
+			updateATypeChart();
 			barChartDates.length=0;
 			processBarChartDates();
 			barChartModeArr.length=0;
@@ -2800,7 +2801,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			//roseData.length=0;
 			//processRose();
 			}
-		else if ((secondSelect==0 && firstSelect=="fatality") || (secondSelect=="rose" && firstSelect=="fatality"))  {
+		else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="rose" && firstSelect=="aType"))  {
 			secondSelect="rose";
 			titleText="2nd Filter";
 			thirdSelect=0,fourthSelect=0;
@@ -2814,9 +2815,9 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			secondSelect="rose";
 			titleText="2nd Filter";
 			thirdSelect=0,fourthSelect=0;
-			fatality=0, fatalSelected=0, mode=0, modeSelected=0;
-			barChartFatalArr.length=0;
-			updateFatalChart();
+			aType=0, aTypeSelected=0, mode=0, modeSelected=0;
+			barChartATypeArr.length=0;
+			updateATypeChart();
 			barChartModeArr.length=0;
 			processBarChartMode();
 			}
@@ -2824,13 +2825,13 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			secondSelect="rose";
 			titleText="2nd Filter";
 			thirdSelect=0,fourthSelect=0;
-			fatality=0, fatalSelected=0, month=0, monthSelected =0;
-			barChartFatalArr.length=0;
-			updateFatalChart();
+			aType=0, aTypeSelected=0, month=0, monthSelected =0;
+			barChartATypeArr.length=0;
+			updateATypeChart();
 			barChartDates.length=0;
 			processBarChartDates();
 			}
-		else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="fatality") || (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="fatality") || (thirdSelect=="rose" && secondSelect=="fatality" && firstSelect=="mode")){
+		else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="mode")){
 			thirdSelect="rose";
 			titleText="3rd Filter";
 			fourthSelect=0;
@@ -2842,11 +2843,11 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			thirdSelect="rose";
 			titleText="3rd Filter";
 			fourthSelect=0;
-			fatalSelected=0,fatality = 0;
-			barChartFatalArr.length=0;
-			updateFatalChart();
+			aTypeSelected=0,aType = 0;
+			barChartATypeArr.length=0;
+			updateATypeChart();
 			}
-		else if (thirdSelect==0 && secondSelect=="fatality" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="fatality" || thirdSelect=="rose" && secondSelect=="fatality" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="fatality"){
+		else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="aType" || thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="aType"){
 			thirdSelect="mode";
 			titleText="3rd Filter";
 			fourthSelect=0;
