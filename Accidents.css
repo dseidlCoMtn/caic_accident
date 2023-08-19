@@ -54,13 +54,13 @@
 		}
 
 		#resetFiltersBtn {
-			font-size: 7pt;
+			font-size: 11pt;
 			cursor: pointer;
 			border-radius: 5px;
 			background-color: #fbfbfcdf;
 			border: 1px solid rgba(57, 57, 70, 0.875);
-			padding: 2px 4px;
-			height: 26px;
+			padding: 3px 4px;
+			height: 25px;
 		}
 
 		#chart-area, #chart-travel, #chart-rose, #chart-mode, #reportrange {
@@ -122,20 +122,20 @@
 		.fa-calendar{
 			position: absolute;
 			left: 10px;
-			top: calc(50% - 0.6em);
-		  }
+			top: calc(50% - 0.5em);
+		}
 		.fa-caret-down{
 			position: absolute;
 			right: 12px;
 			top: calc(50% - 0.6em);
-		  }
+		}
 		input{
 			padding-left: 17px;
-		  }
+		}
+
 		.input-wrapper{
 			position: relative;
-		  }
-
+		}
 
 		.daterangepicker {
 			font-family: Nanum Gothic;

@@ -915,7 +915,7 @@
 	function mapChange() {
 		var hasAcc = map.hasLayer(acc);
 		var hasAccByType = map.hasLayer(accByType);
-		var hasAccLocationPt = map.hasLayer(accLocationPts);
+		var hasAccLocationPts = map.hasLayer(accLocationPts);
 		var hasZones = map.hasLayer(zones);
 		var hasHeat = map.hasLayer(heat);
 		map.removeLayer(acc);
@@ -940,7 +940,7 @@
 		accLocationPts = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
 						return L.circleMarker(latlng);},
-						onEachFeature: onEachFeature,
+						onEachFeature: onEachFeatureLocationPts,
 						style:styleLocationPts,
 						filter:layerFilter
 		});
@@ -955,7 +955,7 @@
 		roseFiltersFlat = roseFilters.flat();
 		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
-		if (hasAccLocationPt == true){accLocationPts.addTo(map)};
+		if (hasAccLocationPts == true){accLocationPts.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
 		if (hasHeat == true){heat.addTo(map)};
@@ -1033,12 +1033,12 @@
 
 	function lassoLayers(layers) {
 		var hasAcc = map.hasLayer(acc);
-		var hasAccLocationPt = map.hasLayer(accLocationPts)
+		var hasAccLocationPts = map.hasLayer(accLocationPts)
 		var hasAccByType = map.hasLayer(accByType);
 		var hasZones = map.hasLayer(zones);
 		var hasHeat = map.hasLayer(heat);
 		
-		if (hasAcc == false && hasAccByType==false && hasAccLocationPt==false && hasHeat == true ){
+		if (hasAcc == false && hasAccByType == false && hasAccLocationPts == false && hasHeat == true ){
 		alert("Please turn on one of the accident point layers to filter by lasso.");
 		}
 
@@ -1060,10 +1060,12 @@
 		fourthSelect=0;
 
 		map.removeLayer(acc);
+		map.removeLayer(accLocationPts);
 		map.removeLayer(accByType);
 		map.removeLayer(zones);
 		map.removeLayer(heat);
 		layerControl.removeLayer(acc);
+		layerControl.removeLayer(accLocationPts);
 		layerControl.removeLayer(accByType);
 		layerControl.removeLayer(zones);
 		layerControl.removeLayer(heat);
@@ -1081,7 +1083,6 @@
 		function layerFilterL(feature) {
 				if (lassoIDs.includes(feature.properties.acc_id) === true){
 						return true
-						
 				}
 				else {
 						return false
@@ -1097,9 +1098,9 @@
 		accLocationPts = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
 						return L.circleMarker(latlng);},
-						onEachFeature: onEachFeature,
+						onEachFeature: onEachFeatureLocationPts,
 						style:styleLocationPts,
-						filter:layerFilter
+						filter:layerFilterL
 		});
 		accByType = L.geoJson(apigeo, {
 				pointToLayer: function(geoJsonPoint, latlng) {
@@ -1111,6 +1112,7 @@
 		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
 		//console.log(startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
+		if (hasAccLocationPts == true){accLocationPts.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
 		if (hasZones == true){zones.addTo(map)};
 		if (hasHeat == true){heat.addTo(map)};
@@ -1302,6 +1304,10 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 		acc.resetStyle(e.target);
 	}
 
+	function resetHighlightLocationPts(e) {
+		accLocationPts.resetStyle(e.target);
+	}
+
 	function resetHighlightTravelMode(e) {
 		accByType.resetStyle(e.target);
 	}
@@ -1336,6 +1342,22 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 		/* push to bar chart for travel mode graph*/
 		barChartModeArr.push(feature.properties.acc_travel_mode);
 		roseData.push({roseField:feature.properties.roseField});
+	}
+
+//Actions for mouseover, mouseout for accident points BY TRAVEL MODE
+function onEachFeatureLocationPts(feature, layer) {
+		layer.on({
+			//mouseover: highlightFeature,
+			// mouseout: resetHighlightLocationPts
+		});
+
+		//content of the popup
+		layer.bindPopup("<strong>" + feature.properties.acc_location +"</strong><br>" + (moment(feature.properties.datetime).format("MM/DD/YYYY")) +
+			"<br>" + feature.properties.acc_activity 
+			+ "<br>" + feature.properties.Rscale + " " + feature.properties.Dscale +
+			"<br>Caught: " + feature.properties.no_caught + 
+			", Buried: " + feature.properties.no_buried + ", Killed: " + feature.properties.no_killed + 
+			"<br><a href=" + feature.properties.report + " target=_blank>Link to Report</a>");
 	}
 
 	//Actions for mouseover, mouseout for accident points BY TRAVEL MODE
@@ -1498,7 +1520,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 		accLocationPts = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
 						return L.circleMarker(latlng);},
-						onEachFeature: onEachFeature,
+						onEachFeature: onEachFeatureLocationPts,
 						style:styleLocationPts,
 						filter:layerFilter
 		});
