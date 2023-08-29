@@ -2049,11 +2049,8 @@ function onEachFeatureLocationPts(feature, layer) {
 		
 		
 	function updateATypeChart() {
-		//await delay (450);
-		// console.log(barLabels2);
 		if (acc != undefined){
-			if (barChartATypeArr.length > 0 || Object.keys(acc._layers).length==0){
-				
+			if (barChartATypeArr.length > 0 || Object.keys(acc._layers).length==0){			
 				//Reduce the array of all aType types to an object with counts of unique activities
 				const accCount = barChartATypeArr.reduce((allNames, name) => {
 					const currCount = allNames[name] ?? 0;
@@ -2066,7 +2063,22 @@ function onEachFeatureLocationPts(feature, layer) {
 				//Grab the keys and values from the accCount
 				barLabels2=Object.keys(accCount);
 				barValues=Object.values(accCount);
-				
+				//Rename the labels on the chart
+				for (let i = 0; i < barLabels2.length; i++)
+					if (barLabels2[i] == "SS")
+					barLabels2[i] = "SOFT SLAB";	
+					else if (barLabels2[i] == "HS") 
+					barLabels2[i] = "HARD SLAB";
+					else if (barLabels2[i] == "WS") 
+					barLabels2[i] = "WET SLAB";
+					else if (barLabels2[i] == "WL") 
+					barLabels2[i] = "WET LOOSE";
+					else if (barLabels2[i] == "I") 
+					barLabels2[i] = "ICE";
+					else if (barLabels2[i] == "R") 
+					barLabels2[i] = "ROOF";
+					else
+					barLabels2[i] = "UNK";
 				//Update the bar chart with the labels and values
 				barChartCanvas.data.labels = barLabels2;
 				barChartCanvas.data.datasets[0].data=barValues;				
