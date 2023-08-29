@@ -275,6 +275,8 @@
 	<script type="text/javascript" src="zones.js"></script>
 	<script type="text/javascript">
 	
+	let now = moment();
+	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 
 		//Add CAIC logo
@@ -1984,15 +1986,15 @@ function onEachFeatureLocationPts(feature, layer) {
 	$('#reportrange').daterangepicker({
 		"showDropdowns": false,
 		"startDate": moment('2018-10-01'),
-		"endDate": moment('2023-09-30'),
+		"endDate": moment(),
 		locale: {
       		format: 'MMM D, YYYY'
    		 },
 		ranges: {
-				'Last 5 Avalanche Years': [moment('2018-10-01'), moment('2023-09-30')],
-				'Current Avalanche Year': [moment('2022-10-01'), moment('2023-09-30')],
+				'Last 5 Avalanche Years': [moment().subtract(7, 'years'), moment()],
+				'Current Avalanche Year': [moment('2022-10-01'), moment()],
 				'Last Avalanche Year': [moment('2021-10-01'), moment('2022-09-30')],
-				'Last 10 Avalanche Years': [moment('2013-10-01'), moment('2023-09-30')],
+				'Last 10 Avalanche Years': [moment('2013-10-01'), moment()],
 				'All': [moment('2008-01-01'), moment()],
 				},
 				//maxDate: moment()
@@ -2001,7 +2003,7 @@ function onEachFeatureLocationPts(feature, layer) {
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
-	updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
+	updateDisplayedDateRange(moment('2018-10-01'), moment());
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
