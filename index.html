@@ -277,13 +277,21 @@
 	
 	let now = moment();
 	let currentYear = moment().year();
+	let currentMonth = moment().month();
+	let currentAviYear
+	
+	//today back to 10/1/currentYear
 	// the avalanche year is from 10/01 to 9/31 each year.
-	const findAvalancheYear = (now, currentYear) => {
+	let findAvalancheYear = () => {
 		// check if it is after October 1 if so, calculate the current year from now to 
-		if (now >= "10/01") {
-
+		if (currentMonth == 'October'||'November'||'December') {
+			currentAviYear = currentYear;}
+		else {
+			currentAviYear = currentYear-1;
 		}
 	}
+	findAvalancheYear()
+	console.log("currentAviYear: " + currentAviYear)
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 
@@ -1135,10 +1143,10 @@
 	};
 
 	
-	//add Help button
-	L.easyButton('fa-regular fa-circle-question', function(btn, map){
-		onClick: window.open("Help.html", "_blank");
-	},'Help with this map').addTo(map);
+//add Help button
+L.easyButton('fa-regular fa-circle-question', function(btn, map){
+	onClick: window.open("Help.html", "_blank");
+},'Help with this map').addTo(map);
 
 //Function to run to clear the filters
 let clearFilters = function(btn){
@@ -1154,9 +1162,10 @@ let clearFilters = function(btn){
 		secondSelect=0;
 		thirdSelect=0;
 		fourthSelect=0;
-		$('#reportrange').data('daterangepicker').startDate=moment('2018-10-01');
-		$('#reportrange').data('daterangepicker').endDate=moment('2023-09-30');
-		updateDisplayedDateRange(moment('2018-10-01'), moment('2023-09-30'));
+// change date range to be last 5 avalanche years
+		$('#reportrange').data('daterangepicker').startDate=moment(currentAviYear + '-10-01').subtract(5, 'years');
+		$('#reportrange').data('daterangepicker').endDate=now;
+		updateDisplayedDateRange(moment(currentAviYear + '-10-01').subtract(5, 'years'), now);
 		barChartATypeArr.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
@@ -1993,17 +2002,18 @@ function onEachFeatureLocationPts(feature, layer) {
 	//Sets the dropdowns and ranges for the date range picker
 	$('#reportrange').daterangepicker({
 		"showDropdowns": false,
-		"startDate": moment().subtract(5, 'years'),
+		// October 1, currentAviYear
+		"startDate": moment(currentAviYear + '-10-01').subtract(5, 'years'),
 		"endDate": moment(),
 		locale: {
       		format: 'MM/DD/YYYY'
    		 },
 		ranges: {
-				'Last 5 Avalanche Years': [moment().subtract(5, 'years'), moment()],
-				'Current Avalanche Year': [moment().subtract(1, 'years'), moment()],
-				'Last Avalanche Year': [moment('2021-10-01'), moment('2022-09-30')],
-				'Last 10 Avalanche Years': [moment().subtract(10, 'years'), moment()],
-				'All': [moment('2008-01-01'), moment()],
+				'Last 5 Avalanche Years': [moment(currentAviYear + '-10-01').subtract(5, 'years'), now],
+				'Current Avalanche Year': [moment(currentAviYear + '-10-01').subtract(1, 'years'), now],
+				'Last Avalanche Year': [moment(currentAviYear + '-10-01').subtract(2, 'years'), moment(currentAviYear + '-09-30').subtract(1, 'years')],
+				'Last 10 Avalanche Years': [moment(currentAviYear + '-10-01').subtract(10, 'years'), now],
+				'All': [moment('2008-01-01'), now],
 				},
 				//maxDate: moment()
 		}, 
@@ -2011,7 +2021,7 @@ function onEachFeatureLocationPts(feature, layer) {
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
-	updateDisplayedDateRange(moment('2018-10-01'), moment());
+	updateDisplayedDateRange(moment(currentAviYear + '-10-01'), now);
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
