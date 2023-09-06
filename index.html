@@ -276,6 +276,14 @@
 	<script type="text/javascript">
 	
 	let now = moment();
+	let currentYear = moment().year();
+	// the avalanche year is from 10/01 to 9/31 each year.
+	const findAvalancheYear = (now, currentYear) => {
+		// check if it is after October 1 if so, calculate the current year from now to 
+		if (now >= "10/01") {
+
+		}
+	}
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 
@@ -1985,16 +1993,16 @@ function onEachFeatureLocationPts(feature, layer) {
 	//Sets the dropdowns and ranges for the date range picker
 	$('#reportrange').daterangepicker({
 		"showDropdowns": false,
-		"startDate": moment('2018-10-01'),
+		"startDate": moment().subtract(5, 'years'),
 		"endDate": moment(),
 		locale: {
-      		format: 'MMM D, YYYY'
+      		format: 'MM/DD/YYYY'
    		 },
 		ranges: {
-				'Last 5 Avalanche Years': [moment().subtract(7, 'years'), moment()],
-				'Current Avalanche Year': [moment('2022-10-01'), moment()],
+				'Last 5 Avalanche Years': [moment().subtract(5, 'years'), moment()],
+				'Current Avalanche Year': [moment().subtract(1, 'years'), moment()],
 				'Last Avalanche Year': [moment('2021-10-01'), moment('2022-09-30')],
-				'Last 10 Avalanche Years': [moment('2013-10-01'), moment()],
+				'Last 10 Avalanche Years': [moment().subtract(10, 'years'), moment()],
 				'All': [moment('2008-01-01'), moment()],
 				},
 				//maxDate: moment()
@@ -2066,21 +2074,21 @@ function onEachFeatureLocationPts(feature, layer) {
 				barLabels2=Object.keys(accCount);
 				barValues=Object.values(accCount);
 				//Rename the labels on the chart
-				for (let i = 0; i < barLabels2.length; i++)
-					if (barLabels2[i] == "SS")
-					barLabels2[i] = "SOFT SLAB";	
-					else if (barLabels2[i] == "HS") 
-					barLabels2[i] = "HARD SLAB";
-					else if (barLabels2[i] == "WS") 
-					barLabels2[i] = "WET SLAB";
-					else if (barLabels2[i] == "WL") 
-					barLabels2[i] = "WET LOOSE";
-					else if (barLabels2[i] == "I") 
-					barLabels2[i] = "ICE";
-					else if (barLabels2[i] == "R") 
-					barLabels2[i] = "ROOF";
-					else
-					barLabels2[i] = "UNK";
+				// for (let i = 0; i < barLabels2.length; i++)
+				// 	if (barLabels2[i] == "SS")
+				// 	barLabels2[i] = "SOFT SLAB";	
+				// 	else if (barLabels2[i] == "HS") 
+				// 	barLabels2[i] = "HARD SLAB";
+				// 	else if (barLabels2[i] == "WS") 
+				// 	barLabels2[i] = "WET SLAB";
+				// 	else if (barLabels2[i] == "WL") 
+				// 	barLabels2[i] = "WET LOOSE";
+				// 	else if (barLabels2[i] == "I") 
+				// 	barLabels2[i] = "ICE";
+				// 	else if (barLabels2[i] == "R") 
+				// 	barLabels2[i] = "ROOF";
+				// 	else
+				// 	barLabels2[i] = "UNK";
 				//Update the bar chart with the labels and values
 				barChartCanvas.data.labels = barLabels2;
 				barChartCanvas.data.datasets[0].data=barValues;				
