@@ -73,7 +73,7 @@
 						<div class="col-xs-12 col-md-4">
 							<div class="chart-wrapper">
 								<div class="chart-title">
-									Avalanche Rose
+									Avalanche Rose 
 									<span
 										id="unknown-avy-rose-number-display" data-toggle="tooltip" data-placement="top"
 										title="Incomplete elevation or aspect information has prevented some avalanches from being plotted on the rose.">
@@ -2069,8 +2069,11 @@ function onEachFeatureLocationPts(feature, layer) {
 		
 		
 	function updateATypeChart() {
+		//await delay (450);
+		//console.log(barLabels);
 		if (acc != undefined){
-			if (barChartATypeArr.length > 0 || Object.keys(acc._layers).length==0){			
+			if (barChartATypeArr.length > 0 || Object.keys(acc._layers).length==0){
+				
 				//Reduce the array of all aType types to an object with counts of unique activities
 				const accCount = barChartATypeArr.reduce((allNames, name) => {
 					const currCount = allNames[name] ?? 0;
@@ -2099,9 +2102,11 @@ function onEachFeatureLocationPts(feature, layer) {
 				// 	barLabels2[i] = "ROOF";
 				// 	else
 				// 	barLabels2[i] = "UNK";
+				
 				//Update the bar chart with the labels and values
 				barChartCanvas.data.labels = barLabels2;
-				barChartCanvas.data.datasets[0].data=barValues;				
+				barChartCanvas.data.datasets[0].data=barValues;
+				
 				//Reset the outline of any previously selected aType
 				const dataset = barChartCanvas.data.datasets[0];
 				dataset.borderWidth = [];
