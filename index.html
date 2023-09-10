@@ -58,7 +58,7 @@
 			<div id='title-block'>
 				<h2 id="CAIC">CAIC Accident Explorer</h2>
 				<div id="controlBundle">
-					<button id="resetFiltersBtn" class="fa fa-filter-circle-xmark" onclick="clearFilters()"></button>
+					<button id="resetFiltersBtn" class="resetFiltersBtn fa fa-filter-circle-xmark" onclick="clearFilters()"></button>
 					<div class="input-wrapper">
 						<input id="reportrange"/>
 						<label for="reportrange" class="fa fa-calendar"></label>
@@ -2158,7 +2158,8 @@ function onEachFeatureLocationPts(feature, layer) {
 					display: true,
 					text: 'Accidents by Avalanche Type',
 					position: 'top'
-					}
+					},
+				
 				},
 				maintainAspectRatio: false,
 				onClick : evt=> {

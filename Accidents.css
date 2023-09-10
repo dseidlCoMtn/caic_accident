@@ -53,7 +53,7 @@
 			align-items: center;
 		}
 
-		#resetFiltersBtn {
+		.resetFiltersBtn {
 			font-size: 11pt;
 			cursor: pointer;
 			border-radius: 5px;
