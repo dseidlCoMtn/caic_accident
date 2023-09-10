@@ -291,7 +291,7 @@
 		}
 	}
 	findAvalancheYear()
-	console.log("currentAviYear: " + currentAviYear)
+	// console.log("currentAviYear: " + currentAviYear)
 	
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 
@@ -980,38 +980,6 @@
 		addOverlays();
 	}
 
-/* 	//Add CAIC logo
-	L.Control.Button = L.Control.extend({
-		options: {
-			position: 'bottomright',
-			width:'120px'
-		},
-		onAdd: function (map) {
-			var caicContainer = L.DomUtil.create('div', 'leaflet-control');
-			$(caicContainer).html('<a href="https://avalanche.state.co.us/" target="_blank"><div id="caicLogo"></div></a>');
-			return caicContainer;
-		},
-		onRemove: function(map) {},
-	});
-	var caicLogo = new L.Control.Button()
-	caicLogo.addTo(map);
-	
-	//Add CMC GIS attribution
-	L.Control.Button = L.Control.extend({
-		options: {
-			position: 'bottomright',
-			width:'120px'
-		},
-		onAdd: function (map) {
-			var cmcContainer = L.DomUtil.create('div', 'leaflet-control');
-			$(cmcContainer).html('<div id="cmcLogo"> <p class="text">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</p> </div>');
-			return cmcContainer;
-		},
-		onRemove: function(map) {},
-	});
-	var cmcLogo = new L.Control.Button()
-	cmcLogo.addTo(map);
- */
 	//add Current Location button
 	L.easyButton('fa-solid fa-location-crosshairs', function(btn, map){
 		map.locate({setView: true, maxZoom: 13});
@@ -1162,7 +1130,7 @@ let clearFilters = function(btn){
 		secondSelect=0;
 		thirdSelect=0;
 		fourthSelect=0;
-// change date range to be last 5 avalanche years
+		// change date range to be last 5 avalanche years
 		$('#reportrange').data('daterangepicker').startDate=moment(currentAviYear + '-10-01').subtract(5, 'years');
 		$('#reportrange').data('daterangepicker').endDate=now;
 		updateDisplayedDateRange(moment(currentAviYear + '-10-01').subtract(5, 'years'), now);
@@ -2021,7 +1989,7 @@ function onEachFeatureLocationPts(feature, layer) {
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
-	updateDisplayedDateRange(moment(currentAviYear + '-10-01'), now);
+	updateDisplayedDateRange(moment(currentAviYear + '-10-01').subtract(5, 'years'), now);
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
@@ -2087,21 +2055,21 @@ function onEachFeatureLocationPts(feature, layer) {
 				barLabels2=Object.keys(accCount);
 				barValues=Object.values(accCount);
 				//Rename the labels on the chart
-				// for (let i = 0; i < barLabels2.length; i++)
-				// 	if (barLabels2[i] == "SS")
-				// 	barLabels2[i] = "SOFT SLAB";	
-				// 	else if (barLabels2[i] == "HS") 
-				// 	barLabels2[i] = "HARD SLAB";
-				// 	else if (barLabels2[i] == "WS") 
-				// 	barLabels2[i] = "WET SLAB";
-				// 	else if (barLabels2[i] == "WL") 
-				// 	barLabels2[i] = "WET LOOSE";
-				// 	else if (barLabels2[i] == "I") 
-				// 	barLabels2[i] = "ICE";
-				// 	else if (barLabels2[i] == "R") 
-				// 	barLabels2[i] = "ROOF";
-				// 	else
-				// 	barLabels2[i] = "UNK";
+				for (let i = 0; i < barLabels2.length; i++)
+					if (barLabels2[i] == "SS")
+					barLabels2[i] = "SOFT SLAB";	
+					else if (barLabels2[i] == "HS") 
+					barLabels2[i] = "HARD SLAB";
+					else if (barLabels2[i] == "WS") 
+					barLabels2[i] = "WET SLAB";
+					else if (barLabels2[i] == "WL") 
+					barLabels2[i] = "WET LOOSE";
+					else if (barLabels2[i] == "I") 
+					barLabels2[i] = "ICE";
+					else if (barLabels2[i] == "R") 
+					barLabels2[i] = "ROOF";
+					else
+					barLabels2[i] = "UNK";
 				
 				//Update the bar chart with the labels and values
 				barChartCanvas.data.labels = barLabels2;
@@ -2271,7 +2239,7 @@ function onEachFeatureLocationPts(feature, layer) {
 							fourthSelect="aType";
 							titleText="4th Filter";
 							}
-						//console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect,aTypeSelected, monthSelected, modeSelected);
+						// console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect,aTypeSelected, monthSelected, modeSelected);
 						barChartCanvas.options.plugins.title.text = "Accidents by Avalanche Type | "+titleText+": "+value;
 						barChartCanvas.update();
 						mapChange();
