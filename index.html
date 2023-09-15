@@ -48,6 +48,9 @@
 
 	<!-- Loading crossfilter -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+
+	<!-- Loading js datalabels -->
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 	
 </head>
 <body>	
@@ -267,12 +270,17 @@
 				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
 				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
 				<div id="chart-mode"><canvas id="bar-chart-mode"></canvas></div>
+				<div id="chart-r"><canvas id="pie-r"></canvas></div>
+				<div id="chart-d"><canvas id="pie-d"></canvas></div>
 			</div>
 		</div>
 	</div>
 
 	<script type="text/javascript" src="AvalancheRose.js"></script>
 	<script type="text/javascript" src="zones.js"></script>
+	<script type="text/javascript" src="chartClicks.js"></script>
+	<script type="text/javascript" src="layerFilter.js"></script>
+	<script type="text/javascript" src="heatFunction.js"></script>
 	<script type="text/javascript">
 	
 	let now = moment();
@@ -640,295 +648,12 @@
 
 
 	
-	var startDate, endDate, month=0, aType=0, mode=0;
+	var startDate, endDate, month=0, aType=0, mode=0, rScale=0, dScale=0;
 	var lassoIDs=[];
 	var roseFilters = rosePieChart.filters();
 	var roseFiltersFlat = roseFilters.flat();
 
-	function layerFilter(feature) {
-		var roseFiltersFlat = roseFilters.flat();
 
-		//Rose filter
-		if (aType == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (roseFiltersFlat.includes(feature.properties.roseField)&& moment(feature.properties.datetime) >= startDate && moment(feature.properties.datetime) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType filter
-		if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType & rose filter
-				if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType & lasso filter
-		else if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Lasso & rose filter
-		else if (aType == 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if ((moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType & lasso & rose filter
-		else if (aType != 0 && monthSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.atype == aType && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode filter
-		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + rose filter
-		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + lasso filter
-		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + lasso + rose filter
-		else if (mode != 0 && monthSelected == 0 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Month filter
-		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Month + rose filter
-		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Month + lasso filter
-		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Month + lasso + rose filter
-		else if (aType != 0 && monthSelected == 1 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Travel Mode filter
-		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Travel Mode + rose filter
-		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Travel Mode + lasso filter
-		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//aType + Travel Mode + lasso + rose filter
-		else if (aType != 0 && monthSelected == 0 && modeSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.atype == aType && feature.properties.acc_travel_mode == mode && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month + rose filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month + lasso filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month + lasso + rose filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month + aType filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month + aType + rose filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month + aType + lasso filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Travel Mode + Month + aType + lasso + rose filter
-		else if (mode != 0 && monthSelected == 1 && aTypeSelected == 1 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (feature.properties.acc_travel_mode == mode && feature.properties.atype == aType && moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Month filter
-		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length==0) {
-			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Month + rose filter
-		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length == 0 && roseFilters.length>0) {
-			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Month + lasso filter
-		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length==0) {
-			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Month + lasso + rose filter
-		else if (month != 0 && aTypeSelected == 0 && modeSelected == 0 && lassoIDs.length > 0 && roseFilters.length>0) {
-			if (moment(feature.properties.datetime).format("MMM") == month && (moment(feature.properties.datetime)) >= startDate && (moment(feature.properties.datetime)) < endDate && lassoIDs.includes(feature.properties.acc_id) && roseFiltersFlat.includes(feature.properties.roseField)) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-		//Date filter
-		else {
-			if ((moment(feature.properties.datetime)) >= startDate
-				&& (moment(feature.properties.datetime)) < endDate) {
-				return true
-			}
-			else {
-				return false
-			}
-		}
-	}
 
 	function mapChange() {
 		var hasAcc = map.hasLayer(acc);
@@ -971,7 +696,7 @@
 		});
 		roseFilters = rosePieChart.filters();
 		roseFiltersFlat = roseFilters.flat();
-		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
+		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat, rScale, dScale);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccLocationPts == true){accLocationPts.addTo(map)};
 		if (hasAccByType == true){accByType.addTo(map)};
@@ -980,38 +705,6 @@
 		addOverlays();
 	}
 
-/* 	//Add CAIC logo
-	L.Control.Button = L.Control.extend({
-		options: {
-			position: 'bottomright',
-			width:'120px'
-		},
-		onAdd: function (map) {
-			var caicContainer = L.DomUtil.create('div', 'leaflet-control');
-			$(caicContainer).html('<a href="https://avalanche.state.co.us/" target="_blank"><div id="caicLogo"></div></a>');
-			return caicContainer;
-		},
-		onRemove: function(map) {},
-	});
-	var caicLogo = new L.Control.Button()
-	caicLogo.addTo(map);
-	
-	//Add CMC GIS attribution
-	L.Control.Button = L.Control.extend({
-		options: {
-			position: 'bottomright',
-			width:'120px'
-		},
-		onAdd: function (map) {
-			var cmcContainer = L.DomUtil.create('div', 'leaflet-control');
-			$(cmcContainer).html('<div id="cmcLogo"> <p class="text">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</p> </div>');
-			return cmcContainer;
-		},
-		onRemove: function(map) {},
-	});
-	var cmcLogo = new L.Control.Button()
-	cmcLogo.addTo(map);
- */
 	//add Current Location button
 	L.easyButton('fa-solid fa-location-crosshairs', function(btn, map){
 		map.locate({setView: true, maxZoom: 13});
@@ -1069,13 +762,19 @@
 		monthSelected = 0;
 		modeSelected = 0;
 		roseSelected = 0;
+		rSelected = 0;
+		dSelected = 0;
 		month=0;
 		aType=0;
 		mode = 0;
+		dScale =0;
+		rScale=0;
 		firstSelect=0;
 		secondSelect=0;
 		thirdSelect=0;
 		fourthSelect=0;
+		fifthSelect=0;
+		sixthSelect=0;
 
 		map.removeLayer(acc);
 		map.removeLayer(accLocationPts);
@@ -1094,6 +793,8 @@
 		barChartATypeArr.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
+		pieRArr.length=0;
+		pieDArr.length=0;
 		roseData.length=0;
 		rosePieChart.filterAll();
 		roseFilters = rosePieChart.filters();
@@ -1127,7 +828,7 @@
 				style: styleAccidentType,
 				filter: layerFilterL
 		});
-		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
+		heat = createHeatmap(map, accPoints, startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat, rScale, dScale);
 		//console.log(startDate, endDate, aType, month, mode, lassoIDs, roseFiltersFlat);
 		if (hasAcc == true){acc.addTo(map)};
 		if (hasAccLocationPts == true){accLocationPts.addTo(map)};
@@ -1138,6 +839,8 @@
 		updateATypeChart();
 		processBarChartDates();
 		processBarChartMode();
+		processDScale();
+		processRScale();
 		processRose();
 		}
 	};
@@ -1155,13 +858,19 @@ let clearFilters = function(btn){
 		monthSelected = 0;
 		modeSelected = 0;
 		roseSelected =0;
+		rSelected=0;
+		dSelected=0;
 		month=0;
 		aType=0;
 		mode = 0;
+		rScale=0;
+		dScale=0;
 		firstSelect=0;
 		secondSelect=0;
 		thirdSelect=0;
 		fourthSelect=0;
+		fifthSelect=0;
+		sixthSelect=0;
 // change date range to be last 5 avalanche years
 		$('#reportrange').data('daterangepicker').startDate=moment(currentAviYear + '-10-01').subtract(5, 'years');
 		$('#reportrange').data('daterangepicker').endDate=now;
@@ -1169,6 +878,8 @@ let clearFilters = function(btn){
 		barChartATypeArr.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
+		pieRArr.length=0;
+		pieDArr.length=0;
 		roseData.length=0;
 		lassoIDs.length=0;
 		rosePieChart.filterAll();
@@ -1177,6 +888,8 @@ let clearFilters = function(btn){
 		updateATypeChart();
 		processBarChartDates();
 		processBarChartMode();
+		processRScale();
+		processDScale();
 		processRose();
 		removeLocationMarker();
 	}
@@ -1361,6 +1074,8 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 		/* push to bar chart for travel mode graph*/
 		barChartModeArr.push(feature.properties.acc_travel_mode);
 		roseData.push({roseField:feature.properties.roseField});
+		pieRArr.push(feature.properties.Rscale);
+		pieDArr.push(feature.properties.Dscale);
 	}
 
 //Actions for mouseover, mouseout for accident points BY TRAVEL MODE
@@ -1523,7 +1238,9 @@ function onEachFeatureLocationPts(feature, layer) {
 				const accID = json[i].classic_accident_id;
 				const roseID = json[i].accident_locations[0].aspect+" "+treeline;
 				const avType = json[i].accident_avalanches[0].type_code;
-				heatPoints.push([lat, lon, date, avType, travMode, accID, roseID])
+				const rScaleID = json[i].accident_avalanches[0].relative_size;
+				const dScaleID = json[i].accident_avalanches[0].destructive_size;
+				heatPoints.push([lat, lon, date, avType, travMode, accID, roseID, rScaleID, dScaleID])
 		}
 		};
 		startDate = moment(new Date($('#reportrange').data('daterangepicker').startDate));
@@ -1568,401 +1285,6 @@ function onEachFeatureLocationPts(feature, layer) {
 	var overlays = {};
 
 
-	//Function to call L.heatLayer
-	function createHeatmap(map, points, minDate, maxDate, aType, month, mode, lassoIDs, roseFiltersFlat) {
-		const pointsArray = [];
-		//roseFiltersFlat = roseFilters.flat();
-		//console.log(aType, month, mode, lassoIDs, roseFiltersFlat);
-		//console.log(roseFilters);
-		if (roseFiltersFlat == "undefined"){
-			console.log("yes");
-			roseFilters = rosePieChart.filters();
-			roseFiltersFlat = roseFilters.flat();
-		}
-
-		//No graph selections + lasso
-		if (aType == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-			for (i in points) {
-				const pointID = points[i][5];
-				if (lassoIDs.includes(pointID) === true){
-					pointsArray.push([points[i][0], points[i][1]]);
-					}
-				}
-			}
-		//Rose
-		else if (aType == 0 && month == 0 && mode ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-			for (i in points) {
-				const pointRose = points[i][6];
-				const pointDate = moment(points[i][2]);
-				if (roseFiltersFlat.includes(pointRose) === true && (pointDate >= minDate) && (pointDate < maxDate)){
-					pointsArray.push([points[i][0], points[i][1]]);
-					}
-				}
-			}
-		//aType + month + mode
-		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + month + mode + rose
-		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + month + mode + lasso
-		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + month + mode + lasso + rose
-		else if (aType !=0 && month !=0 && mode!=0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointMonth == month) && (pointMode==mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + month
-		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + month + rose
-		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + month + lasso
-		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& 	lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + month + lasso + rose
-		else if (aType !=0 && month !=0 && mode ==0 && lassoIDs != undefined &&  lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + mode
-		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + mode + rose
-		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined &&  lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + mode + lasso
-		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + mode + lasso + rose
-		else if (aType !=0 && mode !=0 && month ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month + mode
-		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month + mode + rose
-		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					const pointRose = points[i][6];
-					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month + mode + lasso
-		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month + mode + lasso + rose
-		else if (month !=0 && mode !=0 && aType ==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointMode = points[i][4];
-					const pointRose = points[i][6];
-					if ((pointMonth == month) && (pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType only
-		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate))  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + rose
-		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + lasso
-		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//aType + lasso + rose
-		else if (aType !=0 && mode==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointaType = points[i][3];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointaType == aType) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month only
-		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate))  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month + rose
-		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month + lasso
-		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Lasso + rose
-		else if (month ==0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Month + lasso + rose
-		else if (month !=0 && aType==0 && mode==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointMonth = moment(points[i][2]).format("MMM");
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointMonth == month) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Mode only
-		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate))  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Mode + rose
-		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length == 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate) && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Mode + lasso
-		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length == 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		//Mode + lasso + rose
-		else if (mode !=0 && aType==0 && month==0 && lassoIDs != undefined && lassoIDs.length > 0 && roseFiltersFlat != undefined && roseFiltersFlat.length > 0){
-				for (i in points) {
-					const pointID = points[i][5];
-					const pointMode = points[i][4];
-					const pointDate = moment(points[i][2]);
-					const pointRose = points[i][6];
-					if ((pointMode == mode) && (pointDate >= minDate) && (pointDate < maxDate)&& lassoIDs.includes(pointID) == true && roseFiltersFlat.includes(pointRose) === true)  {
-						pointsArray.push([points[i][0], points[i][1]]);	
-						}
-					} 
-			}
-		else{
-				//check if the date picker has been used
-				if ((minDate != undefined) && (maxDate != undefined)) {
-					for (i in points) {
-						const pointDate = moment(points[i][2]);
-						if ((pointDate >= minDate) && (pointDate < maxDate))  {
-							pointsArray.push([points[i][0], points[i][1]]);
-						}
-					}
-				} else {
-					for (i in points) {
-						pointsArray.push([points[i][0], points[i][1]]);
-					}
-				}
-
-			}
-		return L.heatLayer(pointsArray, {
-			radius: 21,
-			blur: 12,
-			minOpacity: 0.4,
-			gradient: {.3: 'cyan', 0.7: 'blue', .98: 'purple'},
-			maxZoom: 25
-			});
-	};
-		
 	//needed to set the layerControl as a variable so we can call it in
 	//later filter function for dates
 	const layerControl = L.control.layers(baseLayers, overlays, {collapsed: true});
@@ -2030,13 +1352,19 @@ function onEachFeatureLocationPts(feature, layer) {
 			aType = 0;
 			month = 0;
 			mode = 0;
+			rScale=0;
+			dScale=0;
 			firstSelect=0;
 			secondSelect=0;
 			thirdSelect=0;
 			fourthSelect=0;
+			fifthSelect=0;
+			sixthSelect=0;
 			barChartATypeArr.length=0;
 			barChartDates.length=0;
 			barChartModeArr.length=0;
+			pieRArr.length=0;
+			pieDArr.length=0;
 			roseData.length=0;
 			rosePieChart.filterAll();
 			roseFilters = rosePieChart.filters();
@@ -2045,10 +1373,14 @@ function onEachFeatureLocationPts(feature, layer) {
 			aTypeSelected = 0;
 			monthSelected = 0;
 			modeSelected = 0;
+			rSelected=0;
+			dSelected=0;
 			roseSelected =0;
 			updateATypeChart();
 			processBarChartDates();			
 			processBarChartMode();
+			processRScale();
+			processDScale();
 			processRose();			
 
 	});
@@ -2057,7 +1389,10 @@ function onEachFeatureLocationPts(feature, layer) {
 	updateATypeChart();
 	processBarChartDates();
 	processBarChartMode();
+	processRScale();
+	processDScale();
 	processRose();
+
 		
 	//Setting empty arrays to hold graph data
 	//let barLabels=[];
@@ -2065,12 +1400,12 @@ function onEachFeatureLocationPts(feature, layer) {
 	let barChartDates=[];
 	let barChartModeArr =[];
 	let roseData = [];
+	let pieRArr=[]
+	let pieDArr=[]
 
 		
 		
 	function updateATypeChart() {
-		//await delay (450);
-		//console.log(barLabels);
 		if (acc != undefined){
 			if (barChartATypeArr.length > 0 || Object.keys(acc._layers).length==0){
 				
@@ -2133,13 +1468,14 @@ function onEachFeatureLocationPts(feature, layer) {
 	Chart.defaults.font.color = '#333';
 
 	//Stores whether selections have been made in charts
-	var aTypeSelected = 0, monthSelected = 0, modeSelected = 0, roseSelected = 0, firstSelect =0,
-	secondSelect=0, thirdSelect=0, fourthSelect=0;
+	var aTypeSelected = 0, monthSelected = 0, modeSelected = 0, roseSelected = 0,
+	rSelected=0, dSelected=0, firstSelect =0,
+	secondSelect=0, thirdSelect=0, fourthSelect=0, fifthSelect=0, sixthSelect=0;
 	
 	//Properties for aType bar graph
-	const canvas = document.getElementById("barChartCanvas");
-	const ctx = canvas.getContext('2d');
-	const barChartCanvas = new Chart(ctx, {
+	//const canvas = document.getElementById("barChartCanvas");
+	//const ctx = canvas.getContext('2d');
+	const barChartCanvas = new Chart("barChartCanvas", {
 			type: 'bar',
 			data: {
 				labels: barChartATypeArr,
@@ -2163,129 +1499,16 @@ function onEachFeatureLocationPts(feature, layer) {
 				maintainAspectRatio: false,
 				onClick : evt=> {
 					const points = barChartCanvas.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-					if (points.length) {
-						aTypeSelected = 1;
-						const clickedPoint = points[0];
-						aType = barChartCanvas.data.labels[clickedPoint.index];
-						const value = barChartCanvas.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
-						const actLabels = barChartCanvas.options.scales.x.ticks;
-						const dataset = barChartCanvas.data.datasets[0];
-						dataset.borderWidth = [];
-						dataset.borderColor = [];
-						for (let i = 0; i < dataset.data.length; i++) {
-							if (clickedPoint.index == i) {
-								dataset.borderWidth[i] = 4;
-								dataset.borderColor[i] = "black";
-							} else {
-								dataset.borderWidth[i] = 1;
-								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
-							}
-						}
-						if (monthSelected ==0 && modeSelected==0 && firstSelect==0 && roseSelected==0) {
-							firstSelect= "aType";
-							titleText="1st Filter";
-							barChartDates.length=0;
-							processBarChartDates();
-							barChartModeArr.length=0;
-							processBarChartMode();
-							roseData.length=0;
-							processRose();
-							}
-						else if (firstSelect == "aType") {
-							titleText="1st Filter";
-							monthSelected=0,month=0,modeSelected=0,mode=0,roseSelected=0;
-							secondSelect=0,thirdSelect=0,fourthSelect=0;
-							barChartDates.length=0;
-							processBarChartDates();
-							barChartModeArr.length=0;
-							processBarChartMode();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="aType" && firstSelect=="mode"))  {
-							secondSelect="aType";
-							titleText="2nd Filter";
-							thirdSelect=0,fourthSelect=0;
-							monthSelected=0,month = 0;
-							roseSelected=0;
-							barChartDates.length=0;
-							processBarChartDates();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="month") || (secondSelect=="aType" && firstSelect=="month"))  {
-							secondSelect="aType";
-							titleText="2nd Filter";
-							thirdSelect=0,fourthSelect=0;
-							modeSelected=0,mode = 0;
-							roseSelected=0;
-							barChartModeArr.length=0;
-							processBarChartMode();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="aType" && firstSelect=="rose"))  {
-							secondSelect="aType";
-							titleText="2nd Filter";
-							thirdSelect=0,fourthSelect=0;
-							modeSelected=0,mode = 0;
-							monthSelected=0,month = 0;
-							barChartModeArr.length=0;
-							processBarChartMode();
-							barChartDates.length=0;
-							processBarChartDates();
-							}
-						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="month") || (thirdSelect==0 && secondSelect=="month" && firstSelect=="rose") || (thirdSelect=="aType" && secondSelect=="rose" && firstSelect=="month") || (thirdSelect=="aType" && secondSelect=="month" && firstSelect=="rose")){
-							thirdSelect="aType";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							modeSelected=0,mode = 0;
-							barChartModeArr.length=0;
-							processBarChartMode();
-							}
-						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="rose" || thirdSelect=="aType" && secondSelect=="rose" && firstSelect=="mode" || thirdSelect=="aType" && secondSelect=="mode" && firstSelect=="rose"){
-							thirdSelect="aType";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							monthSelected=0,month = 0;
-							barChartDates.length=0;
-							processBarChartDates();
-							}
-						else if (thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="aType" && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="aType" && secondSelect=="mode" && firstSelect=="month"){
-							thirdSelect="aType";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							roseSelected=0;
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else  {
-							fourthSelect="aType";
-							titleText="4th Filter";
-							}
-						//console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect,aTypeSelected, monthSelected, modeSelected);
-						barChartCanvas.options.plugins.title.text = "Accidents by Avalanche Type | "+titleText+": "+value;
-						barChartCanvas.update();
-						mapChange();
-				  }},
-
+					aTypeOnClick(points);
+				  },
 				scales: {
 				x: {
 					title:{
 						text: 'Type',
 						display: false
 					}
+				},
 
-					},
-					
 				y:{
 					title:{
 						text: 'Accidents',
@@ -2315,116 +1538,8 @@ function onEachFeatureLocationPts(feature, layer) {
 			maintainAspectRatio: false,
 			onClick : evt=> {
 					const points = barChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-					if (points.length) {
-						monthSelected = 1;
-						const clickedPoint = points[0];
-						month = barChart.data.labels[clickedPoint.index];
-						const value = barChart.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
-						const monthLabels = barChart.options.scales.x.ticks;
-						const dataset = barChart.data.datasets[0];
-						dataset.borderWidth = [];
-						dataset.borderColor = [];
-						for (let i = 0; i < dataset.data.length; i++) {
-							if (clickedPoint.index == i) {
-								dataset.borderWidth[i] = 4;
-								dataset.borderColor[i] = "black";
-							} else {
-								dataset.borderWidth[i] = 1;
-								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
-							}
-						}
-						if (aTypeSelected==0 && modeSelected==0 && firstSelect==0 && roseSelected==0) {
-							firstSelect= "month";
-							titleText="1st Filter";
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							barChartModeArr.length=0;
-							processBarChartMode();
-							roseData.length=0;
-							processRose();
-							}
-						else if (firstSelect == "month") {
-							titleText="1st Filter";
-							aTypeSelected=0,aType=0,modeSelected=0,mode=0,roseSelected=0;
-							secondSelect=0,thirdSelect=0,fourthSelect=0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							barChartModeArr.length=0;
-							processBarChartMode();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="month" && firstSelect=="aType"))  {
-							secondSelect="month";
-							titleText="2nd Filter";
-							thirdSelect=0, fourthSelect=0;
-							mode=0, modeSelected=0, roseSelected =0;
-							barChartModeArr.length=0;
-							processBarChartMode();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="mode") || (secondSelect=="month" && firstSelect=="mode")) {
-							secondSelect="month";
-							titleText="2nd Filter";
-							thirdSelect=0, fourthSelect=0;
-							aType=0, aTypeSelected=0, roseSelected =0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="rose") || (secondSelect=="month" && firstSelect=="rose")) {
-							secondSelect="month";
-							titleText="2nd Filter";
-							thirdSelect=0, fourthSelect=0;
-							aType=0, aTypeSelected=0, mode=0, modeSelected =0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							barChartModeArr.length=0;
-							processBarChartMode();
-							}
-						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="rose") || (thirdSelect=="month" && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect=="month" && secondSelect=="aType" && firstSelect=="rose")){
-							thirdSelect="month";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							modeSelected=0,mode = 0;
-							barChartModeArr.length=0;
-							processBarChartMode();
-							}
-						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="rose" || thirdSelect=="month" && secondSelect=="rose" && firstSelect=="mode" || thirdSelect=="month" && secondSelect=="mode" && firstSelect=="rose"){
-							thirdSelect="month";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							aTypeSelected=0,aType = 0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							}
-						else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="mode" || thirdSelect==0 && secondSelect=="mode" && firstSelect=="aType" || thirdSelect=="month" && secondSelect=="aType" && firstSelect=="mode" || thirdSelect=="month" && secondSelect=="mode" && firstSelect=="aType"){
-							thirdSelect="month";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							roseSelected=0;
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}		
-						else {
-							fourthSelect="month";
-							titleText="4th Filter";
-							}
-						//console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect,aTypeSelected, monthSelected, modeSelected);
-						barChart.options.plugins.title.text = "Accidents by Month | "+titleText+": "+value;
-						barChart.update();
-						mapChange();
-				  }},
+					monthOnClick(points);
+				  },
 			scales: {
 				x: {
 					title:{
@@ -2454,10 +1569,8 @@ function onEachFeatureLocationPts(feature, layer) {
 	});
 
 	function processBarChartDates() {
-		//await delay (450);
 		if (acc != undefined){
 			if (barChartDates.length > 0 || Object.keys(acc._layers).length==0){
-				/* console.log("barChartDates: ", barChartDates); */
 				/* Reduce the array of all accident dates  to an object with counts of unique months */
 				let dateData = barChartDates.reduce((allDates, month) => {
 						const currentCount = allDates[month] ?? 0;
@@ -2520,116 +1633,8 @@ function onEachFeatureLocationPts(feature, layer) {
 			},
 				onClick : evt=> {
 					const points = barChartMode.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
-					if (points.length) {
-						modeSelected = 1;
-						const clickedPoint = points[0];
-						mode = barChartMode.data.labels[clickedPoint.index];
-						const value = barChartMode.data.datasets[clickedPoint.datasetIndex].data[clickedPoint.index];
-						const actLabels = barChartMode.options.scales.x.ticks;
-						const dataset = barChartMode.data.datasets[0];
-						dataset.borderWidth = [];
-						dataset.borderColor = [];
-						for (let i = 0; i < dataset.data.length; i++) {
-							if (clickedPoint.index == i) {
-								dataset.borderWidth[i] = 4;
-								dataset.borderColor[i] = "black";
-							} else {
-								dataset.borderWidth[i] = 1;
-								dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
-							}
-						}
-						if (monthSelected ==0 && aTypeSelected==0 && firstSelect==0 && roseSelected ==0) {
-							firstSelect= "mode";
-							titleText="1st Filter";
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							barChartDates.length=0;
-							processBarChartDates();
-							roseData.length=0;
-							processRose();
-							}
-						else if (firstSelect == "mode") {
-							titleText="1st Filter";
-							monthSelected=0, month=0, aTypeSelected=0, aType=0, roseSelected =0;
-							secondSelect=0, thirdSelect=0, fourthSelect=0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							barChartDates.length=0;
-							processBarChartDates();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="mode" && firstSelect=="aType"))  {
-							secondSelect="mode";
-							titleText="2nd Filter";
-							thirdSelect=0,fourthSelect=0;
-							month=0, monthSelected=0, roseSelected=0;
-							barChartDates.length=0;
-							processBarChartDates();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="mode" && firstSelect=="month"))  {
-							secondSelect="mode";
-							titleText="2nd Filter";
-							thirdSelect=0,fourthSelect=0;
-							aType=0, aTypeSelected=0, roseSelected =0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}
-						else if ((secondSelect==0 && firstSelect=="rose") ||(secondSelect=="mode" && firstSelect=="rose"))  {
-							secondSelect="mode";
-							titleText="2nd Filter";
-							thirdSelect=0,fourthSelect=0;
-							aType=0, aTypeSelected=0, month=0, monthSelected =0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							barChartDates.length=0;
-							processBarChartDates();
-							}
-						else if ((thirdSelect==0 && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="rose") || (thirdSelect=="mode" && secondSelect=="rose" && firstSelect=="aType") || (thirdSelect=="mode" && secondSelect=="aType" && firstSelect=="rose")){
-							thirdSelect="mode";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							monthSelected=0,month = 0;
-							barChartDates.length=0;
-							processBarChartDates();
-							}
-						else if (thirdSelect==0 && secondSelect=="rose" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="rose" || thirdSelect=="mode" && secondSelect=="rose" && firstSelect=="month" || thirdSelect=="mode" && secondSelect=="month" && firstSelect=="rose"){
-							thirdSelect="mode";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							aTypeSelected=0,aType = 0;
-							barChartATypeArr.length=0;
-							updateATypeChart();
-							}
-						else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="aType" || thirdSelect=="mode" && secondSelect=="aType" && firstSelect=="month" || thirdSelect=="mode" && secondSelect=="month" && firstSelect=="aType"){
-							thirdSelect="mode";
-							titleText="3rd Filter";
-							fourthSelect=0;
-							roseSelected=0;
-							roseData.length=0;
-							rosePieChart.filterAll();
-							roseFilters = rosePieChart.filters();
-							processRose();
-							}	
-						else {
-							fourthSelect="mode";
-							titleText="4th Filter";
-							}
-						//console.log(aType, month, mode, firstSelect, secondSelect, thirdSelect, aTypeSelected, monthSelected, modeSelected);
-						barChartMode.options.plugins.title.text = "Accidents by Travel Mode | "+titleText+": "+value;
-						barChartMode.update();
-						mapChange();
-				  }},
+					modeOnClick(points);
+					},
 			// on click here 
 			maintainAspectRatio: false,
 			scales: {
@@ -2661,7 +1666,6 @@ function onEachFeatureLocationPts(feature, layer) {
 	});
 
 	function processBarChartMode() {
-		//await delay (450);
 		if (acc != undefined){
 			if (barChartModeArr.length > 0 || Object.keys(acc._layers).length==0){
 				let dateDataMode = barChartModeArr.reduce((allDates, month) => {
@@ -2700,6 +1704,170 @@ function onEachFeatureLocationPts(feature, layer) {
 		  setTimeout(processBarChartMode, 50);
 		}
 	}
+
+	let pieR = new Chart('pie-r', {
+		type: 'doughnut',
+		plugins: [ChartDataLabels],
+		options: {
+			plugins: {
+				title: {
+					display: true,
+					text: 'Accidents by R Scale',
+					padding: {
+						top: 10,
+						bottom: 10
+                	}
+				},
+				legend: false,
+
+				datalabels:{
+					textStrokeColor:'white',
+					textStrokeWidth:'3',
+					labels: {value:{},title:{color:'black'}},
+					formatter: (val, pieR) => (pieR.chart.data.labels[pieR.dataIndex])
+				}
+			},
+				onClick : evt=> {
+					const points = pieR.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+					rScaleOnClick(points);
+					},
+			maintainAspectRatio: false,
+			scales: {
+			}
+		},
+		data: {
+			datasets: [
+				{
+				backgroundColor:'#cdced6'
+        }
+			]
+		}
+		
+	});
+
+	function processRScale() {
+		if (acc != undefined){
+			if (pieRArr.length > 0 || Object.keys(acc._layers).length==0){
+				
+				//Reduce the array of all r Scale types to an object with counts of unique R scales
+				const rScaleCount = pieRArr.reduce((allNames, name) => {
+					const currCount = allNames[name] ?? 0;
+					return {
+					...allNames,
+					[name]: currCount + 1,
+					};
+					}, {});
+			
+				//Grab the keys and values from the accCount
+				barLabels2=Object.keys(rScaleCount);
+				barValues=Object.values(rScaleCount);
+				
+				//Update the bar chart with the labels and values
+				pieR.data.labels = barLabels2;
+				pieR.data.datasets[0].data=barValues;
+				
+				//Reset the outline of any previously selected aType
+				const dataset = pieR.data.datasets[0];
+				dataset.borderWidth = [];
+				dataset.borderColor = [];
+				for (let i = 0; i < dataset.data.length; i++) {
+					dataset.borderWidth[i] = 1;
+					dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+					}
+				pieR.options.plugins.title.text = "Accidents by R Scale";
+				pieR.update();
+			}
+			else{
+				setTimeout(processRScale, 50);
+			}
+		}
+		else{
+		  setTimeout(processRScale, 50);
+		}
+	}
+
+	let pieD = new Chart('pie-d', {
+		type: 'doughnut',
+		plugins: [ChartDataLabels],
+		options: {
+			plugins: {
+				title: {
+					display: true,
+					text: 'Accidents by D Scale',
+					padding: {
+						top: 10,
+						bottom: 10
+                	}
+				},
+				legend: false,
+
+				datalabels:{
+					textStrokeColor:'white',
+					textStrokeWidth:'3',
+					labels: {value:{},title:{color:'black'}},
+					//font:{size:8},
+					formatter: (val, pieD) => (pieD.chart.data.labels[pieD.dataIndex])
+				}
+			},
+				onClick : evt=> {
+					const points = pieD.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+					dScaleOnClick(points);
+					},
+			maintainAspectRatio: false,
+			scales: {
+			}
+		},
+		data: {
+			datasets: [
+				{
+				backgroundColor:'#cdced6'
+        }
+			]
+		}
+		
+	});
+
+	function processDScale() {
+		if (acc != undefined){
+			if (pieDArr.length > 0 || Object.keys(acc._layers).length==0){
+				
+				//Reduce the array of all r Scale types to an object with counts of unique R scales
+				const dScaleCount = pieDArr.reduce((allNames, name) => {
+					const currCount = allNames[name] ?? 0;
+					return {
+					...allNames,
+					[name]: currCount + 1,
+					};
+					}, {});
+			
+				//Grab the keys and values from the accCount
+				barLabels2=Object.keys(dScaleCount);
+				barValues=Object.values(dScaleCount);
+				
+				//Update the bar chart with the labels and values
+				pieD.data.labels = barLabels2;
+				pieD.data.datasets[0].data=barValues;
+				
+				//Reset the outline of any previously selected aType
+				const dataset = pieD.data.datasets[0];
+				dataset.borderWidth = [];
+				dataset.borderColor = [];
+				for (let i = 0; i < dataset.data.length; i++) {
+					dataset.borderWidth[i] = 1;
+					dataset.borderColor[i] = "rgba(0, 0, 0, 0.1)";
+					}
+				pieD.options.plugins.title.text = "Accidents by D Scale";
+				pieD.update();
+			}
+			else{
+				setTimeout(processDScale, 50);
+			}
+		}
+		else{
+		  setTimeout(processDScale, 50);
+		}
+	}
+
 
 
 
@@ -2763,88 +1931,7 @@ function onEachFeatureLocationPts(feature, layer) {
 			// toggle the filter on the chart
 			//console.log($(this).attr('filter'));
 			rosePieChart.filter($(this).attr('filter'));
-			roseSelected = 1;
-			roseData.length=0;
-			if (monthSelected ==0 && aTypeSelected==0 && firstSelect==0 && modeSelected ==0) {
-				firstSelect= "rose";
-				titleText="1st Filter";
-				barChartATypeArr.length=0;
-				updateATypeChart();
-				barChartDates.length=0;
-				processBarChartDates();
-				barChartModeArr.length=0;
-				processBarChartMode();
-				}
-			else if (firstSelect == "rose") {
-				titleText="1st Filter";
-				monthSelected=0, month=0, aTypeSelected=0, aType=0, modeSelected=0, mode =0;
-				secondSelect=0, thirdSelect=0, fourthSelect=0;
-				barChartATypeArr.length=0;
-				updateATypeChart();
-				barChartDates.length=0;
-				processBarChartDates();
-				barChartModeArr.length=0;
-				processBarChartMode();
-				}
-			else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="rose" && firstSelect=="aType"))  {
-				secondSelect="rose";
-				titleText="2nd Filter";
-				thirdSelect=0,fourthSelect=0;
-				month=0, monthSelected=0, mode=0, modeSelected=0;
-				barChartDates.length=0;
-				processBarChartDates();
-				barChartModeArr.length=0;
-				processBarChartMode();
-				}
-			else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="rose" && firstSelect=="month"))  {
-				secondSelect="rose";
-				titleText="2nd Filter";
-				thirdSelect=0,fourthSelect=0;
-				aType=0, aTypeSelected=0, mode=0, modeSelected=0;
-				barChartATypeArr.length=0;
-				updateATypeChart();
-				barChartModeArr.length=0;
-				processBarChartMode();
-				}
-			else if ((secondSelect==0 && firstSelect=="mode") ||(secondSelect=="rose" && firstSelect=="mode"))  {
-				secondSelect="rose";
-				titleText="2nd Filter";
-				thirdSelect=0,fourthSelect=0;
-				aType=0, aTypeSelected=0, month=0, monthSelected =0;
-				barChartATypeArr.length=0;
-				updateATypeChart();
-				barChartDates.length=0;
-				processBarChartDates();
-				}
-			else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="mode")){
-				thirdSelect="rose";
-				titleText="3rd Filter";
-				fourthSelect=0;
-				monthSelected=0,month = 0;
-				barChartDates.length=0;
-				processBarChartDates();
-				}
-			else if (thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="mode"){
-				thirdSelect="rose";
-				titleText="3rd Filter";
-				fourthSelect=0;
-				aTypeSelected=0,aType = 0;
-				barChartATypeArr.length=0;
-				updateATypeChart();
-				}
-			else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="aType" || thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="aType"){
-				thirdSelect="mode";
-				titleText="3rd Filter";
-				fourthSelect=0;
-				modeSelected=0, mode=0;
-				barChartModeArr.length=0;
-				processBarChartMode();
-				}	
-			else {
-				fourthSelect="mode";
-				titleText="4th Filter";
-				}
-			mapChange();
+			roseOnClick();
 			var ndx = crossfilter(roseData),
 					roseDimension = ndx.dimension(function (d) {
 						return d.roseField;
@@ -2872,90 +1959,7 @@ function onEachFeatureLocationPts(feature, layer) {
 		// apply and redraw
 		rosePieChart.filter([filter]);
 		roseFilters = rosePieChart.filters();
-		roseSelected = 1;
-		roseData.length=0;
-		if (monthSelected ==0 && aTypeSelected==0 && firstSelect==0 && modeSelected ==0) {
-			firstSelect= "rose";
-			titleText="1st Filter";
-			barChartATypeArr.length=0;
-			updateATypeChart();
-			barChartDates.length=0;
-			processBarChartDates();
-			barChartModeArr.length=0;
-			processBarChartMode();
-			}
-		else if (firstSelect == "rose") {
-			titleText="1st Filter";
-			monthSelected=0, month=0, aTypeSelected=0, aType=0, modeSelected=0, mode =0;
-			secondSelect=0, thirdSelect=0, fourthSelect=0;
-			barChartATypeArr.length=0;
-			updateATypeChart();
-			barChartDates.length=0;
-			processBarChartDates();
-			barChartModeArr.length=0;
-			processBarChartMode();
-			//roseData.length=0;
-			//processRose();
-			}
-		else if ((secondSelect==0 && firstSelect=="aType") || (secondSelect=="rose" && firstSelect=="aType"))  {
-			secondSelect="rose";
-			titleText="2nd Filter";
-			thirdSelect=0,fourthSelect=0;
-			month=0, monthSelected=0, mode=0, modeSelected=0;
-			barChartDates.length=0;
-			processBarChartDates();
-			barChartModeArr.length=0;
-			processBarChartMode();
-			}
-		else if ((secondSelect==0 && firstSelect=="month") ||(secondSelect=="rose" && firstSelect=="month"))  {
-			secondSelect="rose";
-			titleText="2nd Filter";
-			thirdSelect=0,fourthSelect=0;
-			aType=0, aTypeSelected=0, mode=0, modeSelected=0;
-			barChartATypeArr.length=0;
-			updateATypeChart();
-			barChartModeArr.length=0;
-			processBarChartMode();
-			}
-		else if ((secondSelect==0 && firstSelect=="mode") ||(secondSelect=="rose" && firstSelect=="mode"))  {
-			secondSelect="rose";
-			titleText="2nd Filter";
-			thirdSelect=0,fourthSelect=0;
-			aType=0, aTypeSelected=0, month=0, monthSelected =0;
-			barChartATypeArr.length=0;
-			updateATypeChart();
-			barChartDates.length=0;
-			processBarChartDates();
-			}
-		else if ((thirdSelect==0 && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect==0 && secondSelect=="aType" && firstSelect=="mode") || (thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="aType") || (thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="mode")){
-			thirdSelect="rose";
-			titleText="3rd Filter";
-			fourthSelect=0;
-			monthSelected=0,month = 0;
-			barChartDates.length=0;
-			processBarChartDates();
-			}
-		else if (thirdSelect==0 && secondSelect=="mode" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="mode" || thirdSelect=="rose" && secondSelect=="mode" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="mode"){
-			thirdSelect="rose";
-			titleText="3rd Filter";
-			fourthSelect=0;
-			aTypeSelected=0,aType = 0;
-			barChartATypeArr.length=0;
-			updateATypeChart();
-			}
-		else if (thirdSelect==0 && secondSelect=="aType" && firstSelect=="month" || thirdSelect==0 && secondSelect=="month" && firstSelect=="aType" || thirdSelect=="rose" && secondSelect=="aType" && firstSelect=="month" || thirdSelect=="rose" && secondSelect=="month" && firstSelect=="aType"){
-			thirdSelect="mode";
-			titleText="3rd Filter";
-			fourthSelect=0;
-			modeSelected=0, mode=0;
-			barChartModeArr.length=0;
-			processBarChartMode();
-			}	
-		else {
-			fourthSelect="mode";
-			titleText="4th Filter";
-			}
-		mapChange();
+		roseOnClick();
 		var ndx = crossfilter(roseData),
 				roseDimension = ndx.dimension(function (d) {
 					return d.roseField;

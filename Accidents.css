@@ -63,7 +63,7 @@
 			height: 25px;
 		}
 
-		#chart-area, #chart-travel, #chart-rose, #chart-mode, #reportrange {
+		#chart-area, #chart-travel, #chart-rose, #chart-mode, #chart-r, #chart-d, #reportrange {
 			padding: 5px;
 			margin: 5px;
 			border-radius: 5px;
@@ -71,7 +71,7 @@
 			border: 1px solid rgba(57, 57, 70, 0.875);
 		}
 		
-		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode {
+		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode, #pie-r, #pie-d {
 			height: 250px;
 		}
 		
