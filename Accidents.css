@@ -74,7 +74,7 @@
 		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode, #pie-r, #pie-d {
 			height: 250px;
 		}
-		
+
 		#caicLogo{
 			background-image: url("images/caic-logo.png");
 			background-size: 120px, 30px;
@@ -220,7 +220,12 @@
 			text-decoration: none;
 		}
 
-		
+		#pies {
+			width:100%;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-evenly;
+		}
 
 		/* Responsive display CSS */
 		@media (max-width: 767px) {
@@ -235,7 +240,6 @@
 				display: none !important;
 			}
 			#container {
-				background-color: pink;
 				flex-direction: column;
 				width: 100%;
 				min-height: 50%;
@@ -247,5 +251,11 @@
 			#side-panel {
 				width: 100%;
 				min-height: 40%;
+			}
+			#pies {
+				width: 100%;
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: space-evenly;
 			}
 		}
