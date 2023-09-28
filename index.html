@@ -294,7 +294,7 @@
 	//today back to 10/1/currentYear
 	// the avalanche year is from 10/01 to 9/31 each year.
 	let findAvalancheYear = () => {
-		// check if it is after October 1 if so, calculate the current year from now to 
+		// check if it is after October 1 if so, calculate the current year from now to September 30
 		if (currentMonth == 'October'||'November'||'December') {
 			currentAviYear = currentYear;}
 		else {
@@ -302,8 +302,7 @@
 		}
 	}
 	findAvalancheYear()
-	console.log("currentAviYear: " + currentAviYear)
-	
+
 	var map = L.map('map').setView([39.118413163683854, -106.44565988833477], 7.5);
 
 		//Add CAIC logo
@@ -983,6 +982,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 			fillColor: getColor(feature.properties.Dscale)
 		};
 	}
+	// style the avi location points
 	function styleLocationPts(feature) {
 		return {
 			radius: 3.5,
@@ -1146,6 +1146,24 @@ function onEachFeatureLocationPts(feature, layer) {
 					'Fatal';
 	}
 
+	//Rename the labels on the chart
+	function labelAviType(type) {
+		if (type == "SS")
+		return "SOFT SLAB";	
+		else if (type == "HS") 
+		return "HARD SLAB";
+		else if (type == "WS") 
+		return "WET SLAB";
+		else if (type == "WL") 
+		return "WET LOOSE";
+		else if (type == "I") 
+		return "ICE";
+		else if (type == "R") 
+		return "ROOF";
+		else
+		return "UNK";
+	}
+
 	var acc, accByType, zones, heat;
 	//var heat;
 	var heatPoints =[];
@@ -1186,6 +1204,7 @@ function onEachFeatureLocationPts(feature, layer) {
 			}
 		let treeline = getTreeline(json[i].accident_locations[0].site_elevation);
 		let fatalVar = getFatal(json[i].summary_counts.killed);
+		let avtype = labelAviType(json[i].accident_avalanches[0].type_code);
 		//Grabbing lat/longs from the CSV
 		for (var j in csvObj){
 			var classicID2 = parseInt(csvObj[j].acc_id);
@@ -1216,7 +1235,8 @@ function onEachFeatureLocationPts(feature, layer) {
 					"no_caught":json[i].summary_counts.caught,
 					"no_buried":json[i].summary_counts.buried,
 					"no_killed":json[i].summary_counts.killed,
-					"atype":json[i].accident_avalanches[0].type_code,
+					"atype":avtype,
+					// "atype":json[i].accident_avalanches[0].type_code,
 					"trigger1":json[i].accident_avalanches[0].primary_trigger,
 					"trigger2":json[i].accident_avalanches[0].secondary_trigger,
 					"Rscale":json[i].accident_avalanches[0].relative_size,
@@ -1240,7 +1260,8 @@ function onEachFeatureLocationPts(feature, layer) {
 				const travMode = travmode;
 				const accID = json[i].classic_accident_id;
 				const roseID = json[i].accident_locations[0].aspect+" "+treeline;
-				const avType = json[i].accident_avalanches[0].type_code;
+				let avType = avtype;
+				// const avType = json[i].accident_avalanches[0].type_code;
 				const rScaleID = json[i].accident_avalanches[0].relative_size;
 				const dScaleID = json[i].accident_avalanches[0].destructive_size;
 				heatPoints.push([lat, lon, date, avType, travMode, accID, roseID, rScaleID, dScaleID])
@@ -1424,22 +1445,7 @@ function onEachFeatureLocationPts(feature, layer) {
 				//Grab the keys and values from the accCount
 				barLabels2=Object.keys(accCount);
 				barValues=Object.values(accCount);
-				//Rename the labels on the chart
-				// for (let i = 0; i < barLabels2.length; i++)
-				// 	if (barLabels2[i] == "SS")
-				// 	barLabels2[i] = "SOFT SLAB";	
-				// 	else if (barLabels2[i] == "HS") 
-				// 	barLabels2[i] = "HARD SLAB";
-				// 	else if (barLabels2[i] == "WS") 
-				// 	barLabels2[i] = "WET SLAB";
-				// 	else if (barLabels2[i] == "WL") 
-				// 	barLabels2[i] = "WET LOOSE";
-				// 	else if (barLabels2[i] == "I") 
-				// 	barLabels2[i] = "ICE";
-				// 	else if (barLabels2[i] == "R") 
-				// 	barLabels2[i] = "ROOF";
-				// 	else
-				// 	barLabels2[i] = "UNK";
+				
 				
 				//Update the bar chart with the labels and values
 				barChartCanvas.data.labels = barLabels2;
