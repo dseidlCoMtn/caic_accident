@@ -22,20 +22,32 @@
 
     <h2>Layers</h2>
     <!-- List each layer and include the legend image -->
-    <p>The default layer is the Accidents layer. Accident points are mapped, with D scale being indicated by color and R scale by circle size. The Accidents by Travel Mode layer shows the activity of the user(s) involved in the activity. The CAIC Zones layer shows the areas that forecasting is available for (https://lb.avalanche.state.co.us/forecasts/help/forecast-zones/). The Heatmap layer shows where accidents are focused. <!-- Include text that this is a representation of the density of the accident points.--> This layer adjusts based on how zoomed in the map is.</p>
+    <p>The default layer is the Accidents by Travel Mode layer. The Accidents by Travel Mode layer shows the activity of the user(s) involved in the activity. Accident points are shown with an icon representing the travel mode of the user(s). The next layer is a point map of avalanche accident locations. In the third layer Accident points are also mapped, with D scale being indicated by color and R scale by circle size. The CAIC Zones layer shows the areas that forecasting is available for (https://lb.avalanche.state.co.us/forecasts/help/forecast-zones/). The Heatmap layer shows where accidents are focused. The heatmap is a representation of the density of the accident points. The heatmap layer adjusts based on how zoomed in the map is.</p>
 
     <h2>Map Buttons</h2>
-    <!-- Center the images of the map buttons
-    Placement of these buttons is going to change. -->
     <p style="display:inline-block;"><img src="images/dateFilter.png" style="height: 10%; width: 10%"></img>By default, the map loads with the previous 5 Water Years of data (one year is October 1 - September 30). This can be adjusted by clicking/tapping the dropdown with the calendar and date range. <br><br>
-    <img src="images/zoomButton.png"><img>The + and - buttons can be used to control the zoom of the map. The Home button will take you to the default center and zoom of the map.<br><br> 
-    <i class="fa fa-filter-circle-xmark"></i> Underneath that is the Clear Filters button, which will reset the data selection the the default data range and remove any filters from the graphs. Use this button to bring the original dataset back.<br><br>
+    <img src="images/zoomButton.png"><img>The + and - buttons can be used to control the zoom of the map.<br><br> 
     <img src="images/lasso.svg" style="width: 20px; height: auto"></img> Below this is the Lasso tool. With this selected, you can click, hold, and move your mouse on the map to select specific accident data. <br><br>
-    <i class="fa-regular fa-circle-question"></i> At the bottom of these buttons is the help button. </p>
+    <i class="fa-regular fa-circle-question"></i> This is the help button.<br><br>
+    <i class="fa fa-filter-circle-xmark"></i> Underneath that is the Clear Filters button, which will reset the data selection the the default data range and remove any filters from the graphs. Use this button to bring the original dataset back.</p><br><br>
 
     <h2>Charts</h2>
     <!-- List each chart and include images-->
-    <p>The map includes charts that change based on the data that is selected. The charts can be used to filter the map, as well. Click on any of the bars to only select data in that category. The filters are stackable, i.e. multiple charts can be used to filter. </p>
+    <p>The map includes charts that change based on the data that is selected. The charts can be used to filter the map, as well. Click on any of the bars to only select data in that category. The filters are stackable, i.e. multiple charts can be used to filter. To clear all the filters, click on the <i class="fa fa-filter-circle-xmark"></i> at the top of the chart panel.</p>
+
+    <p>The first chart is the Avalanche Rose chart, click on any section of the rose to select the aspect and/or location in relation to tree line. (Below tree line, At tree line, Above tree line). Click on more sections of the avalanche rose to add them to the map.</p>
+
+    <p>The Accidents by Avalanche type chart shows what type of avalanche occured. The possible avalanche types are soft slab, hard slab, wet loose, wet slab, ice, roof slide, and unknown. You can select any bar on the chart to see those incidents. If you select another bar, the data will switch to that type of avalanch and deselect the other type.</p>
+
+    <p>Accidents by Month chart shows when the avalanche accident happened. You can filter by one month at a tiime by clicking on one of the month bars. You can switch months by clicking on another bar in the chart. You can choose one month at a time to filter by with this chart.</p>
+
+    <p>Accidents by Travel Mode chart shows which mode of travel those involved in the accident were using. You can select a bar on the chart to see all the accidents that involved that travel mode. You can pick another bar to switch to that type of travel mode.</p>
+
+    <p>There are two donut charts at the bottom of the chart panel that depict the size of the avalanche using R scale and D scale. Click on the part of the circle with the scale you are interested in to see all the avalanches of that size.</p>
+
+
+
+
 
      <!-- Possibly take users through 1-2 scenarios, such as isolating accidents in the last avalanche year, then lassoing in a zone, then selecting from those the skiing ones. -->
   </body>
