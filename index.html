@@ -1423,9 +1423,10 @@ function onEachFeatureLocationPts(feature, layer) {
 	var accPoints=[];
 	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/Accidents.json';
 	const csvURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
+	const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
-	//const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: ''}};
+	
 	const apigeo = {
         type: "FeatureCollection",
         features: [],
@@ -1439,17 +1440,17 @@ function onEachFeatureLocationPts(feature, layer) {
 		//auth.auth0 = await createAuth0Client(AUTH0_CONFIG);
 		//var testAuth = await auth.init();
 		//console.log(testAuth);
-		console.log("hi");
+		//console.log("hi");
 		//console.log(auth.auth0);
 		//console.log(auth.auth0);
 		await auth.init();
-		console.log(auth.auth0);
-		await auth.login();
-
+		//console.log(auth.auth0);
 		//await auth.login();
+
+		await auth.login();
 		//await auth.auth0.loginWithRedirect({redirect_uri: window.location.origin + window.location.pathname});
-		//const isAuthenticated = await auth.auth0.isAuthenticated();
-		//console.log(isAuthenticated);
+		const isAuthenticated = await auth.auth0.isAuthenticated();
+		console.log(isAuthenticated);
 
 		//const token = await auth.auth0.getTokenSilently();
 
@@ -1458,16 +1459,29 @@ function onEachFeatureLocationPts(feature, layer) {
 
  
 
-		const caicAuthHeaders = await auth.fetchCAICAuthHeaderWithToken();
+		//caicAuthHeaders = await auth.fetchCAICAuthHeaderWithToken();
+		//caicAuthHeaders = auth.fetchCAICAuthHeaderWithToken();
+		await auth.fetchCAICAuthHeaderWithToken();
+		//let token = caicAuthHeaders;
+		//console.log(caicAuthHeaders);
+		//console.log(token2);
+		//await token2;
+		const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: token2}};
+		console.log(apiOptions);
+		//return;
+		//const apiOptions = {method: 'GET', headers: token};
 		//console.log(token);
-		console.log(caicAuthHeaders);
-	  //const response = await fetch(apiURL, apiOptions);
-	  //const json = await response.json();
-	  //console.log(json);
-	  const response = await fetch(jsonURL);
+		//console.log(caicAuthHeaders);
+
+	  const response = await fetch(apiURL, apiOptions);
+	  console.log(response);
+	  const json = await response.json();
+	  console.log(json);
+
+	  //const response = await fetch(jsonURL);
 	  const csvResponse = await fetch(csvURL);
 	  const csvText = await csvResponse.text();
-	  const json = await response.json();
+	  //const json = await response.json();
 	  const csvObj = $.csv.toObjects(csvText);
 
 	  for (var i in json){

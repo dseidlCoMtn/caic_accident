@@ -7,7 +7,7 @@ const auth = {
 
         if (isAuthenticated) {  // if you're already authed, quietly update the ui and move on
             window.history.replaceState({}, document.title, window.location.origin + window.location.pathname);
-            auth.updateUI();
+            //auth.updateUI();
             return;
         }
 
@@ -51,26 +51,26 @@ const auth = {
     // and shortly we'll have a UI to update again.
     updateUI: async () => {
         try {
-            const isAuthenticated = await auth.auth0.isAuthenticated();
+            //const isAuthenticated = await auth.auth0.isAuthenticated();
 
-            if (isAuthenticated) {
-                // if authed, show the little user icon in the upper left. click it to log out.
-                const user = await auth.auth0.getUser();
-                $('#auth-button')
-                    .removeClass('hidden')
-                    .html(`<img src="${user.picture}"/>`)
-                    .click(auth.logout)
-                    .tooltip();
+            // if (isAuthenticated) {
+            //     // if authed, show the little user icon in the upper left. click it to log out.
+            //     const user = await auth.auth0.getUser();
+            //     $('#auth-button')
+            //         .removeClass('hidden')
+            //         .html(`<img src="${user.picture}"/>`)
+            //         .click(auth.logout)
+            //         .tooltip();
                 
-                // make sure the other one stays hidden
-                $('#home-button').addClass('hidden');
-            } else {
-                // else you're the public, show the CAIC logo so they can click it to go back to home.
-                $('#home-button').removeClass('hidden');
+            //     // make sure the other one stays hidden
+            //     $('#home-button').addClass('hidden');
+            // } else {
+            //     // else you're the public, show the CAIC logo so they can click it to go back to home.
+            //     $('#home-button').removeClass('hidden');
 
-                // make sure the other one stays hidden
-                $('#auth-button').addClass('hidden');
-            }
+            //     // make sure the other one stays hidden
+            //     $('#auth-button').addClass('hidden');
+            // }
         } catch (err) {
             console.log("Error updating UI!", err);
             return;
@@ -90,7 +90,9 @@ const auth = {
                 const token = await auth.auth0.getTokenSilently({redirect_uri: window.location.origin + window.location.pathname});
                 //const token = await auth.auth0.login();
                 if (token) {
-                    header['Authorization'] = `Bearer ${token}`;
+                    //header['Authorization'] = `Bearer ${token}`;
+                    //token2=`Bearer ${token}`;
+                    token2='Bearer '+token;
                 } else {
                     console.warn('Auth0 said you were logged in but the returned token was null!');
                 }
@@ -105,8 +107,8 @@ const auth = {
         }
 
         // either way, keep the UI up to date
-        await auth.updateUI();
+        //await auth.updateUI();
 
-        return header;
+        return token2;
     }
 }
