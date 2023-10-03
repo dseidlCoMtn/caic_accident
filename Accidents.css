@@ -52,6 +52,11 @@
 			justify-content: space-around;
 		}
 
+		button {
+			font-family: 'Nanum Gothic', Arial, Helvetica, sans-serif;
+			font-size: 0.75em;
+		}
+
 		#controlBundle {
 			display: flex;
 			flex-direction: row;
