@@ -69,212 +69,213 @@
 					</div>
 				</div>	
 			</div>	
-			
 			<div id='chart-container'>
-				<div id="chart-rose">
-					<div id="pie-rose" class="row pie-row">
-						<div class="col-xs-12 col-md-4">
-							<div class="chart-wrapper">
-								<div class="chart-title">
-									Avalanche Rose 
-									<span
-										id="unknown-avy-rose-number-display" data-toggle="tooltip" data-placement="top"
-										title="Incomplete elevation or aspect information has prevented some avalanches from being plotted on the rose.">
-									</span>
-								</div>
-								<div class="chart-stage text-center">
-									<a class="reset hidden within-chart" href="javascript:void(0)">
-										<!-- <span class="icon">↻</span> -->
-									</a>
-									<div id="rose-pie-chart" class='hidden'></div>
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" width="180">
-										<g transform="matrix(1, 0, 0, 1, 28.720007, 28.720008)">
-											<g class="avy-rose-part" filter="E <TL">
-												<path d="M 376.21 127 L 376.21 273 L 329.82 253.78 L 329.82 146.26 L 376.21 127 Z" transform="translate(-8.72 -8.72)">
-													<title>E &lt;TL</title>
-												</path>
-												<text transform="translate(345 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
+				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>				
+				<div id="pies">
+					<div id="chart-rose">
+						<div id="pie-rose" class="row pie-row">
+							<div class="col-xs-12 col-md-4">
+								<div class="chart-wrapper">
+									<div class="chart-title">
+										Avalanche Rose 
+										<span
+											id="unknown-avy-rose-number-display" data-toggle="tooltip" data-placement="top"
+											title="Incomplete elevation or aspect information has prevented some avalanches from being plotted on the rose.">
+										</span>
+									</div>
+									<div class="chart-stage text-center">
+										<a class="reset hidden within-chart" href="javascript:void(0)">
+											<!-- <span class="icon">↻</span> -->
+										</a>
+										<div id="rose-pie-chart" class='hidden'></div>
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" width="180">
+											<g transform="matrix(1, 0, 0, 1, 28.720007, 28.720008)">
+												<g class="avy-rose-part" filter="E <TL">
+													<path d="M 376.21 127 L 376.21 273 L 329.82 253.78 L 329.82 146.26 L 376.21 127 Z" transform="translate(-8.72 -8.72)">
+														<title>E &lt;TL</title>
+													</path>
+													<text transform="translate(345 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="E TL">
+													<path d="M 329.83 146.22 L 329.83 253.74 L 282.95 234.33 L 282.95 165.62 L 329.83 146.22 Z" transform="translate(-8.72 -8.72)">
+														<title>E TL</title>
+													</path>
+													<text transform="translate(298 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="E >TL">
+													<path d="M 282.93 165.65 L 282.93 234.36 L 200 200 L 282.93 165.65 Z" transform="translate(-8.72 -8.72)">
+														<title>E &gt;TL</title>
+													</path>
+													<text transform="translate(250 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="SE >TL">
+													<path d="M 200 200 L 282.94 234.36 L 234.36 283 L 200 200 Z" transform="translate(-8.72 -8.72)">
+														<title>SE &gt;TL</title>
+													</path>
+													<text transform="translate(236 236)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="SE TL">
+													<path d="M 282.94 234.36 L 329.82 253.77 L 253.76 329.77 L 234.36 283 L 282.94 234.36 Z" transform="translate(-8.72 -8.72)">
+														<title>SE TL</title>
+													</path>
+													<text transform="translate(267 267)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="SE <TL">
+													<path d="M 329.82 253.77 L 376.21 273 L 273 376.21 L 253.77 329.79 L 329.82 253.77 Z" transform="translate(-8.72 -8.72)">
+														<title>SE &lt;TL</title>
+													</path>
+													<text transform="translate(300 300)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="S <TL">
+													<path d="M 253.76 329.79 L 273 376.21 L 127 376.21 L 146.22 329.81 L 253.76 329.79 Z" transform="translate(-8.72 -8.72)">
+														<title>S &lt;TL</title>
+													</path>
+													<text transform="translate(191 348)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="S TL">
+													<path d="M 234.36 283 L 253.76 329.84 L 146.23 329.84 L 165.64 283 L 234.36 283 Z" transform="translate(-8.72 -8.72)">
+														<title>S TL</title>
+													</path>
+													<text transform="translate(191 300)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="S >TL">
+													<path d="M 200 200 L 234.36 283 L 165.65 283 L 200 200 Z" transform="translate(-8.72 -8.72)">
+														<title>S &gt;TL</title>
+													</path>
+													<text transform="translate(191 255)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="SW >TL">
+													<path d="M 200 200 L 165.64 283 L 117.07 234.4 L 200 200 Z" transform="translate(-8.72 -8.72)">
+														<title>SW &gt;TL</title>
+													</path>
+													<text transform="translate(145 236)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="SW TL">
+													<path d="M 165.64 283 L 146.23 329.86 L 70.23 253.86 L 117.14 234.43 L 165.64 283 Z" transform="translate(-8.72 -8.72)">
+														<title>SW TL</title>
+													</path>
+													<text transform="translate(115 267)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="SW <TL">
+													<path d="M 146.23 329.81 L 127 376.21 L 23.79 273 L 70.16 253.79 L 146.16 329.79 L 146.23 329.81 Z" transform="translate(-8.72 -8.72)">
+														<title>SW &lt;TL</title>
+													</path>
+													<text transform="translate(83 300)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="W <TL">
+													<path d="M 70.16 253.78 L 23.79 273 L 23.79 127 L 70.12 146.2 L 70.16 253.78 Z" transform="translate(-8.72 -8.72)">
+														<title>W &lt;TL</title>
+													</path>
+													<text transform="translate(38 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="W TL">
+													<path d="M 117.07 165.65 L 117.07 234.34 L 70.16 253.78 L 70.16 146.2 L 117.07 165.65 Z" transform="translate(-8.72 -8.72)">
+														<title>W TL</title>
+													</path>
+													<text transform="translate(85 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="W >TL">
+													<path d="M 200 200 L 117.07 234.35 L 117.07 165.66 L 200 200 Z" transform="translate(-8.72 -8.72)">
+														<title>W &gt;TL</title>
+													</path>
+													<text transform="translate(130 193)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="NW >TL">
+													<path d="M 165.65 117.08 L 200 200 L 117.07 165.65 L 165.65 117.08 Z" transform="translate(-8.72 -8.72)">
+														<title>NW &gt;TL</title>
+													</path>
+													<text transform="translate(148 149)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="N >TL">
+													<path d="M 234.35 117.08 L 200 200 L 165.65 117.08 L 234.35 117.08 Z" transform="translate(-8.72 -8.72)">
+														<title>N &gt;TL</title>
+													</path>
+													<text transform="translate(191 136)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="NE >TL">
+													<path d="M 234.35 117.08 L 282.92 165.65 L 200 200 L 234.35 117.08 Z" transform="translate(-8.72 -8.72)">
+														<title>NE &gt;TL</title>
+													</path>
+													<text transform="translate(235 149)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="NE TL">
+													<path d="M 329.83 146.22 L 282.93 165.65 L 234.36 117.08 L 253.8 70.13 L 329.83 146.22 Z" transform="translate(-8.72 -8.72)">
+														<title>NE TL</title>
+													</path>
+													<text transform="translate(266 120)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="NE <TL">
+													<path d="M 376.21 127 L 329.83 146.21 L 253.83 70.12 L 273 23.79 L 376.21 127 Z" transform="translate(-8.72 -8.72)">
+														<title>NE &lt;TL</title>
+													</path>
+													<text transform="translate(300 85)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="N <TL">
+													<path d="M 273 23.79 L 253.8 70.13 L 146.24 70.13 L 127 23.79 L 273 23.79 Z" transform="translate(-8.72 -8.72)">
+														<title>N &lt;TL</title>
+													</path>
+													<text transform="translate(191 40)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="N TL">
+													<path d="M 253.76 70.11 L 234.31 117.11 L 165.61 117.11 L 146.16 70.11 L 253.76 70.11 Z" transform="translate(-8.72 -8.72)">
+														<title>N TL</title>
+													</path>
+													<text transform="translate(191 88)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="NW TL">
+													<path d="M 146.2 70.11 L 165.65 117.11 L 117.07 165.68 L 70.12 146.2 L 146.2 70.11 Z" transform="translate(-8.72 -8.72)">
+														<title>NW TL</title>
+													</path>
+													<text transform="translate(117 120)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<g class="avy-rose-part" filter="NW <TL">
+													<path d="M 127 23.79 L 146.2 70.11 L 70.13 146.17 L 23.79 127 L 127 23.79 Z" transform="translate(-8.72 -8.72)">
+														<title>NW &lt;TL</title>
+													</path>
+													<text transform="translate(85 85)" dominant-baseline="middle" text-anchor="middle">0</text>
+												</g>
+												<text 
+													class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle" x="191" y="-5"
+													filter='["N >TL", "N TL", "N <TL", "NE >TL", "NE TL", "NE <TL", "NW >TL", "NW TL", "NW <TL"]'>
+													N
+												</text>
+												<text 
+													class="cardinal-direction rose-multiselector"  dominant-baseline="middle" text-anchor="middle" y="195" x="-12"
+													filter='["W >TL", "W TL", "W <TL", "SW >TL", "SW TL", "SW <TL", "NW >TL", "NW TL", "NW <TL"]'>
+													W
+												</text>
+												<text
+													class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle" x="387" y="195"
+													filter='["E >TL", "E TL", "E <TL", "SE >TL", "SE TL", "SE <TL", "NE >TL", "NE TL", "NE <TL"]'>
+													E
+												</text>
+												<text
+													class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle"  x="191" y="395"
+													filter='["S >TL", "S TL", "S <TL", "SE >TL", "SE TL", "SE <TL", "SW >TL", "SW TL", "SW <TL"]'>
+													S
+												</text>
 											</g>
-											<g class="avy-rose-part" filter="E TL">
-												<path d="M 329.83 146.22 L 329.83 253.74 L 282.95 234.33 L 282.95 165.62 L 329.83 146.22 Z" transform="translate(-8.72 -8.72)">
-													<title>E TL</title>
-												</path>
-												<text transform="translate(298 193)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="E >TL">
-												<path d="M 282.93 165.65 L 282.93 234.36 L 200 200 L 282.93 165.65 Z" transform="translate(-8.72 -8.72)">
-													<title>E &gt;TL</title>
-												</path>
-												<text transform="translate(250 193)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="SE >TL">
-												<path d="M 200 200 L 282.94 234.36 L 234.36 283 L 200 200 Z" transform="translate(-8.72 -8.72)">
-													<title>SE &gt;TL</title>
-												</path>
-												<text transform="translate(236 236)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="SE TL">
-												<path d="M 282.94 234.36 L 329.82 253.77 L 253.76 329.77 L 234.36 283 L 282.94 234.36 Z" transform="translate(-8.72 -8.72)">
-													<title>SE TL</title>
-												</path>
-												<text transform="translate(267 267)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="SE <TL">
-												<path d="M 329.82 253.77 L 376.21 273 L 273 376.21 L 253.77 329.79 L 329.82 253.77 Z" transform="translate(-8.72 -8.72)">
-													<title>SE &lt;TL</title>
-												</path>
-												<text transform="translate(300 300)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="S <TL">
-												<path d="M 253.76 329.79 L 273 376.21 L 127 376.21 L 146.22 329.81 L 253.76 329.79 Z" transform="translate(-8.72 -8.72)">
-													<title>S &lt;TL</title>
-												</path>
-												<text transform="translate(191 348)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="S TL">
-												<path d="M 234.36 283 L 253.76 329.84 L 146.23 329.84 L 165.64 283 L 234.36 283 Z" transform="translate(-8.72 -8.72)">
-													<title>S TL</title>
-												</path>
-												<text transform="translate(191 300)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="S >TL">
-												<path d="M 200 200 L 234.36 283 L 165.65 283 L 200 200 Z" transform="translate(-8.72 -8.72)">
-													<title>S &gt;TL</title>
-												</path>
-												<text transform="translate(191 255)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="SW >TL">
-												<path d="M 200 200 L 165.64 283 L 117.07 234.4 L 200 200 Z" transform="translate(-8.72 -8.72)">
-													<title>SW &gt;TL</title>
-												</path>
-												<text transform="translate(145 236)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="SW TL">
-												<path d="M 165.64 283 L 146.23 329.86 L 70.23 253.86 L 117.14 234.43 L 165.64 283 Z" transform="translate(-8.72 -8.72)">
-													<title>SW TL</title>
-												</path>
-												<text transform="translate(115 267)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="SW <TL">
-												<path d="M 146.23 329.81 L 127 376.21 L 23.79 273 L 70.16 253.79 L 146.16 329.79 L 146.23 329.81 Z" transform="translate(-8.72 -8.72)">
-													<title>SW &lt;TL</title>
-												</path>
-												<text transform="translate(83 300)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="W <TL">
-												<path d="M 70.16 253.78 L 23.79 273 L 23.79 127 L 70.12 146.2 L 70.16 253.78 Z" transform="translate(-8.72 -8.72)">
-													<title>W &lt;TL</title>
-												</path>
-												<text transform="translate(38 193)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="W TL">
-												<path d="M 117.07 165.65 L 117.07 234.34 L 70.16 253.78 L 70.16 146.2 L 117.07 165.65 Z" transform="translate(-8.72 -8.72)">
-													<title>W TL</title>
-												</path>
-												<text transform="translate(85 193)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="W >TL">
-												<path d="M 200 200 L 117.07 234.35 L 117.07 165.66 L 200 200 Z" transform="translate(-8.72 -8.72)">
-													<title>W &gt;TL</title>
-												</path>
-												<text transform="translate(130 193)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="NW >TL">
-												<path d="M 165.65 117.08 L 200 200 L 117.07 165.65 L 165.65 117.08 Z" transform="translate(-8.72 -8.72)">
-													<title>NW &gt;TL</title>
-												</path>
-												<text transform="translate(148 149)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="N >TL">
-												<path d="M 234.35 117.08 L 200 200 L 165.65 117.08 L 234.35 117.08 Z" transform="translate(-8.72 -8.72)">
-													<title>N &gt;TL</title>
-												</path>
-												<text transform="translate(191 136)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="NE >TL">
-												<path d="M 234.35 117.08 L 282.92 165.65 L 200 200 L 234.35 117.08 Z" transform="translate(-8.72 -8.72)">
-													<title>NE &gt;TL</title>
-												</path>
-												<text transform="translate(235 149)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="NE TL">
-												<path d="M 329.83 146.22 L 282.93 165.65 L 234.36 117.08 L 253.8 70.13 L 329.83 146.22 Z" transform="translate(-8.72 -8.72)">
-													<title>NE TL</title>
-												</path>
-												<text transform="translate(266 120)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="NE <TL">
-												<path d="M 376.21 127 L 329.83 146.21 L 253.83 70.12 L 273 23.79 L 376.21 127 Z" transform="translate(-8.72 -8.72)">
-													<title>NE &lt;TL</title>
-												</path>
-												<text transform="translate(300 85)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="N <TL">
-												<path d="M 273 23.79 L 253.8 70.13 L 146.24 70.13 L 127 23.79 L 273 23.79 Z" transform="translate(-8.72 -8.72)">
-													<title>N &lt;TL</title>
-												</path>
-												<text transform="translate(191 40)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="N TL">
-												<path d="M 253.76 70.11 L 234.31 117.11 L 165.61 117.11 L 146.16 70.11 L 253.76 70.11 Z" transform="translate(-8.72 -8.72)">
-													<title>N TL</title>
-												</path>
-												<text transform="translate(191 88)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="NW TL">
-												<path d="M 146.2 70.11 L 165.65 117.11 L 117.07 165.68 L 70.12 146.2 L 146.2 70.11 Z" transform="translate(-8.72 -8.72)">
-													<title>NW TL</title>
-												</path>
-												<text transform="translate(117 120)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<g class="avy-rose-part" filter="NW <TL">
-												<path d="M 127 23.79 L 146.2 70.11 L 70.13 146.17 L 23.79 127 L 127 23.79 Z" transform="translate(-8.72 -8.72)">
-													<title>NW &lt;TL</title>
-												</path>
-												<text transform="translate(85 85)" dominant-baseline="middle" text-anchor="middle">0</text>
-											</g>
-											<text 
-												class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle" x="191" y="-5"
-												filter='["N >TL", "N TL", "N <TL", "NE >TL", "NE TL", "NE <TL", "NW >TL", "NW TL", "NW <TL"]'>
-												N
-											</text>
-											<text 
-												class="cardinal-direction rose-multiselector"  dominant-baseline="middle" text-anchor="middle" y="195" x="-12"
-												filter='["W >TL", "W TL", "W <TL", "SW >TL", "SW TL", "SW <TL", "NW >TL", "NW TL", "NW <TL"]'>
-												W
-											</text>
-											<text
-												class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle" x="387" y="195"
-												filter='["E >TL", "E TL", "E <TL", "SE >TL", "SE TL", "SE <TL", "NE >TL", "NE TL", "NE <TL"]'>
-												E
-											</text>
-											<text
-												class="cardinal-direction rose-multiselector" dominant-baseline="middle" text-anchor="middle"  x="191" y="395"
-												filter='["S >TL", "S TL", "S <TL", "SE >TL", "SE TL", "SE <TL", "SW >TL", "SW TL", "SW <TL"]'>
-												S
-											</text>
-										</g>
-									</svg>
-									<span>
-										<a href="javascript:void(0)" class="rose-multiselector" filter='["N <TL", "NE <TL", "E <TL", "SE <TL", "S <TL", "SW <TL", "W <TL", "NW <TL"]'>Below</a>
-										<a href="javascript:void(0)" class="rose-multiselector" filter='["N <TL", "NE <TL", "E <TL", "SE <TL", "S <TL", "SW <TL", "W <TL", "NW <TL", "N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL"]'>|</a>
-										<a href="javascript:void(0)" class="rose-multiselector" filter='["N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL"]'>Near</a>
-										<a href="javascript:void(0)" class="rose-multiselector" filter='["N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL", "N >TL", "NE >TL", "E >TL", "SE >TL", "S >TL", "SW >TL", "W >TL", "NW >TL"]'>|</a>
-										<a href="javascript:void(0)" class="rose-multiselector" filter='["N >TL", "NE >TL", "E >TL", "SE >TL", "S >TL", "SW >TL", "W >TL", "NW >TL"]'>Above</a>
-									</span>
+										</svg>
+										<span>
+											<a href="javascript:void(0)" class="rose-multiselector" filter='["N <TL", "NE <TL", "E <TL", "SE <TL", "S <TL", "SW <TL", "W <TL", "NW <TL"]'>Below</a>
+											<a href="javascript:void(0)" class="rose-multiselector" filter='["N <TL", "NE <TL", "E <TL", "SE <TL", "S <TL", "SW <TL", "W <TL", "NW <TL", "N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL"]'>|</a>
+											<a href="javascript:void(0)" class="rose-multiselector" filter='["N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL"]'>Near</a>
+											<a href="javascript:void(0)" class="rose-multiselector" filter='["N TL", "NE TL", "E TL", "SE TL", "S TL", "SW TL", "W TL", "NW TL", "N >TL", "NE >TL", "E >TL", "SE >TL", "S >TL", "SW >TL", "W >TL", "NW >TL"]'>|</a>
+											<a href="javascript:void(0)" class="rose-multiselector" filter='["N >TL", "NE >TL", "E >TL", "SE >TL", "S >TL", "SW >TL", "W >TL", "NW >TL"]'>Above</a>
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
-				<div id="chart-area" ><canvas id="bar-chart" ></canvas></div>
-				<div id="chart-mode"><canvas id="bar-chart-mode"></canvas></div>
-				<div id="pies">
-					<div id="chart-r"><canvas id="pie-r"></canvas></div>
-					<div id="chart-d"><canvas id="pie-d"></canvas></div>
-				</div>
+					<div class='pink-box'>
+						<div id="chart-r"><canvas id="pie-r"></canvas></div>
+						<div id="chart-d"><canvas id="pie-d"></canvas></div>
+					</div>
 					
+				</div>
+			<div id="chart-mode"><canvas id="bar-chart-mode"></canvas></div>	
 			</div>
 		</div>
 	</div>
