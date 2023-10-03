@@ -47,6 +47,11 @@
 			justify-content: space-around;
 		}
 
+		#about-help {
+			display: flex;
+			justify-content: space-around;
+		}
+
 		#controlBundle {
 			display: flex;
 			flex-direction: row;
