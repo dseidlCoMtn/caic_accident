@@ -53,7 +53,10 @@
 	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 	
 </head>
-<body>	
+<body>
+	<div id="loading-overlay">
+        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+	</div>	
 	<div id='container'>
 		<div id='map'>
     	</div>
@@ -329,7 +332,7 @@
 		},
 		onAdd: function (map) {
 			var cmcContainer = L.DomUtil.create('div', 'leaflet-control');
-			$(cmcContainer).html('<div id="cmcLogo"> <p class="text">Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS</p> </div>');
+			$(cmcContainer).html('<div id="cmcLogo"><a class="text" href="https://coloradomtn.edu/programs/gis/" target="_blank"> <p class="text"> Joe Tayabji, Lucy Kepner, Dara Seidl | CMC GIS </p></a> </div>');
 			return cmcContainer;
 		},
 		onRemove: function(map) {},
@@ -1077,8 +1080,12 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 		/* push to bar chart for travel mode graph*/
 		barChartModeArr.push(feature.properties.acc_travel_mode);
 		roseData.push({roseField:feature.properties.roseField});
-		pieRArr.push(feature.properties.Rscale);
-		pieDArr.push(feature.properties.Dscale);
+		if (feature.properties.Rscale != ""){
+			pieRArr.push(feature.properties.Rscale);
+		}
+		if (feature.properties.Dscale != ""){
+			pieDArr.push(feature.properties.Dscale);
+		}
 	}
 
 //Actions for mouseover, mouseout for accident points BY TRAVEL MODE
@@ -1146,22 +1153,23 @@ function onEachFeatureLocationPts(feature, layer) {
 					'Fatal';
 	}
 
+
 	//Rename the labels on the chart
 	function labelAviType(type) {
 		if (type == "SS")
-		return "SOFT SLAB";	
+		return "Soft Slab";	
 		else if (type == "HS") 
-		return "HARD SLAB";
+		return "Hard Slab";
 		else if (type == "WS") 
-		return "WET SLAB";
+		return "Wet Slab";
 		else if (type == "WL") 
-		return "WET LOOSE";
+		return "Wet Loose";
 		else if (type == "I") 
-		return "ICE";
+		return "Ice";
 		else if (type == "R") 
-		return "ROOF";
+		return "Roof";
 		else
-		return "UNK";
+		return "Unknown";
 	}
 
 	var acc, accByType, zones, heat;
@@ -1194,13 +1202,27 @@ function onEachFeatureLocationPts(feature, layer) {
 		var classicID = json[i].classic_accident_id;
 		var latitude=0;
 		var longitude=0;
-		var travmode
+		var travmode,rClass,dClass
 		//switching travel modes with null to Unknown
 		if (json[i].travel_mode === null){
 				travmode="Unknown";
 			}
 		else{
 			travmode = json[i].travel_mode;
+			}
+		//switching rScales with null to ""
+		if (json[i].accident_avalanches[0].relative_size === null){
+				rClass="";
+			}
+		else{
+			rClass = json[i].accident_avalanches[0].relative_size;
+			}
+		//switching dScales with null to ""
+		if (json[i].accident_avalanches[0].destructive_size === null){
+			dClass="";
+			}
+		else{
+			dClass = json[i].accident_avalanches[0].destructive_size;
 			}
 		let treeline = getTreeline(json[i].accident_locations[0].site_elevation);
 		let fatalVar = getFatal(json[i].summary_counts.killed);
@@ -1239,8 +1261,8 @@ function onEachFeatureLocationPts(feature, layer) {
 					// "atype":json[i].accident_avalanches[0].type_code,
 					"trigger1":json[i].accident_avalanches[0].primary_trigger,
 					"trigger2":json[i].accident_avalanches[0].secondary_trigger,
-					"Rscale":json[i].accident_avalanches[0].relative_size,
-					"Dscale":json[i].accident_avalanches[0].destructive_size,
+					"Rscale":rClass,
+					"Dscale":dClass,
 					"surface":json[i].accident_avalanches[0].surface,
 					"setting":json[i].accident_locations[0].setting,
 					"elevation":json[i].accident_locations[0].site_elevation,
@@ -1262,8 +1284,8 @@ function onEachFeatureLocationPts(feature, layer) {
 				const roseID = json[i].accident_locations[0].aspect+" "+treeline;
 				let avType = avtype;
 				// const avType = json[i].accident_avalanches[0].type_code;
-				const rScaleID = json[i].accident_avalanches[0].relative_size;
-				const dScaleID = json[i].accident_avalanches[0].destructive_size;
+				const rScaleID = rClass;
+				const dScaleID = dClass;
 				heatPoints.push([lat, lon, date, avType, travMode, accID, roseID, rScaleID, dScaleID])
 		}
 		};
@@ -1299,7 +1321,9 @@ function onEachFeatureLocationPts(feature, layer) {
 			});
 		accPoints= await(heatPoints);
 		heat = createHeatmap(map, accPoints, startDate, endDate);
-		}
+
+		$('#loading-overlay').toggleClass('hidden', true);
+	}
 
 	var baseLayers = {
 		"Natural Atlas": Natural_Atlas,
@@ -1814,7 +1838,9 @@ function onEachFeatureLocationPts(feature, layer) {
 					textStrokeColor:'white',
 					textStrokeWidth:'3',
 					labels: {value:{},title:{color:'black'}},
-					//font:{size:8},
+					//font:{size:10},
+					display:'auto',
+					//align:'end',
 					formatter: (val, pieD) => (pieD.chart.data.labels[pieD.dataIndex])
 				}
 			},
