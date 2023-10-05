@@ -91,12 +91,14 @@ const auth = {
                 //const token = await auth.auth0.login();
                 if (token) {
                     //header['Authorization'] = `Bearer ${token}`;
-                    //token2=`Bearer ${token}`;
-                    token2='Bearer '+token;
+                    token2=`Bearer ${token}`;
+                    //token2='Bearer '+token;
                 } else {
                     console.warn('Auth0 said you were logged in but the returned token was null!');
                 }
-            } catch (e) {
+            } 
+            
+            catch (e) {
                 // if you need to login again because your auth expired or you need to give further permissions,
                 // we will automatically redirect you to the login page again.
                 if (e.error === 'login_required' || e.error === 'consent_required') {
@@ -109,6 +111,6 @@ const auth = {
         // either way, keep the UI up to date
         //await auth.updateUI();
 
-        return token2;
+        //return token2;
     }
 }
