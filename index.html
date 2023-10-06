@@ -1179,8 +1179,8 @@ function onEachFeatureLocationPts(feature, layer) {
 	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/Accidents.json';
 	const csvURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
-	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
-	//const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: ''}};
+	const apiURL = 'https://api.avalanche.state.co.us/api/v2/observation_reports?per=300&r[public_report_detail_true]&r[type_eq]=accident_report&r[state_eq]=CO&r[sorts]=observed_at';
+	const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UUXhORVEzTVVGR1JFTXpNREJETkVVeFEwWTFSVGRFTWpnMFFqUTFOa016TWpCRk5UUkNRdyJ9.eyJpc3MiOiJodHRwczovL2NhaWMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY0OTRjMTU3NGY1YjZjMDliNTFjMDBlMSIsImF1ZCI6WyJodHRwczovL2FwaS5hdmFsYW5jaGUuc3RhdGUuY28udXMiLCJodHRwczovL2NhaWMuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY5NjU1MTM4MCwiZXhwIjoxNjk2NjM3NzgwLCJhenAiOiJsQ2RHMzJkdVd5OXVwSEVrYnZ5M2dqWno1WnVoZHFZaiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgb2ZmbGluZV9hY2Nlc3MiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnB1YmxpYyJdfQ.C_jZhnxJ-ESXtRARU-1Wvl2qF-UehT6hPjzSJb1Q8dKzUm06cBdq36skhSsvzabSz9_y7D8Yrqm9b2EsGP3DOdhu2iJtl8Eg0FNzkb8WUwkk6IHeJoarTJbZBxRCjmUxCepum08sU1gxwKCGPOwPtcffSwu8oovdmo7Yys3381TfokA7u9LS5sXTHC97o_MlPsZetM7EEzging-TZMW4NLxn6vSp80NALuS7ioiKE8vyKV0nmo8jl5OfekOdbJkCui9u67pXzizg0frvH6AQsUUkscnQvDDQEsfkFZ4ptAzCzcdZqL7f6yjsRlhaR5uCNuAbeUrNUA5Kyds_zg7Ghg'}};
 	const apigeo = {
         type: "FeatureCollection",
         features: [],
@@ -1189,13 +1189,13 @@ function onEachFeatureLocationPts(feature, layer) {
       console.error(error);
       });
 	async function getData() {
-	  //const response = await fetch(apiURL, apiOptions);
-	  //const json = await response.json();
-	  //console.log(json);
-	  const response = await fetch(jsonURL);
+	  const response = await fetch(apiURL, apiOptions);
+	  const json = await response.json();
+	  console.log(json);
+	  //const response = await fetch(jsonURL);
 	  const csvResponse = await fetch(csvURL);
 	  const csvText = await csvResponse.text();
-	  const json = await response.json();
+	  //const json = await response.json();
 	  const csvObj = $.csv.toObjects(csvText);
 
 	  for (var i in json){
