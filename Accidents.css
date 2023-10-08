@@ -52,13 +52,9 @@
 			justify-content: space-around;
 		}
 
-		button {
-			font-family: 'Nanum Gothic', Arial, Helvetica, sans-serif;
-			font-size: 0.75em;
-		}
-
 		.btn-info {
 			font-size: 10pt;
+			font-family: 'Nanum Gothic', Arial, Helvetica, sans-serif;
 			color: black;
 			text-decoration: none;
 			cursor: pointer;
@@ -92,15 +88,16 @@
 			background-color: #fbfbfcdf;
 			border: 1px solid rgba(57, 57, 70, 0.875);
 		}
-		
-		#chart-r, #chart-d {
-			display: flex;
-			justify-content: center;
-			align-content: stretch;
-		}
 
 		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode, #pie-r, #pie-d {
 			height: 250px;
+		}
+		
+		.pink-box {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-content: space-around;
 		}
 
 		#caicLogo{
@@ -254,13 +251,6 @@
 
 		#pies {
 			width:100%;
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: center;
-			align-content: stretch;
-		}
-
-		.pink-box {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: center;
