@@ -12,7 +12,7 @@
 		}
  					
 		#map {
-			width: 60%;
+			width: 50%;
 			min-height: 100%;
 			font-family: 'Nanum Gothic', sans-serif; 
 		}
@@ -35,7 +35,7 @@
 		}
 
 		#side-panel {
-			width: 40%;
+			width: 50%;
 			height: 100%;
 			overflow: auto;
 			background-color: #CDCED7;
@@ -45,6 +45,24 @@
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-around;
+		}
+
+		#about-help {
+			display: flex;
+			justify-content: space-around;
+		}
+
+		.btn-info {
+			font-size: 10pt;
+			font-family: 'Nanum Gothic', Arial, Helvetica, sans-serif;
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+			border-radius: 5px;
+			background-color: #fbfbfcdf;
+			border: 1px solid rgba(57, 57, 70, 0.875);
+			padding: 2px 5px;
+			height: 16px;
 		}
 
 		#controlBundle {
@@ -70,9 +88,16 @@
 			background-color: #fbfbfcdf;
 			border: 1px solid rgba(57, 57, 70, 0.875);
 		}
-		
+
 		#bar-chart,#barChartCanvas, #rose, #bar-chart-mode, #pie-r, #pie-d {
 			height: 250px;
+		}
+		
+		.pink-box {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-content: space-around;
 		}
 
 		#caicLogo{
@@ -134,11 +159,13 @@
 			left: 10px;
 			top: calc(50% - 0.5em);
 		}
+
 		.fa-caret-down{
 			position: absolute;
 			right: 12px;
 			top: calc(50% - 0.6em);
 		}
+
 		input{
 			padding-left: 17px;
 		}
@@ -162,7 +189,9 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			flex-grow: 2;
 		}
+
 		.chart-wrapper {
 			border-radius: 3px;
 			margin-bottom: 10px;
@@ -251,7 +280,8 @@
 			width:100%;
 			display: flex;
 			flex-wrap: wrap;
-			justify-content: space-evenly;
+			justify-content: center;
+			align-content: stretch;
 		}
 
 		/* Responsive display CSS */
@@ -273,16 +303,16 @@
 			}
 			#map {
 				width: 100%;
-				min-height: 60%;
+				min-height: 50%;
 			}
 			#side-panel {
 				width: 100%;
-				min-height: 40%;
+				min-height: 50%;
 			}
 			#pies {
 				width: 100%;
 				flex-direction: row;
 				flex-wrap: wrap;
-				justify-content: space-evenly;
+				justify-content: stretch;
 			}
 		}
