@@ -1176,11 +1176,14 @@ function onEachFeatureLocationPts(feature, layer) {
 	//var heat;
 	var heatPoints =[];
 	var accPoints=[];
-	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/Accidents.json';
+	const jsonURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/obsAccidents.json';
 	const csvURL = 'https://raw.githubusercontent.com/dseidlCoMtn/caic_accident/main/CO_Accidents.csv';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
-	const apiURL = 'https://api.avalanche.state.co.us/api/v2/observation_reports?per=300&r[public_report_detail_true]&r[type_eq]=accident_report&r[state_eq]=CO&r[sorts]=observed_at';
-	const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UUXhORVEzTVVGR1JFTXpNREJETkVVeFEwWTFSVGRFTWpnMFFqUTFOa016TWpCRk5UUkNRdyJ9.eyJpc3MiOiJodHRwczovL2NhaWMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY0OTRjMTU3NGY1YjZjMDliNTFjMDBlMSIsImF1ZCI6WyJodHRwczovL2FwaS5hdmFsYW5jaGUuc3RhdGUuY28udXMiLCJodHRwczovL2NhaWMuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY5NjU1MTM4MCwiZXhwIjoxNjk2NjM3NzgwLCJhenAiOiJsQ2RHMzJkdVd5OXVwSEVrYnZ5M2dqWno1WnVoZHFZaiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgb2ZmbGluZV9hY2Nlc3MiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnB1YmxpYyJdfQ.C_jZhnxJ-ESXtRARU-1Wvl2qF-UehT6hPjzSJb1Q8dKzUm06cBdq36skhSsvzabSz9_y7D8Yrqm9b2EsGP3DOdhu2iJtl8Eg0FNzkb8WUwkk6IHeJoarTJbZBxRCjmUxCepum08sU1gxwKCGPOwPtcffSwu8oovdmo7Yys3381TfokA7u9LS5sXTHC97o_MlPsZetM7EEzging-TZMW4NLxn6vSp80NALuS7ioiKE8vyKV0nmo8jl5OfekOdbJkCui9u67pXzizg0frvH6AQsUUkscnQvDDQEsfkFZ4ptAzCzcdZqL7f6yjsRlhaR5uCNuAbeUrNUA5Kyds_zg7Ghg'}};
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/observation_reports?per=300&r[public_report_detail_true]&r[type_eq]=accident_report&r[state_eq]=CO&r[sorts]=observed_at';
+	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/observation_reports?per=300&order_by=observed_at&order_direction=desc&r[public_report_detail_true]&r[affected_groups_present]&r[state_eq]=CO&r[type_eq]=accident_report';
+	//const apiURL = 'https://api.avalanche.state.co.us/api/v2/observation_reports?per=300&order_by=observed_at&order_direction=desc&r[public_report_detail_true]&r[state_eq]=CO&r[avalanche_observations_count_gteq]=1';
+	const apiURL = 'https://api.avalanche.state.co.us/api/v2/accident_reports?per=300&order_by=observed_at&order_direction=desc&r[state_eq]=CO';
+	const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UUXhORVEzTVVGR1JFTXpNREJETkVVeFEwWTFSVGRFTWpnMFFqUTFOa016TWpCRk5UUkNRdyJ9.eyJpc3MiOiJodHRwczovL2NhaWMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDY0OTRjMTU3NGY1YjZjMDliNTFjMDBlMSIsImF1ZCI6WyJodHRwczovL2FwaS5hdmFsYW5jaGUuc3RhdGUuY28udXMiLCJodHRwczovL2NhaWMuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY5NzA0MjgxMywiZXhwIjoxNjk3MTI5MjEzLCJhenAiOiJsQ2RHMzJkdVd5OXVwSEVrYnZ5M2dqWno1WnVoZHFZaiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgb2ZmbGluZV9hY2Nlc3MiLCJwZXJtaXNzaW9ucyI6WyJyZWFkOnB1YmxpYyJdfQ.kWK_A8ggm5N8AJLZnVZwFN2vCb_QBpDt3Wak4fc82dpNO5jbHqzcOV7YdH43YNxuBg13AdwfqQvomiKqtO4kXMvgNvBLhD9fCpOSQL1H0kcYtXxX1O52IuZ6Xhy_GQeo2sWWCIZMxSOAs8mhnGQlcxX3Z104LQgvBZjcDk_ZpuZ3PeGKLt-dG6_f2F99Firb7jNyuw4ISdzWsZBHDXUbgASw8BVf8f73Gp2f0t9dAq3Brz0dmorOGWZEc0r6G7Rx4ubudBfZ5Nw3VqU2-k44GQHjPDz891RKm0XjLsAs4d5RYYkYDQYfS9HRtRaYchYzi2Q5D5S1L_wXQNlmwYOYyg'}};
 	const apigeo = {
         type: "FeatureCollection",
         features: [],
@@ -1199,16 +1202,16 @@ function onEachFeatureLocationPts(feature, layer) {
 	  const csvObj = $.csv.toObjects(csvText);
 
 	  for (var i in json){
-		var classicID = json[i].classic_accident_id;
+		var classicID = json[i].classic_id;
 		var latitude=0;
 		var longitude=0;
 		var travmode,rClass,dClass
 		//switching travel modes with null to Unknown
-		if (json[i].travel_mode === null){
+		if (json[i].public_report_detail.travel_mode === null){
 				travmode="Unknown";
 			}
 		else{
-			travmode = json[i].travel_mode;
+			travmode = json[i].public_report_detail.travel_mode;
 			}
 		//switching rScales with null to ""
 		if (json[i].accident_avalanches[0].relative_size === null){
