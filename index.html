@@ -879,9 +879,10 @@ let clearFilters = function(btn){
 		fifthSelect=0;
 		sixthSelect=0;
 // change date range to be last 5 avalanche years
-		$('#reportrange').data('daterangepicker').startDate=moment(currentAviYear + '-10-01').subtract(5, 'years');
-		$('#reportrange').data('daterangepicker').endDate=now;
-		updateDisplayedDateRange(moment(currentAviYear + '-10-01').subtract(5, 'years'), now);
+		$('#reportrange').data('daterangepicker').startDate=moment(currentAviYear + '/10/01').subtract(5, 'years');
+		$('#reportrange').data('daterangepicker').endDate= moment((currentAviYear + 1) + '/9/30');
+		updateDisplayedDateRange(moment(currentAviYear + '/10/01').subtract(5, 'years'), moment((currentAviYear + 1) + '/9/30'));
+		//updateDisplayedDateRange(startDate, endDate);
 		barChartATypeArr.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
@@ -1368,7 +1369,8 @@ function onEachFeatureLocationPts(feature, layer) {
 	
 	// once the dates are selected, format and display the range in the date selection box.
 	function updateDisplayedDateRange (start, end) {
-	 		$('#reportrange input').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+	 		//$('#reportrange input').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+			 $('#reportrange input').html(start, end);
 	 	}
 	
 	//Sets the dropdowns and ranges for the date range picker
@@ -1377,17 +1379,17 @@ function onEachFeatureLocationPts(feature, layer) {
 	$('#reportrange').daterangepicker({
 		"showDropdowns": false,
 		// October 1 thru Sept 30, currentAviYear
-		"startDate": moment(currentAviYear + '-10-01').subtract(5, 'years'),
-		"endDate": moment((currentAviYear + 1) + '-9-30'),
+		"startDate": moment(currentAviYear + '/10/01').subtract(5, 'years'),
+		"endDate": moment((currentAviYear + 1) + '/9/30'),
 		locale: {
       		format: 'MM/DD/YYYY'
    		 },
 		ranges: {
-				'Last 5 Avalanche Years': [moment(currentAviYear + '-10-01').subtract(5, 'years'), moment((currentAviYear + 1) + '-9-30')],
-				'Current Avalanche Year': [moment(currentAviYear + '-10-01'), moment((currentAviYear + 1) + '-9-30')],
-				'Last Avalanche Year': [moment(currentAviYear + '-10-01').subtract(1, 'years'), moment(currentAviYear + '-09-30')],
-				'Last 10 Avalanche Years': [moment(currentAviYear + '-10-01').subtract(10, 'years'), moment((currentAviYear + 1) + '-9-30')],
-				'All': [moment('2008-01-01'), moment((currentAviYear + 1) + '-9-30')],
+				'Last 5 Avalanche Years': [moment(currentAviYear + '/10/01').subtract(5, 'years'), moment((currentAviYear + 1) + '/9/30')],
+				'Current Avalanche Year': [moment(currentAviYear + '/10/01'), moment((currentAviYear + 1) + '/9/30')],
+				'Last Avalanche Year': [moment(currentAviYear + '/10/01').subtract(1, 'years'), moment(currentAviYear + '/9/30')],
+				'Last 10 Avalanche Years': [moment(currentAviYear + '/10/01').subtract(10, 'years'), moment((currentAviYear + 1) + '/9/30')],
+				'All': [moment('2008-01-01'), moment((currentAviYear + 1) + '/9/30')],
 				},
 				//maxDate: moment()
 		}, 
@@ -1395,7 +1397,7 @@ function onEachFeatureLocationPts(feature, layer) {
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
-	updateDisplayedDateRange(moment(currentAviYear + '-10-01'), now);
+	updateDisplayedDateRange(moment(currentAviYear + '/10/01').subtract(5, 'years'),moment((currentAviYear + 1) + '/9/30'));
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
