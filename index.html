@@ -879,10 +879,9 @@ let clearFilters = function(btn){
 		fifthSelect=0;
 		sixthSelect=0;
 // change date range to be last 5 avalanche years
-		$('#reportrange').data('daterangepicker').startDate=moment(currentAviYear + '/10/01').subtract(5, 'years');
-		$('#reportrange').data('daterangepicker').endDate= moment((currentAviYear + 1) + '/9/30');
-		updateDisplayedDateRange(moment(currentAviYear + '/10/01').subtract(5, 'years'), moment((currentAviYear + 1) + '/9/30'));
-		//updateDisplayedDateRange(startDate, endDate);
+		$('#reportrange').data('daterangepicker').setStartDate(moment(currentAviYear + '/10/01').subtract(5, 'years'));
+		$('#reportrange').data('daterangepicker').setEndDate(moment((currentAviYear + 1) + '/9/30'));
+		//updateDisplayedDateRange(moment(currentAviYear + '/10/01').subtract(5, 'years'), moment((currentAviYear + 1) + '/9/30'));
 		barChartATypeArr.length=0;
 		barChartDates.length=0;
 		barChartModeArr.length=0;
@@ -1369,8 +1368,8 @@ function onEachFeatureLocationPts(feature, layer) {
 	
 	// once the dates are selected, format and display the range in the date selection box.
 	function updateDisplayedDateRange (start, end) {
-	 		//$('#reportrange input').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
-			 $('#reportrange input').html(start, end);
+	 		$('#reportrange input').html(start.format('MMM D, YYYY') + ' - ' + end.format('MMM D, YYYY'));
+			//$('#reportrange input').html(start, end);
 	 	}
 	
 	//Sets the dropdowns and ranges for the date range picker
@@ -1384,6 +1383,7 @@ function onEachFeatureLocationPts(feature, layer) {
 		locale: {
       		format: 'MM/DD/YYYY'
    		 },
+		//autoUpdateInput: false,
 		ranges: {
 				'Last 5 Avalanche Years': [moment(currentAviYear + '/10/01').subtract(5, 'years'), moment((currentAviYear + 1) + '/9/30')],
 				'Current Avalanche Year': [moment(currentAviYear + '/10/01'), moment((currentAviYear + 1) + '/9/30')],
@@ -1394,6 +1394,7 @@ function onEachFeatureLocationPts(feature, layer) {
 				//maxDate: moment()
 		}, 
 		updateDisplayedDateRange,
+		
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
