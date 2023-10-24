@@ -72,7 +72,7 @@
 					</div>
 				</div>	
 			</div>
-			<div id='about-help'><a class="btn-info" href="about.html" target="_blank">About this Project</a><a class="btn-info" href="Help.html" target="_blank">Help</a></div>
+			<div id='about-help'><a class="btn-info" href="/accident-explorer/about" target="_blank">About this Project</a><a class="btn-info" href="/accident-explorer/help" target="_blank">Help</a></div>
 			<div id='chart-container'>
 				<div id="chart-mode"><canvas id="bar-chart-mode"></canvas></div>
 				<div id='chart-travel'><canvas id="barChartCanvas"></canvas></div>
@@ -855,7 +855,7 @@
 	
 //add Help button
 L.easyButton('fa-regular fa-circle-question', function(btn, map){
-	onClick: window.open("Help.html", "_blank");
+	onClick: window.open("/accident-explorer/help", "_blank");
 },'Help with this map').addTo(map);
 
 //Function to run to clear the filters
