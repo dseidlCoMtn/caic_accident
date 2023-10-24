@@ -8,47 +8,154 @@
 
  </head>
   <body>
-    <h1>Colorado Accident Explorer Help</h1>
-
-       <!--Put collaboration text here
-      The CO Accident Explorer is a collaborative effort between CAIC and the Colorado Mountain College GIS program. CMC GIS alumni Lucy Kepner and Joe Tayabji designed and coded the application, advised by CMC GIS professor Dara Seidl. The map application is built in the open-source JavaScript <a href="https://leafletjs.com/">Leaflet</a> library with charts coded in <a href="https://www.chartjs.org/">chart.js</a> and <a href="https://dc-js.github.io/dc.js/">dc.js</a>. The application is intended to provide CMC staff and the public a dynamic means to visualize accident statistics and their geographical distributions according to variables of interest, including avalanche aspect, relationship to treeline, month, and travel mode. The application is updated automatically from the List Observation Reports endpoint of the CAIC Data API.
-
-      -->
-    <h2>Accidents</h2>
-    <p>Avalanche accidents occur when there is human involvement with an avalanche.  <!-- Condense sentences: ex. Either a human was caught, buried, or killed in the avalanche, or a human triggered the avalanche.-->This can mean someone was caught, buried, or killed. It can also mean there was a human triggered avalanche where no one was caught, buried, or killed. Accident statistics portrayed in this application date back to December 2009. Currently, only fatal accidents where at least one death occurred are depicted in the map. For more information, go to <a href="https://avalanche.state.co.us/accidents/statistics-and-reporting">CAIC Statistics & Reporting</a>.</p>
+    <h1>Avalanche Accident Explorer Help</h1>
 
     <h2>Background</h2>
-    <p>This map is a collaborative effort between the CAIC and Colorado Mountain College.  Lucy Kepner, Dara Seidl, and Joe Tayabji created the map using <a href="https://leafletjs.com/">Leaflet</a>, based on data provided from the CAIC. Accidents are shown on a map with three different base layers. <!-- Base layer descriptions can go under Layers --> The default, Natural Atlas, blends natural and man-made features with contour lines. Roads, trails, and peak names are all labeled. More detail is showed when zoomed in. The Imagery basemap displays satellite imagery from summer. When zoomed in, higher resolution imagery is shown. The Esri Terrain basemap is a simple layer that uses shaded relief so hills and mountains can easily be seen.</p>
+    <p>This explorer tool is a collaborative effort between CAIC and the Colorado Mountain College (CMC) Geographic Information Systems (GIS) program. Incorporating CAIC avalanche accident statistics, Lucy Kepner, Joe Tayabji, and Dara Seidl created the application using the open-source JavaScript libraries <a href="https://leafletjs.com/">Leaflet</a> and <a href="https://www.chartjs.org/">Chart.js</a>. 
+    <br>
+    <div style="text-align: center;">
+      <a href="about.html" target="_blank"> About this Project</a>
+    </div>
+    <br> 
+    The application includes an interactive map on the left and a series of connected charts on the right or bottom, depending on screen size. Visitors to the site can filter accidents appearing in the map by clicking on variables of interest in the charts, using the lasso tool in the map, or selecting a range of dates in the date drop-down. The map defaults to showing fatal accident locations for the last five avalanche years.
+    <br>
+    <div style="text-align: center;">
+     <img src="images/MapOct23.jpg" width=50% height=30% style="padding-right: 30px; padding-top: 30px;"/>
+    </div>
+  
+    <h2>Accidents</h2>
+    <p>Avalanche accidents occur when there is human involvement with an avalanche, meaning that at least one person was caught, buried, or killed. Currently, only fatal accidents where at least one death occurred are depicted in the map. Accident statistics portrayed in this application date back to December 2009. For more information, go to <a href="https://avalanche.state.co.us/accidents/statistics-and-reporting">CAIC Statistics & Reporting</a>.</p>
 
-    <h2>Layers</h2>
-    <!-- List each layer and include the legend image -->
-    <p>The default layer is the Accidents by Travel Mode layer. The Accidents by Travel Mode layer shows the activity of the user(s) involved in the activity. Accident points are shown with an icon representing the travel mode of the user(s). The next layer is a point map of avalanche accident locations. In the third layer Accident points are also mapped, with D scale being indicated by color and R scale by circle size. The CAIC Zones layer shows the areas that forecasting is available for (https://lb.avalanche.state.co.us/forecasts/help/forecast-zones/). The Heatmap layer shows where accidents are focused. The heatmap is a representation of the density of the accident points. The heatmap layer adjusts based on how zoomed in the map is.</p>
+    <h2>Map Layers</h2>
+    The full list of map layers can be found by hovering the cursor over the layers button in the top right of the map:
+    <img src="images/lyrsBtn.jpg" width=35px height=35px style="padding-right: 30px;"/>
+    <br>
+    This opens up the full list of layers, including basemaps and primary data layers:
+    <div style="text-align: center;">
+      <img src="images/lyrList.jpg" width=145px height=150px style="padding-bottom: 5px; padding-top: 5px;"/>
+     </div>
+    Basemaps are listed at the top next to the radio buttons. You can only view one basemap at a time.
+    Primary data layers are at the bottom of the layer list and indicated by the checkboxes. You can turn on multiple layers at once. You can see the legend associated with each primary data layer by hovering over the <b>Show Legend</b> button at the bottom left of the map: 
+    <img src="images/showLeg.jpg" width=100px height=30px style="padding-right: 30px;"/>
+
+    <h3>Primary Layers</h3>
+    <i>Accidents by Travel Mode</i>
+    <p>This is the default layer in the map. Accident points are shown with an icon representing the travel mode of the person(s) involved in the accident. Clicking or tapping on a point will open a popup with accident statistics and a link to the accident report.
+    
+      <div style="text-align: center;">
+        <img src="images/travModeLeg.jpg" width=100px height=130px style="padding-left: 5px; padding-top: 5px;"/>
+       </div>
+    <br>
+    <i>Accident Location</i>
+       <br>
+      This is a simple point layer of avalanche accident locations, symbolized by purple dots.
+      <div style="text-align: center;">
+        <img src="images/locsLeg.jpg" width=55px height=50px style="padding-left: 5px; padding-top: 5px;"/>
+       </div>
+      
+    <i>Accidents by D & R Scale</i>
+    <br>
+    This layer provides dual symbology: The D Scale (destructive size, 1-5) is indicated by the color of the circles (yellow to red), and R scale (relative size, 1-5) is indicated by circle radius (small to large).
+
+    <div style="text-align: center;">
+      <img src="images/drLeg.jpg" width=130px height=80px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
+
+    <i>CAIC Zones</i>
+    <br>
+    The CAIC Zones layer shows polygon boundaries that forecasting is available for. Clicking or tapping on a zone will open a popup with the zone name.
+
+    <div style="text-align: center;">
+      <img src="images/zoneLeg.jpg" width=200px height=200px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
+
+    <br>
+    <i>Heatmap</i>
+    <br>
+    The heatmap is a representation of the density of the accident points. The heatmap layer adjusts based on how zoomed in the map is. A higher density of accident points is shown in purple with lower densities depicted in light blue.
+    <br>
+
+    <div style="text-align: center;">
+      <img src="images/heatLeg.jpg" width=180px height=40px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
+
+
+
+
+    <h3>Base Layers</h3>
+    <br>
+    <i>Natural Atlas</i>
+    <br>
+    This is the default basemap for the Accident Explorer. <a href="https://naturalatlas.com/" target="_blank"> Natural Atlas</a> blends natural and human-made features with contour lines and labeled road, trail, and peak names.
+
+    <div style="text-align: center;">
+      <img src="images/natAtlas.jpg" width=180px height=180px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
+
+     <i>Imagery</i>
+     <br>
+     The imagery basemap shows satellite imagery sourced by Esri, which allows for viewing of treeline. As you zoom in, the imagery displays at higher resolution. 
+
+     <div style="text-align: center;">
+      <img src="images/imgBase.jpg" width=180px height=180px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
+
+     <i>Esri Terrain </i>
+     <br>
+     This minimalist basemap from Esri shows shaded relief and water features.The locations of points relative to hills and mountains can easily be seen.
+
+     <div style="text-align: center;">
+      <img src="images/terBase.jpg" width=180px height=180px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
 
     <h2>Map Buttons</h2>
-    <p style="display:inline-block;"><img src="images/dateFilter.png" style="height: 10%; width: 10%"></img>By default, the map loads with the previous 5 Water Years of data (one year is October 1 - September 30). This can be adjusted by clicking/tapping the dropdown with the calendar and date range. <br><br>
-    <img src="images/zoomButton.png"><img>The + and - buttons can be used to control the zoom of the map.<br><br> 
-    <img src="images/lasso.svg" style="width: 20px; height: auto"></img> Below this is the Lasso tool. With this selected, you can click, hold, and move your mouse on the map to select specific accident data. <br><br>
-    <i class="fa-regular fa-circle-question"></i> This is the help button.<br><br>
-    <i class="fa fa-filter-circle-xmark"></i> Underneath that is the Clear Filters button, which will reset the data selection the the default data range and remove any filters from the graphs. Use this button to bring the original dataset back.</p><br><br>
+
+    <img src="images/zoomButton.png"><img>Use the + and - buttons to control the zoom of the map. The + button will zoom in and the - button will zoom out. You can also use the scroll wheel of a mouse or your fingers to zoom in and out of the map.
+    <br><br> 
+    <i class="fa-solid fa-location-crosshairs"></i> This is the Locator button. Cick this button to see your location on the map. <br>
+    <br>
+    <img src="images/lasso.svg" style="width: 20px; height: auto"></img> This is the Lasso tool. To select a custom set of points in the map, click this button, then click, hold, and move the mouse to draw a polygon on the map around the points you are interested in. This will filter to the accident points in your lasso and update the charts.  <br><br>
+    <i class="fa-regular fa-circle-question"></i> This is the Help button. Clicking it will bring you back to this page. <br><br>
+    <i class="fa fa-filter-circle-xmark"></i> This is the Clear Filters button, which will reset the data selection and remove any filters from the charts. The application will reset to accidents from the last five avalanche years and to the original zoom level of the map. Use this button to bring the original dataset back.</p><br><br>
+
+    <h2>Date Selector</h2>
+    Just above the charts is the Date Selector. Data in the map and charts are filtered between the dates shown in the date selector. The date filter defaults to accidents in the last five avalanche years. One avalanche year is October 1 - September 30. Click the drop-down to choose different presets of dates, including Current Avalanche Year, Last Avalanche Year, Last 10 Avalanche Years, All accidents (since 2009), or a Custom Range of dates through the calendar. You can also type custom dates in the top bar, pressing Apply in the expanded calendar range to set them and filter the map and charts.
+
+    <div style="text-align: center;">
+      <img src="images/dateFilter.jpg" width=500px height=240px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
+
+     <h2>Clear Filters</h2>
+     There are two spots to clear filters in the map. One is the bottom left of the map buttons, described above. The other is just to the left of the date selector. Clicking the Clear Filters <i class="fa fa-filter-circle-xmark"></i> button will reset any selections made in the charts, clear the lasso filter, and restore the range of dates to the last five avalanche years. It will also reset the zoom of the map to the original zoom level.
+ 
+     <div style="text-align: center;">
+       <img src="images/clrFilter.jpg" width=500px height=30px style="padding-left: 5px; padding-top: 5px;"/>
+      </div>
 
     <h2>Charts</h2>
-    <!-- List each chart and include images-->
-    <p>The map includes charts that change based on the data that is selected. The charts can be used to filter the map, as well. Click on any of the bars to only select data in that category. The filters are stackable, i.e. multiple charts can be used to filter. To clear all the filters, click on the <i class="fa fa-filter-circle-xmark"></i> at the top of the chart panel.</p>
 
-    <p>The first chart is the Avalanche Rose chart, click on any section of the rose to select the aspect and/or location in relation to tree line. (Below tree line, At tree line, Above tree line). Click on more sections of the avalanche rose to add them to the map.</p>
+    <p>The application includes six interactive charts: <b>travel mode, avalanche type, an avalanche rose, R scale, D scale, and month</b>. Clicking on a category in a chart will filter the accidents in the map. The charts will also update their numbers when a filter is applied from the date selector, lasso tool, or another chart.  Click on any of the bars or labeled categories to select only data in that category. The filters are stackable, meaning that multiple charts can be used to filter. When you click on a chart, it keeps track of the order of the filtering and changes the label at the top of the chart. For instance, if you first select the Hard Slab avalanche type and then the Snowmobile travel mode, the chart titles will keep track of how many accidents were filtered in the first filter, then in the second filter, and so on. 
+    To clear all the filters, click on the <i class="fa fa-filter-circle-xmark"></i> at the top of the chart panel.</p>
 
-    <p>The Accidents by Avalanche type chart shows what type of avalanche occured. The possible avalanche types are soft slab, hard slab, wet loose, wet slab, ice, roof slide, and unknown. You can select any bar on the chart to see those incidents. If you select another bar, the data will switch to that type of avalanch and deselect the other type.</p>
+    <div style="text-align: center;">
+      <img src="images/multiFilter.jpg" width=600px height=350px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
 
-    <p>Accidents by Month chart shows when the avalanche accident happened. You can filter by one month at a tiime by clicking on one of the month bars. You can switch months by clicking on another bar in the chart. You can choose one month at a time to filter by with this chart.</p>
+     Once a chart filter is applied, you can also reset the filter by clicking on a different category in a parent chart of the filtering. With the example above, Avalanche Type is the first filter. If you click on a different Avalanche Type category, such as Soft Slab, any subsequent or secondary filters (in this case, Travel Mode), will be cleared. In all charts except the Avalanche Rose, selecting another bar or category will switch to that type of avalanche accident and deselect the previous type.
 
-    <p>Accidents by Travel Mode chart shows which mode of travel those involved in the accident were using. You can select a bar on the chart to see all the accidents that involved that travel mode. You can pick another bar to switch to that type of travel mode.</p>
+     Changing the date range will also clear the filtering in the charts and reset the map to all accidents between that date range.
+     <br><br>
+     <i>Avalanche Rose</i>      <br><br>
+     The Avalanche Rose stores data by aspect and elevation below/near/above treeline. In this chart, you can filter on multiple cells, clicking on cells to add them to your selection and clicking on them again to deselect. You can also filter with the buttons Below | Near | Above to filter on accidents at these elevations at all aspects.
 
-    <p>There are two donut charts at the bottom of the chart panel that depict the size of the avalanche using R scale and D scale. Click on the part of the circle with the scale you are interested in to see all the avalanches of that size.</p>
-
-
-
-
-
-     <!-- Possibly take users through 1-2 scenarios, such as isolating accidents in the last avalanche year, then lassoing in a zone, then selecting from those the skiing ones. -->
+     <div style="text-align: center;">
+      <img src="images/aviRose.jpg" width=250px height=250px style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
+     <br><br>
+     <i>Example</i>      <br><br>
+     Below represents an example workflow. First, a collection of cells near or above treeline is selected in the avalanche rose. This filters the map to 22 accidents. Next, a selection is made in the R scale donut chart for accidents with a relative scale of R2. This further filters the 22 to 8 accident points. Third, a selection is made for accidents from this subset with a destructive scale of D3. This returns just 1 accident, which we can see from the Accidents by Month chart took place in March. There will be 1 point shown in the map.
+     <div style="text-align: center;">
+      <img src="images/example.jpg" width=50% height=35% style="padding-left: 5px; padding-top: 5px;"/>
+     </div>
   </body>
 </html>
