@@ -1344,7 +1344,7 @@ function onEachFeatureLocationPts(feature, layer) {
 		layerControl.addOverlay(accByType, "Accidents by Travel Mode");
 		layerControl.addOverlay(accLocationPts, "Accident Location");
 		layerControl.addOverlay(acc, "Accidents by D & R Scale");
-		layerControl.addOverlay(zones, "CAIC Zones");
+		layerControl.addOverlay(zones, "Backcountry Areas");
 		layerControl.addOverlay(heat, "Heatmap");
 		layerControl.addTo(map);
 	}
@@ -1354,7 +1354,7 @@ function onEachFeatureLocationPts(feature, layer) {
 		if (heat!==undefined && acc!==undefined && accByType!==undefined) {
 			overlays["Accidents by Travel Mode"] = accByType;
 			overlays["Accidents"] = acc;
-			overlays["CAIC Zones"] = zones;
+			overlays["Backcountry Areas"] = zones;
 			overlays["Heatmap"] = heat;
 			addControlLayersToMap(baseLayers, overlays, map);
 			updateLegend();
