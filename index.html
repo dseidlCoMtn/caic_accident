@@ -323,11 +323,9 @@
 		},
 		onRemove: function(map) {},
 	});
-		/*Uncoment to add CAIC logo back onto map
-			var caicLogo = new L.Control.Button()
-			caicLogo.addTo(map);
-		*/
-		
+	var caicLogo = new L.Control.Button()
+	caicLogo.addTo(map);
+	
 	//Add CMC GIS attribution
 	L.Control.Button = L.Control.extend({
 		options: {
