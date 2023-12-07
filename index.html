@@ -1179,7 +1179,7 @@ function onEachFeatureLocationPts(feature, layer) {
 	var heatPoints =[];
 	var accPoints=[];
 	const jsonURL = 'https://script.googleusercontent.com/macros/echo?user_content_key=BNC2KHZ5jFF1Ni8t3gCweFga9f7KYFkz-APJFPhAig4uTOyR6cT87WKazVfayAeB-gMJWBY60HywalOqo7tDlyB2iAwkGGTwOJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMWojr9NvTBuBLhyHCd5hHa3vuCMNso7y_p5ZNyiNVWkWPJtDMMb5am2CimctfGZgX3fPWPLabdELPghyBW_R6S0MG2WYvTVB-eUtx-5BJYb4-qU7QFww-rhRXZqHQgsmyXG2NICJix0SkXUC5IRP_9kPH47yXzrIe&lib=MVQe7nWMuXfCU-rStZvnQMZo4geuideKu';
-	const csvURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTyG41-SAXhdHs_aew4GAMuapZZ2u9N9oUv4zz32JWX_xkye9h0k29eqZKLXa_SBkXjSAttu8AhWHnM/pub?gid=1602349743&single=true&output=csv';
+	//const csvURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTyG41-SAXhdHs_aew4GAMuapZZ2u9N9oUv4zz32JWX_xkye9h0k29eqZKLXa_SBkXjSAttu8AhWHnM/pub?gid=1602349743&single=true&output=csv';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
 	//const apiOptions = {method: 'GET', headers: {Accept: 'application/json', Authorization: ''}};
@@ -1195,48 +1195,49 @@ function onEachFeatureLocationPts(feature, layer) {
 	  //const json = await response.json();
 	  //console.log(json);
 	  const response = await fetch(jsonURL);
-	  const csvResponse = await fetch(csvURL);
-	  const csvText = await csvResponse.text();
+	  //const csvResponse = await fetch(csvURL);
+	  //const csvText = await csvResponse.text();
 	  const json = await response.json();
-	  const csvObj = $.csv.toObjects(csvText);
+	  //const csvObj = $.csv.toObjects(csvText);
 
-	  for (var i in json){
-		var classicID = json[i].acc_id;
-		var latitude=0;
-		var longitude=0;
+
+	  for (var i in json.data){
+		var classicID = json.data[i].acc_id;
+		var latitude=json.data[i].acc_lat;
+		var longitude=json.data[i].acc_lon;
 		var travmode,rClass,dClass
 		//switching travel modes with " " to Unknown
-		if (json[i].travel_mode === ""){
+		if (json.data[i].travel_mode === ""){
 				travmode="Unknown";
 			}
 		else{
-			travmode = json[i].travel_mode;
+			travmode = json.data[i].travel_mode;
 			}
 		//switching rScales with " " to ""
-		if (json[i].Rscale === ""){
+		if (json.data[i].Rscale === ""){
 				rClass="";
 			}
 		else{
-			rClass = json[i].Rscale;
+			rClass = "R"+json.data[i].Rscale;
 			}
 		//switching dScales with " " to ""
-		if (json[i].Dscale === ""){
+		if (json.data[i].Dscale === ""){
 			dClass="";
 			}
 		else{
-			dClass = json[i].Dscale;
+			dClass = "D"+json.data[i].Dscale;
 			}
-		let treeline = getTreeline(json[i].elevation);
-		let fatalVar = getFatal(json[i].acc_no_killed);
-		let avtype = labelAviType(json[i].acc_type);
+		let treeline = getTreeline(json.data[i].elevation);
+		let fatalVar = getFatal(json.data[i].acc_no_killed);
+		let avtype = labelAviType(json.data[i].atype);
 		//Grabbing lat/longs from the CSV
-		for (var j in csvObj){
-			var classicID2 = parseInt(csvObj[j].acc_id);
-			if (classicID2 === classicID){
-				latitude=csvObj[j].acc_lat;
-				longitude=csvObj[j].acc_lon;
-				}
-			}
+		// for (var j in csvObj){
+		// 	var classicID2 = parseInt(csvObj[j].acc_id);
+		// 	if (classicID2 === classicID){
+		// 		latitude=csvObj[j].acc_lat;
+		// 		longitude=csvObj[j].acc_lon;
+		// 		}
+		// 	}
 		//What sets fatalvar == Fatal	
 		if (latitude != 0 && fatalVar=="Fatal"){
 			apigeo.features.push({
@@ -1246,33 +1247,33 @@ function onEachFeatureLocationPts(feature, layer) {
 				"coordinates": [longitude, latitude]
 				},
 				"properties": {
-					"id": json[i].id,
-					"acc_id":json[i].acc_id,
-					"acc_type":json[i].acc_type,
+					"id": json.data[i].id,
+					"acc_id":json.data[i].acc_id,
+					"acc_type":json.data[i].acc_type,
 					//"report":json[i].report,
-					"url":json[i].report,
-					"water_year":json[i].water_year,
-					"datetime":json[i].acc_date, //i it expecting a date in a certain format??
-					"acc_location":json[i].acc_location,
-					"acc_activity":json[i].acc_activity,
-					"acc_travel_mode":travel_mode,
-					"acc_desc":json[i].description,
-					"no_caught":json[i].acc_no_caught,
-					"no_buried":json[i].acc_no_buried,
-					"no_killed":json[i].acc_no_killed,
+					"url":json.data[i].report,
+					"water_year":json.data[i].water_year,
+					"datetime":json.data[i].acc_date, //i it expecting a date in a certain format??
+					"acc_location":json.data[i].acc_location,
+					"acc_activity":json.data[i].acc_activity,
+					"acc_travel_mode":travmode,
+					"acc_desc":json.data[i].description,
+					"no_caught":json.data[i].acc_no_caught,
+					"no_buried":json.data[i].acc_no_buried,
+					"no_killed":json.data[i].acc_no_killed,
 					"atype":avtype,
 					// "atype":json[i].accident_avalanches[0].type_code,
-					"trigger1":json[i].trigger,
-					"trigger2":json[i].trigDes,
+					"trigger1":json.data[i].trigger,
+					"trigger2":json.data[i].trigDes,
 					"Rscale":rClass,
 					"Dscale":dClass,
-					"surface":json[i].surface,
-					"setting":json[i].setting,
-					"elevation":json[i].elevation,
-					"aspect":json[i].aspect,
-					"slope":json[i].slope,
+					"surface":json.data[i].surface,
+					"setting":json.data[i].setting,
+					"elevation":json.data[i].elevation,
+					"aspect":json.data[i].aspect,
+					"slope":json.data[i].slope,
 					"treeline":treeline,
-					"roseField":json[i].aspect+" "+treeline,
+					"roseField":json.data[i].aspect+" "+treeline,
 					"fatalVar": fatalVar
 					//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
 					//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
@@ -1280,11 +1281,11 @@ function onEachFeatureLocationPts(feature, layer) {
 				});
 				const lat = parseFloat(latitude);
 				const lon = parseFloat(longitude);
-				const date = json[i].acc_date;
+				const date = json.data[i].acc_date;
 				//const activ = json[i].activity;
 				const travMode = travmode;
-				const accID = json[i].acc_id;
-				const roseID = json[i].aspect+" "+treeline;
+				const accID = json.data[i].acc_id;
+				const roseID = json.data[i].aspect+" "+treeline;
 				let avType = avtype;
 				// const avType = json[i].accident_avalanches[0].type_code;
 				const rScaleID = rClass;
@@ -1301,6 +1302,7 @@ function onEachFeatureLocationPts(feature, layer) {
 						style:style,
 						filter:layerFilter
 			});
+
 		// add plain layer with accident location only
 		accLocationPts = L.geoJson(apigeo, {
 			pointToLayer: function(geoJsonPoint, latlng) {
