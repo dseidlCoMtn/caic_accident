@@ -906,7 +906,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 
 	//Get style color by Dscale
 	function getColor(d) {
-		if (d !== null){
+		if (d !== " "){
 			d=d.substring(1);
 			}
 		return d < 1.5 ?  '#ffff00' :
@@ -924,7 +924,7 @@ L.easyButton('fa fa-filter-circle-xmark',clearFilters,'Clear Filters').addTo(map
 
 	//Get radius by Rscale
 	function getSize(d) {
-		if (d !== null){
+		if (d !== " "){
 			d=d.substring(1);
 			}
 		return d < 1.5 ?  6 :
@@ -1146,7 +1146,7 @@ function onEachFeatureLocationPts(feature, layer) {
 		return d < 11000 ?  '<TL' :
 				d < 11700  ? 'TL' :
 				d < 20000  ? '>TL' :
-						 null;
+						 " ";
 	};
 
 	//Classify fatal/non-fatal
@@ -1178,7 +1178,7 @@ function onEachFeatureLocationPts(feature, layer) {
 	//var heat;
 	var heatPoints =[];
 	var accPoints=[];
-	const jsonURL = 'https://raw.githubusercontent.com/CAIC-org/CmcAccidentExplorer/main/Accidents.json';
+	const jsonURL = 'https://script.googleusercontent.com/macros/echo?user_content_key=BNC2KHZ5jFF1Ni8t3gCweFga9f7KYFkz-APJFPhAig4uTOyR6cT87WKazVfayAeB-gMJWBY60HywalOqo7tDlyB2iAwkGGTwOJmA1Yb3SEsKFZqtv3DaNYcMrmhZHmUMWojr9NvTBuBLhyHCd5hHa3vuCMNso7y_p5ZNyiNVWkWPJtDMMb5am2CimctfGZgX3fPWPLabdELPghyBW_R6S0MG2WYvTVB-eUtx-5BJYb4-qU7QFww-rhRXZqHQgsmyXG2NICJix0SkXUC5IRP_9kPH47yXzrIe&lib=MVQe7nWMuXfCU-rStZvnQMZo4geuideKu';
 	const csvURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTyG41-SAXhdHs_aew4GAMuapZZ2u9N9oUv4zz32JWX_xkye9h0k29eqZKLXa_SBkXjSAttu8AhWHnM/pub?gid=1602349743&single=true&output=csv';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/accident_reports?per=300&r[state_eq]=CO&r[is_public_eq]=true';
 	//const apiURL = 'https://lb-octonaut.avalanche.dev/api/v2/avalanche_observations?per=300&r[is_incident_eq]=true';
@@ -1201,34 +1201,34 @@ function onEachFeatureLocationPts(feature, layer) {
 	  const csvObj = $.csv.toObjects(csvText);
 
 	  for (var i in json){
-		var classicID = json[i].classic_accident_id;
+		var classicID = json[i].acc_id;
 		var latitude=0;
 		var longitude=0;
 		var travmode,rClass,dClass
-		//switching travel modes with null to Unknown
-		if (json[i].travel_mode === null){
+		//switching travel modes with " " to Unknown
+		if (json[i].travel_mode === ""){
 				travmode="Unknown";
 			}
 		else{
 			travmode = json[i].travel_mode;
 			}
-		//switching rScales with null to ""
-		if (json[i].accident_avalanches[0].relative_size === null){
+		//switching rScales with " " to ""
+		if (json[i].Rscale === ""){
 				rClass="";
 			}
 		else{
-			rClass = json[i].accident_avalanches[0].relative_size;
+			rClass = json[i].Rscale;
 			}
-		//switching dScales with null to ""
-		if (json[i].accident_avalanches[0].destructive_size === null){
+		//switching dScales with " " to ""
+		if (json[i].Dscale === ""){
 			dClass="";
 			}
 		else{
-			dClass = json[i].accident_avalanches[0].destructive_size;
+			dClass = json[i].Dscale;
 			}
-		let treeline = getTreeline(json[i].accident_locations[0].site_elevation);
-		let fatalVar = getFatal(json[i].summary_counts.killed);
-		let avtype = labelAviType(json[i].accident_avalanches[0].type_code);
+		let treeline = getTreeline(json[i].elevation);
+		let fatalVar = getFatal(json[i].acc_no_killed);
+		let avtype = labelAviType(json[i].acc_type);
 		//Grabbing lat/longs from the CSV
 		for (var j in csvObj){
 			var classicID2 = parseInt(csvObj[j].acc_id);
@@ -1237,6 +1237,7 @@ function onEachFeatureLocationPts(feature, layer) {
 				longitude=csvObj[j].acc_lon;
 				}
 			}
+		//What sets fatalvar == Fatal	
 		if (latitude != 0 && fatalVar=="Fatal"){
 			apigeo.features.push({
 				"type": "Feature",
@@ -1246,32 +1247,32 @@ function onEachFeatureLocationPts(feature, layer) {
 				},
 				"properties": {
 					"id": json[i].id,
-					"acc_id":json[i].classic_accident_id,
-					"acc_type":json[i].classic_report_type,
-					"report":json[i].classic_url,
-					"url":json[i].url,
+					"acc_id":json[i].acc_id,
+					"acc_type":json[i].acc_type,
+					//"report":json[i].report,
+					"url":json[i].report,
 					"water_year":json[i].water_year,
-					"datetime":json[i].observed_at,
-					"acc_location":json[i].location,
-					"acc_activity":json[i].activity,
-					"acc_travel_mode":travmode,
+					"datetime":json[i].acc_date, //i it expecting a date in a certain format??
+					"acc_location":json[i].acc_location,
+					"acc_activity":json[i].acc_activity,
+					"acc_travel_mode":travel_mode,
 					"acc_desc":json[i].description,
-					"no_caught":json[i].summary_counts.caught,
-					"no_buried":json[i].summary_counts.buried,
-					"no_killed":json[i].summary_counts.killed,
+					"no_caught":json[i].acc_no_caught,
+					"no_buried":json[i].acc_no_buried,
+					"no_killed":json[i].acc_no_killed,
 					"atype":avtype,
 					// "atype":json[i].accident_avalanches[0].type_code,
-					"trigger1":json[i].accident_avalanches[0].primary_trigger,
-					"trigger2":json[i].accident_avalanches[0].secondary_trigger,
+					"trigger1":json[i].trigger,
+					"trigger2":json[i].trigDes,
 					"Rscale":rClass,
 					"Dscale":dClass,
-					"surface":json[i].accident_avalanches[0].surface,
-					"setting":json[i].accident_locations[0].setting,
-					"elevation":json[i].accident_locations[0].site_elevation,
-					"aspect":json[i].accident_locations[0].aspect,
-					"slope":json[i].accident_locations[0].angle,
+					"surface":json[i].surface,
+					"setting":json[i].setting,
+					"elevation":json[i].elevation,
+					"aspect":json[i].aspect,
+					"slope":json[i].slope,
 					"treeline":treeline,
-					"roseField":json[i].accident_locations[0].aspect+" "+treeline,
+					"roseField":json[i].aspect+" "+treeline,
 					"fatalVar": fatalVar
 					//"slopeDesc":json[i].accident_locations[0].slope_characteristics,
 					//"danger_rating":json[i].accident_avalanche_observations[0].danger_rating,
@@ -1279,11 +1280,11 @@ function onEachFeatureLocationPts(feature, layer) {
 				});
 				const lat = parseFloat(latitude);
 				const lon = parseFloat(longitude);
-				const date = json[i].observed_at;
+				const date = json[i].acc_date;
 				//const activ = json[i].activity;
 				const travMode = travmode;
-				const accID = json[i].classic_accident_id;
-				const roseID = json[i].accident_locations[0].aspect+" "+treeline;
+				const accID = json[i].acc_id;
+				const roseID = json[i].aspect+" "+treeline;
 				let avType = avtype;
 				// const avType = json[i].accident_avalanches[0].type_code;
 				const rScaleID = rClass;
