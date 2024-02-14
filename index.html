@@ -297,11 +297,13 @@
 	let currentAviYear
 	
 	//today back to 10/1/currentYear
-	// the avalanche year is from 10/01 to 9/31 each year.
+	// the avalanche year is from 10/01 to 9/30 each year.
 	let findAvalancheYear = () => {
 		// check if it is after October 1 if so, calculate the current year from now to September 30
-		if (currentMonth == 'October'||'November'||'December') {
-			currentAviYear = currentYear+1;}
+		//months numbered starting with 0 (Current Feb = 1)
+		if (currentMonth == 9||currentMonth == 10||currentMonth == 11) {
+			currentAviYear = currentYear+1;
+		}
 		else {
 			currentAviYear = currentYear;
 		}
@@ -879,7 +881,7 @@ let clearFilters = function(btn){
 		fifthSelect=0;
 		sixthSelect=0;
 // change date range to be last 5 avalanche years
-		$('#reportrange').data('daterangepicker').setStartDate(moment(currentAviYear + '/10/01').subtract(5, 'years'));
+		$('#reportrange').data('daterangepicker').setStartDate(moment((currentAviYear-1) + '/10/01').subtract(5, 'years'));
 		$('#reportrange').data('daterangepicker').setEndDate(moment((currentAviYear) + '/9/30'));
 		//updateDisplayedDateRange(moment(currentAviYear + '/10/01').subtract(5, 'years'), moment((currentAviYear + 1) + '/9/30'));
 		barChartATypeArr.length=0;
@@ -1381,17 +1383,17 @@ console.log("Current Avi Year: ", currentAviYear);
 	$('#reportrange').daterangepicker({
 		"showDropdowns": false,
 		// October 1 thru Sept 30, currentAviYear
-		"startDate": moment(currentAviYear + '/10/01').subtract(5, 'years'),
+		"startDate": moment((currentAviYear-1) + '/10/01').subtract(5, 'years'),
 		"endDate": moment(currentAviYear + '/9/30'),
 		locale: {
       		format: 'MM/DD/YYYY'
    		 },
 		//autoUpdateInput: false,
 		ranges: {
-				'Last 5 Avalanche Years': [moment(currentAviYear + '/10/01').subtract(5, 'years'), moment((currentAviYear) + '/9/30')],
+				'Last 5 Avalanche Years': [moment((currentAviYear-1) + '/10/01').subtract(5, 'years'), moment((currentAviYear) + '/9/30')],
 				'Current Avalanche Year': [moment((currentAviYear-1) + '/10/01'), moment((currentAviYear) + '/9/30')],
-				'Last Avalanche Year': [moment((currentAviYear) + '/10/01').subtract(2, 'years'), moment((currentAviYear - 1) + '/9/30')],
-				'Last 10 Avalanche Years': [moment(currentAviYear + '/10/01').subtract(10, 'years'), moment((currentAviYear) + '/9/30')],
+				'Last Avalanche Year': [moment((currentAviYear-1) + '/10/01').subtract(1, 'years'), moment((currentAviYear - 1) + '/9/30')],
+				'Last 10 Avalanche Years': [moment((currentAviYear-1) + '/10/01').subtract(10, 'years'), moment((currentAviYear) + '/9/30')],
 				'All': [moment('2008-01-01'), moment((currentAviYear) + '/9/30')],
 				},
 				//maxDate: moment()
@@ -1401,7 +1403,7 @@ console.log("Current Avi Year: ", currentAviYear);
 	);
 	
 	//Sets the initial dates in the date range picker - 5 avalanche years
-	updateDisplayedDateRange(moment(currentAviYear-1 + '/10/01').subtract(5, 'years'),moment((currentAviYear) + '/9/30'));
+	updateDisplayedDateRange(moment((currentAviYear-1) + '/10/01').subtract(5, 'years'),moment((currentAviYear) + '/9/30'));
 	
 	
 	//Upon changes to the date ranges, checks if each accident is after the start date
